@@ -1,6 +1,6 @@
 {
-  "name": "capture",
-  "version": "1.0.0",
+  "name": "redux-vcr.capture",
+  "version": "0.0.1",
   "description": "Describe capture here",
   "main": "lib/index.js",
   "jsnext:main": "es6/index.js",
@@ -13,11 +13,18 @@
     "build": "nwb build",
     "clean": "nwb clean",
     "test": "nwb test",
-    "test:watch": "nwb test --server"
+    "test:watch": "nwb test --server",
+    "lint": "eslint -c ../.eslintrc src/** --ext .js"
   },
   "dependencies": {
+    "node-uuid": "^1.4.7"
   },
   "devDependencies": {
+    "eslint": "^3.2.2",
+    "eslint-config-airbnb": "^10.0.0",
+    "eslint-plugin-import": "^1.12.0",
+    "eslint-plugin-jsx-a11y": "^2.1.0",
+    "eslint-plugin-react": "^6.0.0",
     "nwb": "0.11.x"
   },
   "author": "",
