@@ -1,16 +1,18 @@
-# capture
+# Redux VCR / capture
 
 [![Travis][build-badge]][build]
 [![npm package][npm-badge]][npm]
 [![Coveralls][coveralls-badge]][coveralls]
 
-Describe capture here.
+Capture is responsible for collecting and preparing the Redux actions you'd like to persist. Its responsibilities include:
 
-[build-badge]: https://img.shields.io/travis/user/repo/master.svg?style=flat-square
-[build]: https://travis-ci.org/user/repo
+- Intercepting all actions dispatched to the Redux store
+- Filtering out any actions that do not need to be captured
+- Appending metadata to the actions (timestamps, user-identification, etc)
+- Assigning a unique ID to each action
 
-[npm-badge]: https://img.shields.io/npm/v/npm-package.svg?style=flat-square
-[npm]: https://www.npmjs.org/package/npm-package
+For sending the captured data to a database so that it can be replayed, See ReduxVCR/persist.
 
-[coveralls-badge]: https://img.shields.io/coveralls/user/repo/master.svg?style=flat-square
-[coveralls]: https://coveralls.io/github/user/repo
+--------
+
+### How It Works

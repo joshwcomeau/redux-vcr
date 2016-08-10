@@ -1,5 +1,3 @@
-export const getValues = obj => Object.keys(obj).map(key => obj[key]);
-
 export const isActionBlacklisted = ({ action, blacklist }) => (
   !!blacklist.find(blacklistedAction => {
     let blacklistedActionType, matchingCriteria;
