@@ -16,7 +16,7 @@ describe('captureMiddleware', () => {
   const store = {};
   const next = sinon.stub();
   const action = { type: 'USERS/ADD_NEW' };
-  const blacklistedAction = { type: 'REDUX_VCR/PLAY_CASETTE' };
+  const blacklistedAction = { type: 'REDUX_VCR/PLAY_CASSETTE' };
 
   afterEach(() => {
     dataHandler.persist.reset();
@@ -55,8 +55,8 @@ describe('captureMiddleware', () => {
   });
 
 
-  context('casette metadata', () => {
-    it('adds metadata to the casette', () => {
+  context('cassette metadata', () => {
+    it('adds metadata to the cassette', () => {
       const actionWithData = {
         ...action,
         meta: {
@@ -68,9 +68,9 @@ describe('captureMiddleware', () => {
 
       middleware(store)(next)(actionWithData);
 
-      const [casette] = dataHandler.persist.firstCall.args;
+      const [cassette] = dataHandler.persist.firstCall.args;
 
-      expect(casette.data).to.deep.equal(actionWithData.meta.capture);
+      expect(cassette.data).to.deep.equal(actionWithData.meta.capture);
     });
 
     it('merges in other data', () => {
@@ -84,9 +84,9 @@ describe('captureMiddleware', () => {
       };
       middleware(store)(next)(otherActionWithData);
 
-      const [casette] = dataHandler.persist.firstCall.args;
+      const [cassette] = dataHandler.persist.firstCall.args;
 
-      expect(casette.data).to.deep.equal({
+      expect(cassette.data).to.deep.equal({
         label: 'giorgio_tsoukalos@ancientaliens.com',
         profession: 'Ancient Alien Theorist',
       });
@@ -108,8 +108,8 @@ describe('captureMiddleware', () => {
 
       expect(dataHandler.persist.callCount).to.equal(3);
 
-      const [casette] = dataHandler.persist.firstCall.args;
-      const { actions } = casette;
+      const [cassette] = dataHandler.persist.firstCall.args;
+      const { actions } = cassette;
       const [firstAction, secondAction, thirdAction] = actions;
 
       // Note that the delay is not the time since the beginning,

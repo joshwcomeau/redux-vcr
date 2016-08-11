@@ -2,7 +2,7 @@ module.exports = {
   type: 'web-module',
   build: {
     externals: {},
-    global: 'ReduxVCR/capture',
+    global: 'ReduxVCR_capture',
     jsNext: true,
     umd: true,
   }

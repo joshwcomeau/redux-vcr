@@ -4,7 +4,7 @@ import './polyfills.js';
 
 import { isActionBlacklisted } from './helpers';
 
-const generateCasette = (id = randkey.rand36()) => ({
+const generateCassette = (id = randkey.rand36()) => ({
   id,
   data: {},
   actions: [],
@@ -16,7 +16,7 @@ export const captureMiddleware = ({
   dataHandler,
   prefix = 'REDUX_VCR',
 } = {}) => {
-  const casette = generateCasette();
+  const cassette = generateCassette();
 
   // Ensure that the data handler we've supplied is valid
   invariant(
@@ -41,10 +41,10 @@ export const captureMiddleware = ({
       return next(action);
     }
 
-    // If the action has any metadata for us, apply it to the casette
+    // If the action has any metadata for us, apply it to the cassette
     if (action.meta && action.meta.capture) {
-      casette.data = {
-        ...casette.data,
+      cassette.data = {
+        ...cassette.data,
         ...action.meta.capture,
       };
     }
@@ -53,12 +53,12 @@ export const captureMiddleware = ({
     const delay = now - timeSinceLastEvent;
     timeSinceLastEvent = now;
 
-    casette.actions.push({
+    cassette.actions.push({
       ...action,
       delay,
     });
 
-    dataHandler.persist(casette);
+    dataHandler.persist(cassette);
 
     return next(action);
   };
