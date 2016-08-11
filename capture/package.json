@@ -17,7 +17,8 @@
     "lint": "eslint -c ../.eslintrc src/** --ext .js"
   },
   "dependencies": {
-    "node-uuid": "^1.4.7"
+    "randkey": "^2.0.2",
+    "uuid4": "^1.0.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",

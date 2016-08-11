@@ -1,10 +1,10 @@
-import uuid from 'node-uuid';
+import randkey from 'randkey';
 import invariant from 'invariant';
 import './polyfills.js';
 
 import { isActionBlacklisted } from './helpers';
 
-const generateCasette = (id = uuid.v4()) => ({
+const generateCasette = (id = randkey.rand36()) => ({
   id,
   data: {},
   actions: [],
