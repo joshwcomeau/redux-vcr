@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - 0.12
+  - 4
+  - 6
+env:
+  - PROJECT_NAME=capture
+git:
+  depth: 1
+script: cd $PROJECT_NAME && npm install && npm test
