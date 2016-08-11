@@ -1,21 +1,36 @@
 import uuid from 'node-uuid';
+import invariant from 'invariant';
 import './polyfills.js';
 
 import { isActionBlacklisted } from './helpers';
 
+const generateCasette = (id = uuid.v4()) => ({
+  id,
+  data: {},
+  actions: [],
+});
+
 // eslint-disable-next-line import/prefer-default-export
-export const captureMiddleware = ({ blacklist }) => {
-  const casette = {
-    id: uuid.v4(),
-    data: {},
-    actions: [],
-  };
+export const captureMiddleware = ({
+  blacklist = [],
+  dataHandler,
+  prefix = 'REDUX_VCR',
+} = {}) => {
+  const casette = generateCasette();
+
+  // Ensure that the data handler we've supplied is valid
+  invariant(
+    !!dataHandler && typeof dataHandler.persist === 'function',
+    `Please supply a valid dataHandler to ReduxVCR/capture middleware.
+    A valid dataHandler implements a 'persist' method for syncing to a
+    database.
+
+    For more information, see PLACEHOLDER.`
+  );
 
   // In addition to any user-specified actions, we want to ignore any actions
   // emitted from ReduxVCR/replay.
-  // TODO Allow the ReduxVCR/replay prefix to be manually specified?
-  const replayPrefix = 'REDUX_VCR/';
-  blacklist.push(replayPrefix);
+  blacklist.push({ type: prefix, matchingCriteria: 'startsWith' });
 
   // We've polyfilled performance.now to run in all environments.
   let timeSinceLastEvent = performance.now();
@@ -26,26 +41,24 @@ export const captureMiddleware = ({ blacklist }) => {
       return next(action);
     }
 
-    // If the action has any metadata for us, apply it to the casette,
-    // and then remove it from the action.
+    // If the action has any metadata for us, apply it to the casette
     if (action.meta && action.meta.capture) {
       casette.data = {
         ...casette.data,
         ...action.meta.capture,
       };
-
-      // eslint-disable-next-line no-param-reassign
-      delete action.meta.capture;
     }
 
     const now = performance.now();
+    const delay = now - timeSinceLastEvent;
+    timeSinceLastEvent = now;
 
     casette.actions.push({
       ...action,
-      delay: now - timeSinceLastEvent,
+      delay,
     });
 
-    timeSinceLastEvent = now;
+    dataHandler.persist(casette);
 
     return next(action);
   };
