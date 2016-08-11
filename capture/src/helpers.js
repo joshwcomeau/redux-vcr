@@ -1,6 +1,8 @@
+// eslint-disable-next-line import/prefer-default-export
 export const isActionBlacklisted = ({ action, blacklist }) => (
   !!blacklist.find(blacklistedAction => {
-    let blacklistedActionType, matchingCriteria;
+    let blacklistedActionType;
+    let matchingCriteria;
 
     // `blacklistedAction` can either be a string, or an object containing
     // a `type` and a `matchingCriteria`.
@@ -17,13 +19,18 @@ export const isActionBlacklisted = ({ action, blacklist }) => (
     switch (matchingCriteria) {
       case 'contains':
         regexMatcher = blacklistedActionType;
+        break;
       case 'startsWith':
         regexMatcher = `^${blacklistedActionType}`;
+        break;
       case 'endsWith':
         regexMatcher = `${blacklistedActionType}$`;
+        break;
       case 'perfectMatch':
         regexMatcher = `^${blacklistedActionType}$`;
+        break;
       default:
+        // eslint-disable-next-line no-console
         console.warn(`
           WARNING from ReduxVCR/capture.
           You neglected to provide suitable matching criteria for your
@@ -37,5 +44,5 @@ export const isActionBlacklisted = ({ action, blacklist }) => (
     }
 
     return action.type.match(new RegExp(regexMatcher));
-  });
+  })
 );
