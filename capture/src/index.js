@@ -1,11 +1,9 @@
-import randkey from 'randkey';
 import invariant from 'invariant';
 import './polyfills.js';
 
 import { isActionBlacklisted } from './helpers';
 
-const generateCassette = (id = randkey.rand36()) => ({
-  id,
+const generateCassette = () => ({
   data: {},
   actions: [],
 });

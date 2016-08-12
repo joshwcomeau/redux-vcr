@@ -1,7 +1,7 @@
 {
-  "name": "redux-vcr.capture",
-  "version": "0.0.1",
-  "description": "Describe capture here",
+  "name": "persist",
+  "version": "1.0.0",
+  "description": "Describe persist here",
   "main": "lib/index.js",
   "jsnext:main": "es6/index.js",
   "files": [
@@ -16,6 +16,10 @@
     "test:watch": "nwb test --server",
     "lint": "eslint -c ../.eslintrc src/** --ext .js"
   },
+  "dependencies": {
+    "firebase": "^3.2.1",
+    "lodash.debounce": "^4.0.7"
+  },
   "devDependencies": {
     "chai": "^3.5.0",
     "eslint": "^3.2.2",
@@ -25,6 +29,8 @@
     "eslint-plugin-react": "^6.0.0",
     "nwb": "0.11.x",
     "redux": "^3.5.2",
+    "rewire": "^2.5.2",
+    "rewire-webpack": "^1.0.1",
     "sinon": "^2.0.0-pre.2"
   },
   "author": "",
