@@ -1,4 +1,4 @@
-import FirebaseHandler from '../../shared/firebase-handler';
+import FirebaseHandler from '../../shared/utils/firebase-handler';
 
 
 export default class RetrieveDataHandler {
@@ -8,7 +8,7 @@ export default class RetrieveDataHandler {
   }
 
   retrieveList() {
-    return this.FirebaseHandler
+    return this.firebaseHandler
       .firebase
       .database()
       .ref('cassettes')
@@ -16,7 +16,7 @@ export default class RetrieveDataHandler {
   }
 
   retrieveActions({ id }) {
-    return this.FirebaseHandler
+    return this.firebaseHandler
       .firebase
       .database()
       .ref(`actions/${id}`)

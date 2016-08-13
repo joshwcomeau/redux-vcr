@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import omit from 'lodash';
 
-import FirebaseHandler from '../firebase-handler';
+import FirebaseHandler from '../src/firebase-handler';
 
 const firebaseAuth = {
   apiKey: 'abc123',

@@ -31,6 +31,8 @@ const firebaseStubFactory = () => {
     },
 
     set() {},
+
+    once() {},
   };
 
   sinon.spy(firebaseStub, 'initializeApp');
@@ -40,6 +42,7 @@ const firebaseStubFactory = () => {
   sinon.spy(firebaseStub, 'onAuthStateChanged');
   sinon.spy(firebaseStub, 'ref');
   sinon.spy(firebaseStub, 'set');
+  sinon.spy(firebaseStub, 'once');
 
   return firebaseStub;
 };
