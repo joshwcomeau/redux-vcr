@@ -5,6 +5,7 @@ node_js:
   - 6
 env:
   - PROJECT_NAME=capture
+  - PROJECT_NAME=persist
 git:
   depth: 1
 script: cd $PROJECT_NAME && npm install && npm test
