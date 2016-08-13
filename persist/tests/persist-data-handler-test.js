@@ -15,7 +15,7 @@ const firebaseAuth = {
 };
 
 
-describe('persist DataHandler', () => {
+describe('DataHandler', () => {
   before(() => {
     Object.keys(firebaseStub).forEach(key => {
       sinon.spy(firebaseStub, key);
@@ -142,15 +142,16 @@ describe('persist DataHandler', () => {
 
     describe('casette validation', () => {
       let handler;
-      before(() => {
+      before(done => {
         handler = new DataHandler({ firebaseAuth });
+        window.setTimeout(done, 100);
       });
 
       it('fails when no casette is provided', () => {
         expect(handler.persist).to.throw(/casette/);
       });
 
-      it('fails when no actions are provided', () => {
+      it('fails when no action array is provided', () => {
         const faultyCasette = {};
 
         expect(() => (
@@ -158,10 +159,15 @@ describe('persist DataHandler', () => {
         )).to.throw(/casette/);
       });
 
+      it('succeeds when the actions array is empty', () => {
+        const casette = { actions: [] };
+        expect(() => handler.persist(casette)).to.not.throw();
+      });
+
       it('succeeds when no data is provided (it is optional)', () => {
         const casette = { actions: [{ type: 'STUFF' }] };
 
-        expect(() => handler.persist(casette)).to.be.ok;
+        expect(() => handler.persist(casette)).to.not.throw();
       });
     });
 
@@ -212,6 +218,31 @@ describe('persist DataHandler', () => {
         const setActions = firebaseStub.set.args[1][0];
 
         expect(setActions).to.equal(casette.actions);
+      });
+    });
+
+    describe('debounce timing', () => {
+      it('debounces the persist method when set', done => {
+        // In this test, we'll invoke `persist` several times very quickly,
+        // and check to see that:
+        //   - it isn't invoked at all right away
+        //   - it is only invoked once, at the end of the debounce.
+        const handler = new DataHandler({
+          firebaseAuth,
+          debounceLength: 200,
+        });
+        const casette = { actions: [{ type: 'JUMP_OVER_BARN' }] };
+
+        for (let i = 0; i <= 5; i++) {
+          handler.persist(casette);
+        }
+
+        expect(firebaseStub.database.callCount).to.equal(0);
+
+        window.setTimeout(() => {
+          expect(firebaseStub.database.callCount).to.equal(1);
+          done();
+        }, 250);
       });
     });
   });
