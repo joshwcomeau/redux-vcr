@@ -12,12 +12,13 @@
   "scripts": {
     "build": "nwb build",
     "clean": "nwb clean",
-    "test": "NODE_ENV=test nwb test",
+    "test": "nwb test",
     "test:watch": "nwb test --server",
     "lint": "eslint -c ../.eslintrc src/** --ext .js"
   },
   "dependencies": {
     "firebase": "^3.2.1",
+    "invariant": "^2.2.1",
     "lodash.debounce": "^4.0.7"
   },
   "devDependencies": {

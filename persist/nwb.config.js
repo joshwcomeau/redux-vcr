@@ -8,9 +8,4 @@ module.exports = {
     jsNext: true,
     umd: true,
   },
-  webpack: {
-    extra: {
-      plugins: [new RewirePlugin()],
-    },
-  },
 };

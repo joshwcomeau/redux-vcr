@@ -1,28 +1,46 @@
 import debounce from 'lodash.debounce';
+import invariant from 'invariant';
 import firebase from 'firebase/app';
 
 import 'firebase/auth';
 import 'firebase/database';
 
+
 const sessionStart = Date.now();
 let user = {};
 
 
-const dataHandler = {
-  // Allow firebase to be read and replaced externally.
+export default {
+  // Allow firebase to be replaced externally.
   // While this seems like a terrible idea, it's the only way I've found
   // to be able to stub this private module; libs like `rewire` have
   // trouble with ES6/webpack.
-  firebase,
-
   replaceFirebase(newBase) {
-    console.log(process.env.NODE_ENV)
     if (process.env.NODE_ENV === 'test') {
       this.firebase = newBase;
     }
   },
 
   initialize({ firebaseAuth, debounceLength = 500 } = {}) {
+    // Validate the firebaseAuth object
+    invariant(
+      typeof firebaseAuth === 'object' &&
+      typeof firebaseAuth.apiKey === 'string' &&
+      typeof firebaseAuth.authDomain === 'string' &&
+      typeof firebaseAuth.databaseUrl === 'string',
+      `Please supply a valid 'firebaseAuth' object to ReduxVCR/persist.
+
+      To persist data to firebase, we need an 'apiKey', an 'authDomain',
+      and a 'databaseUrl'.
+
+      For more information, see PLACEHOLDER.`
+    );
+
+    // Default firebase to use the official SDK.
+    if (typeof this.firebase === 'undefined') {
+      this.firebase = firebase;
+    }
+
     this.firebase.initializeApp(firebaseAuth);
 
     // Sign the user in anonymously.
@@ -41,7 +59,7 @@ const dataHandler = {
 
   persist(casette) {
     const { data, actions } = casette;
-    const { uid } = user;
+    const sessionId = user.uid;
     const database = this.firebase.database();
 
     // For efficiency, we want our firebase structure to look like:
@@ -67,14 +85,12 @@ const dataHandler = {
       }
     */
 
-    database.ref(`casettes/${uid}`).set({
+    database.ref(`casettes/${sessionId}`).set({
       data,
       timestamp: sessionStart,
       numOfActions: actions.length,
     });
 
-    database.ref(`actions/${uid}`).set(actions);
+    database.ref(`actions/${sessionId}`).set(actions);
   },
 };
-
-export default dataHandler;
