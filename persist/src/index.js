@@ -4,9 +4,10 @@ import firebase from 'firebase/app';
 
 import 'firebase/auth';
 import 'firebase/database';
+import './polyfills';
 
 
-export default class dataHandler {
+export default class DataHandler {
   constructor({ firebaseAuth, debounceLength }) {
     // Validate the firebaseAuth object
     invariant(
@@ -24,7 +25,7 @@ export default class dataHandler {
 
     // Either use the firebase override set on the class (stubbed for
     // testing), or the default imported firebase.
-    this.firebase = dataHandler.firebase || firebase;
+    this.firebase = DataHandler.firebase || firebase;
 
     this.firebase.initializeApp(firebaseAuth);
 
@@ -46,7 +47,19 @@ export default class dataHandler {
   }
 
   persist(casette) {
-    const { data, actions } = casette;
+    invariant(
+      typeof casette === 'object' &&
+      Array.isArray(casette.actions),
+      `Please supply a valid 'casette' when invoking DataHandler.persist.
+
+      A valid casette is an object containing an optional 'data' argument,
+      and a required array of 'actions'.
+
+      For more information, see PLACEHOLDER.
+      `
+    );
+
+    const { data = {}, actions } = casette;
     const database = this.firebase.database();
 
     invariant(
