@@ -1,41 +1,14 @@
 import debounce from 'lodash.debounce';
 import invariant from 'invariant';
-import firebase from 'firebase/app';
 
-import 'firebase/auth';
-import 'firebase/database';
+import FirebaseHandler from '../../shared/firebase-handler';
 import './polyfills';
 
 
 export default class DataHandler {
   constructor({ firebaseAuth, debounceLength }) {
-    // Validate the firebaseAuth object
-    invariant(
-      typeof firebaseAuth === 'object' &&
-      typeof firebaseAuth.apiKey === 'string' &&
-      typeof firebaseAuth.authDomain === 'string' &&
-      typeof firebaseAuth.databaseURL === 'string',
-      `Please supply a valid 'firebaseAuth' object to ReduxVCR/persist.
-
-      To persist data to firebase, we need an 'apiKey', an 'authDomain',
-      and a 'databaseUrl'.
-
-      For more information, see PLACEHOLDER.`
-    );
-
-    // Either use the firebase override set on the class (stubbed for
-    // testing), or the default imported firebase.
-    this.firebase = DataHandler.firebase || firebase;
-
-    this.firebase.initializeApp(firebaseAuth);
-
-    const auth = this.firebase.auth();
-
-    auth.signInAnonymously();
-
-    auth.onAuthStateChanged(session => {
-      this.sessionId = session.uid;
-    });
+    // Create a Firebase handler
+    this.firebaseHandler = new FirebaseHandler({ firebaseAuth });
 
     this.sessionStart = Date.now();
 
@@ -46,25 +19,23 @@ export default class DataHandler {
     }
   }
 
-  persist(casette) {
+  persist(cassette) {
     invariant(
-      typeof casette === 'object' &&
-      Array.isArray(casette.actions),
-      `Please supply a valid 'casette' when invoking DataHandler.persist.
+      typeof cassette === 'object' &&
+      Array.isArray(cassette.actions),
+      `Please supply a valid 'cassette' when invoking DataHandler.persist.
 
-      A valid casette is an object containing an optional 'data' argument,
+      A valid cassette is an object containing an optional 'data' argument,
       and a required array of 'actions'.
 
       For more information, see PLACEHOLDER.
       `
     );
 
-    const { data = {}, actions } = casette;
-    const database = this.firebase.database();
-
+    const { sessionId } = this.firebaseHandler;
     invariant(
-      typeof this.sessionId !== 'undefined',
-      `It seems you're trying to persist a casette before firebase
+      typeof sessionId !== 'undefined',
+      `It seems you're trying to persist a cassette before firebase
       authentication is complete.
 
       Either this means that you're persisting too quickly, or there's
@@ -76,45 +47,18 @@ export default class DataHandler {
       For more information, see PLACEHOLDER.`
     );
 
-    // For efficiency, we want our firebase structure to look like:
-    /*
-      {
-        casettes: {
-          abc123: { timestamp: 123456789, numOfActions: 200 },
-          xyz789: { ... }
-        ],
-        actions: {
-          abc123: [
-            {
-              time: 100,
-              action: {
-                // Redux action
-                type: 'DO_THING',
-                payload: { ... }
-              }
-            }
-          ],
-          xyz789: [ ... ],
-        },
-      }
-    */
+    const { data = {}, actions } = cassette;
+    const database = this.firebaseHandler.firebase.database();
 
-    database.ref(`casettes/${this.sessionId}`).set({
+    // Store our cassettes separately from our cassette actions.
+    // There are performance reasons for this: by keeping our /cassettes
+    // light, they can easily be sorted or filtered on the client.
+    database.ref(`cassettes/${sessionId}`).set({
       data,
       timestamp: this.sessionStart,
       numOfActions: actions.length,
     });
 
-    database.ref(`actions/${this.sessionId}`).set(actions);
-  }
-
-  // Allow firebase to be replaced externally.
-  // While this seems like a terrible idea, it's the only way I've found
-  // to be able to stub this private module; libs like `rewire` have
-  // trouble with ES6/webpack.
-  static replaceFirebase(newBase) {
-    if (process.env.NODE_ENV === 'test') {
-      this.firebase = newBase;
-    }
+    database.ref(`actions/${sessionId}`).set(actions);
   }
 }

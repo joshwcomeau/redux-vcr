@@ -1,12 +1,8 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
 import sinon from 'sinon';
-import omit from 'lodash';
 
 import DataHandler from '../src';
-import firebaseStub from './firebase-stub';
-
-DataHandler.replaceFirebase(firebaseStub);
 
 const firebaseAuth = {
   apiKey: 'abc123',
@@ -15,235 +11,154 @@ const firebaseAuth = {
 };
 
 
-describe('DataHandler', () => {
-  before(() => {
-    Object.keys(firebaseStub).forEach(key => {
-      sinon.spy(firebaseStub, key);
+describe('Persist DataHandler', () => {
+  describe('authentication', () => {
+    it('fails when invoked immediately', () => {
+      // This test fails because the constructor needs some time
+      // to authenticate with firebase.
+      const handler = new DataHandler({
+        firebaseAuth,
+      });
+
+      const cassette = { data: {}, actions: [] };
+
+      expect(() => handler.persist(cassette)).to.throw(/firebase/);
+    });
+
+    it('succeeds when a debounce is used', done => {
+      const handler = new DataHandler({
+        firebaseAuth,
+        debounceLength: 50,
+      });
+
+      const cassette = { data: {}, actions: [] };
+
+      const firebase = handler.firebaseHandler.firebase;
+
+      // This is a little tricky, since the `persist` method is debounced.
+      // The function will return just fine, even if there's a problem
+      // with the auth.
+      handler.persist(cassette);
+
+      expect(firebase.set.callCount).to.equal(0);
+
+      // Because of that, we also need to wait and see if .set
+      // is called, which is the actual firebase-persist method.
+      window.setTimeout(() => {
+        // Called twice. Once for the cassette, once for its actions.
+        expect(firebase.set.callCount).to.equal(2);
+
+        done();
+      }, 1000);
     });
   });
 
-  afterEach(() => {
-    Object.keys(firebaseStub).forEach(key => {
-      firebaseStub[key].reset();
+  describe('cassette validation', () => {
+    let handler;
+    before(done => {
+      handler = new DataHandler({ firebaseAuth });
+      window.setTimeout(done, 100);
+    });
+
+    it('fails when no cassette is provided', () => {
+      expect(handler.persist).to.throw(/cassette/);
+    });
+
+    it('fails when no action array is provided', () => {
+      const faultyCasette = {};
+
+      expect(() => (
+        handler.persist(faultyCasette)
+      )).to.throw(/cassette/);
+    });
+
+    it('succeeds when the actions array is empty', () => {
+      const cassette = { actions: [] };
+      expect(() => handler.persist(cassette)).to.not.throw();
+    });
+
+    it('succeeds when no data is provided (it is optional)', () => {
+      const cassette = { actions: [{ type: 'STUFF' }] };
+
+      expect(() => handler.persist(cassette)).to.not.throw();
     });
   });
 
-  after(() => {
-    Object.keys(firebaseStub).forEach(key => {
-      firebaseStub[key].restore();
+  describe('firebase integration', () => {
+    let handler;
+    let firebase;
+    const cassette = {
+      data: { label: "Josh's great session" },
+      actions: [{ type: 'DO_GREAT_THINGS' }],
+    };
+
+    beforeEach(done => {
+      handler = new DataHandler({ firebaseAuth });
+      firebase = handler.firebaseHandler.firebase;
+
+      window.setTimeout(() => {
+        handler.persist(cassette);
+        done();
+      }, 50);
+    });
+
+    it('gets a database reference', () => {
+      expect(firebase.database.callCount).to.equal(1);
+    });
+
+    it('gets the ref for the cassettes and actions paths', () => {
+      expect(firebase.ref.callCount).to.equal(2);
+
+      const cassettesRef = firebase.ref.args[0][0];
+      expect(cassettesRef).to.equal('cassettes/abc123');
+
+      const actionsRef = firebase.ref.args[1][0];
+      expect(actionsRef).to.equal('actions/abc123');
+    });
+
+    it('sets the cassette and the actions', () => {
+      const set = firebase.set;
+      expect(set.callCount).to.equal(2);
+    });
+
+    it('passes along the right data for the cassette', () => {
+      const setCasette = firebase.set.args[0][0];
+
+      expect(setCasette.data).to.equal(cassette.data);
+      expect(setCasette.timestamp).to.be.a('number');
+      expect(setCasette.numOfActions).to.equal(cassette.actions.length);
+    });
+
+    it('passes along the actions as-is', () => {
+      const setActions = firebase.set.args[1][0];
+
+      expect(setActions).to.equal(cassette.actions);
     });
   });
 
-
-  describe('initialization', () => {
-    it('throws when no arguments are provided', () => {
-      expect(() => new DataHandler()).to.throw(/firebaseAuth/);
-    });
-
-    // Check that all 3 firebase keys are required
-    Object.keys(firebaseAuth).forEach(missingKey => {
-      const inadequateFirebaseAuth = omit(firebaseAuth, missingKey);
-
-      it(`fails when firebaseAuth is missing ${missingKey}`, () => {
-        const auth = {
-          firebaseAuth: inadequateFirebaseAuth,
-        };
-
-        expect(() => (
-          new DataHandler({ firebaseAuth: auth })
-        )).to.throw(/firebaseAuth/);
+  describe('debounce timing', () => {
+    it('debounces the persist method when set', done => {
+      // In this test, we'll invoke `persist` several times very quickly,
+      // and check to see that:
+      //   - it isn't invoked at all right away
+      //   - it is only invoked once, at the end of the debounce.
+      const handler = new DataHandler({
+        firebaseAuth,
+        debounceLength: 200,
       });
-    });
+      const firebase = handler.firebaseHandler.firebase;
+      const cassette = { actions: [{ type: 'JUMP_OVER_BARN' }] };
 
-    context('with a valid firebaseAuth object', () => {
-      let handler;
+      for (let i = 0; i <= 5; i++) {
+        handler.persist(cassette);
+      }
 
-      beforeEach(() => {
-        handler = new DataHandler({ firebaseAuth });
-      });
+      expect(firebase.database.callCount).to.equal(0);
 
-      it('invokes `initializeApp` with the supplied auth', () => {
-        expect(firebaseStub.initializeApp.callCount).to.equal(1);
-
-        const call = firebaseStub.initializeApp.getCall(0);
-        expect(call.args[0]).to.equal(firebaseAuth);
-      });
-
-      it('invokes `auth` once to retrieve auth methods', () => {
-        expect(firebaseStub.auth.callCount).to.equal(1);
-      });
-
-      it('invokes the `signInAnonymously` method', () => {
-        expect(firebaseStub.signInAnonymously.callCount).to.equal(1);
-      });
-
-      it('registers the `onAuthStateChanged` callback', () => {
-        expect(firebaseStub.onAuthStateChanged.callCount).to.equal(1);
-      });
-
-      it('sets the session ID', done => {
-        // This happens asynchronously, since we need to wait for Firebase
-        // to generate the ID.
-        expect(handler.sessionId).to.be.undefined;
-
-        window.setTimeout(() => {
-          expect(handler.sessionId).to.equal('abc123');
-          done();
-        }, 100);
-      });
-
-      it('captures the sessionStart timestamp', () => {
-        expect(handler.sessionStart).to.be.a('number');
-        expect(handler.sessionStart).to.be.closeTo(Date.now(), 1000);
-      });
-    });
-  });
-
-
-  describe('persist', () => {
-    describe('authentication', () => {
-      it('fails when invoked immediately', () => {
-        // This test fails because the constructor needs some time
-        // to authenticate with firebase.
-        const handler = new DataHandler({
-          firebaseAuth,
-        });
-
-        const casette = { data: {}, actions: [] };
-
-        expect(() => handler.persist(casette)).to.throw(/firebase/);
-      });
-
-      it('succeeds when a debounce is used', done => {
-        const handler = new DataHandler({
-          firebaseAuth,
-          debounceLength: 50,
-        });
-
-        const casette = { data: {}, actions: [] };
-
-        // This is a little tricky, since the `persist` method is
-        // debounced. The function will return just fine, even if
-        // there's a problem with the auth.
-        handler.persist(casette);
-
-        expect(firebaseStub.set.callCount).to.equal(0);
-
-        // Because of that, we also need to wait and see if .set
-        // is called, which is the actual firebase-persist method.
-        window.setTimeout(() => {
-          // Called twice. Once for the casette, once for its actions.
-          expect(firebaseStub.set.callCount).to.equal(2);
-
-          done();
-        }, 1000);
-      });
-    });
-
-    describe('casette validation', () => {
-      let handler;
-      before(done => {
-        handler = new DataHandler({ firebaseAuth });
-        window.setTimeout(done, 100);
-      });
-
-      it('fails when no casette is provided', () => {
-        expect(handler.persist).to.throw(/casette/);
-      });
-
-      it('fails when no action array is provided', () => {
-        const faultyCasette = {};
-
-        expect(() => (
-          handler.persist(faultyCasette)
-        )).to.throw(/casette/);
-      });
-
-      it('succeeds when the actions array is empty', () => {
-        const casette = { actions: [] };
-        expect(() => handler.persist(casette)).to.not.throw();
-      });
-
-      it('succeeds when no data is provided (it is optional)', () => {
-        const casette = { actions: [{ type: 'STUFF' }] };
-
-        expect(() => handler.persist(casette)).to.not.throw();
-      });
-    });
-
-    describe('firebase integration', () => {
-      let handler;
-      const casette = {
-        data: { label: "Josh's great session" },
-        actions: [{ type: 'DO_GREAT_THINGS' }],
-      };
-
-      beforeEach(done => {
-        handler = new DataHandler({ firebaseAuth });
-
-        window.setTimeout(() => {
-          handler.persist(casette);
-          done();
-        }, 50);
-      });
-
-      it('gets a database reference', () => {
-        expect(firebaseStub.database.callCount).to.equal(1);
-      });
-
-      it('gets the ref for the casettes and actions paths', () => {
-        expect(firebaseStub.ref.callCount).to.equal(2);
-
-        const casettesRef = firebaseStub.ref.args[0][0];
-        expect(casettesRef).to.equal('casettes/abc123');
-
-        const actionsRef = firebaseStub.ref.args[1][0];
-        expect(actionsRef).to.equal('actions/abc123');
-      });
-
-      it('sets the casette and the actions', () => {
-        const set = firebaseStub.set;
-        expect(set.callCount).to.equal(2);
-      });
-
-      it('passes along the right data for the casette', () => {
-        const setCasette = firebaseStub.set.args[0][0];
-
-        expect(setCasette.data).to.equal(casette.data);
-        expect(setCasette.timestamp).to.be.a('number');
-        expect(setCasette.numOfActions).to.equal(casette.actions.length);
-      });
-
-      it('passes along the actions as-is', () => {
-        const setActions = firebaseStub.set.args[1][0];
-
-        expect(setActions).to.equal(casette.actions);
-      });
-    });
-
-    describe('debounce timing', () => {
-      it('debounces the persist method when set', done => {
-        // In this test, we'll invoke `persist` several times very quickly,
-        // and check to see that:
-        //   - it isn't invoked at all right away
-        //   - it is only invoked once, at the end of the debounce.
-        const handler = new DataHandler({
-          firebaseAuth,
-          debounceLength: 200,
-        });
-        const casette = { actions: [{ type: 'JUMP_OVER_BARN' }] };
-
-        for (let i = 0; i <= 5; i++) {
-          handler.persist(casette);
-        }
-
-        expect(firebaseStub.database.callCount).to.equal(0);
-
-        window.setTimeout(() => {
-          expect(firebaseStub.database.callCount).to.equal(1);
-          done();
-        }, 250);
-      });
+      window.setTimeout(() => {
+        expect(firebase.database.callCount).to.equal(1);
+        done();
+      }, 250);
     });
   });
 });

@@ -1,9 +1,8 @@
 {
-  "name": "redux-vcr.persist",
+  "name": "redux-vcr.shared",
   "version": "0.0.1",
-  "description": "ReduxVCR persist module",
+  "description": "Not an actual package, just a collection of shared utilities",
   "main": "lib/index.js",
-  "jsnext:main": "es6/index.js",
   "files": [
     "es6",
     "lib",
@@ -18,8 +17,7 @@
   },
   "dependencies": {
     "firebase": "3.2.1",
-    "invariant": "2.2.1",
-    "lodash.debounce": "4.0.7"
+    "invariant": "2.2.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -34,7 +32,6 @@
     "sinon": "^2.0.0-pre.2"
   },
   "author": "Joshua Comeau",
-  "homepage": "https://github.com/joshwcomeau/redux-vcr/tree/master/persist",
   "license": "MIT",
   "repository": {
     "type": "git",
