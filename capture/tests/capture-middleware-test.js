@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { captureMiddleware } from '../src';
+import captureMiddleware from '../src';
 
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
