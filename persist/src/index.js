@@ -6,22 +6,8 @@ import 'firebase/auth';
 import 'firebase/database';
 
 
-const sessionStart = Date.now();
-let user = {};
-
-
-export default {
-  // Allow firebase to be replaced externally.
-  // While this seems like a terrible idea, it's the only way I've found
-  // to be able to stub this private module; libs like `rewire` have
-  // trouble with ES6/webpack.
-  replaceFirebase(newBase) {
-    if (process.env.NODE_ENV === 'test') {
-      this.firebase = newBase;
-    }
-  },
-
-  initialize({ firebaseAuth, debounceLength = 500 } = {}) {
+export default class dataHandler {
+  constructor({ firebaseAuth, debounceLength }) {
     // Validate the firebaseAuth object
     invariant(
       typeof firebaseAuth === 'object' &&
@@ -36,10 +22,9 @@ export default {
       For more information, see PLACEHOLDER.`
     );
 
-    // Default firebase to use the official SDK.
-    if (typeof this.firebase === 'undefined') {
-      this.firebase = firebase;
-    }
+    // Either use the firebase override set on the class (stubbed for
+    // testing), or the default imported firebase.
+    this.firebase = dataHandler.firebase || firebase;
 
     this.firebase.initializeApp(firebaseAuth);
 
@@ -51,12 +36,14 @@ export default {
       this.sessionId = session.uid;
     });
 
+    this.sessionStart = Date.now();
+
     // Debounce our `persist` method, to avoid spamming firebase whenever
     // a small change happens
     if (debounceLength) {
       this.persist = debounce(this.persist, debounceLength);
     }
-  },
+  }
 
   persist(casette) {
     const { data, actions } = casette;
@@ -101,10 +88,20 @@ export default {
 
     database.ref(`casettes/${this.sessionId}`).set({
       data,
-      timestamp: sessionStart,
+      timestamp: this.sessionStart,
       numOfActions: actions.length,
     });
 
     database.ref(`actions/${this.sessionId}`).set(actions);
-  },
-};
+  }
+
+  // Allow firebase to be replaced externally.
+  // While this seems like a terrible idea, it's the only way I've found
+  // to be able to stub this private module; libs like `rewire` have
+  // trouble with ES6/webpack.
+  static replaceFirebase(newBase) {
+    if (process.env.NODE_ENV === 'test') {
+      this.firebase = newBase;
+    }
+  }
+}

@@ -33,9 +33,10 @@ describe('persist dataHandler', () => {
     });
   });
 
+
   describe('initialization', () => {
     it('throws when no arguments are provided', () => {
-      expect(dataHandler.initialize).to.throw(/firebaseAuth/);
+      expect(() => new dataHandler()).to.throw(/firebaseAuth/);
     });
 
     // Check that all 3 firebase keys are required
@@ -43,19 +44,21 @@ describe('persist dataHandler', () => {
       const inadequateFirebaseAuth = omit(firebaseAuth, missingKey);
 
       it(`fails when firebaseAuth is missing ${missingKey}`, () => {
-        const init = () => {
-          dataHandler.initialize({
-            firebaseAuth: inadequateFirebaseAuth,
-          });
+        const auth = {
+          firebaseAuth: inadequateFirebaseAuth,
         };
 
-        expect(init).to.throw(/firebaseAuth/);
+        expect(() => (
+          new dataHandler({ firebaseAuth: auth })
+        )).to.throw(/firebaseAuth/);
       });
     });
 
     context('with a valid firebaseAuth object', () => {
+      let handler;
+
       beforeEach(() => {
-        dataHandler.initialize({ firebaseAuth });
+        handler = new dataHandler({ firebaseAuth });
       });
 
       it('invokes `initializeApp` with the supplied auth', () => {
@@ -79,8 +82,11 @@ describe('persist dataHandler', () => {
 
       it('sets the session ID', done => {
         // This happens asynchronously, since we need to wait for Firebase to generate the ID.
+        // eslint-disable-next-line no-unused-expressions
+        expect(handler.sessionId).to.be.undefined;
+
         window.setTimeout(() => {
-          expect(dataHandler.sessionId).to.equal('abc123');
+          expect(handler.sessionId).to.equal('abc123');
           done();
         }, 100);
       });
