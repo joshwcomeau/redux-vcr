@@ -1,7 +1,7 @@
 {
   "name": "redux-vcr.capture",
   "version": "0.0.1",
-  "description": "Describe capture here",
+  "description": "ReduxVCR capture module",
   "main": "lib/index.js",
   "jsnext:main": "es6/index.js",
   "files": [
@@ -12,7 +12,7 @@
   "scripts": {
     "build": "nwb build",
     "clean": "nwb clean",
-    "test": "NODE_ENV=test nwb test",
+    "test": "nwb test",
     "test:watch": "nwb test --server",
     "lint": "eslint -c ../.eslintrc src/** --ext .js"
   },
@@ -28,8 +28,11 @@
     "redux": "^3.5.2",
     "sinon": "^2.0.0-pre.2"
   },
-  "author": "",
-  "homepage": "",
+  "author": "Joshua Comeau",
+  "homepage": "https://github.com/joshwcomeau/redux-vcr/tree/master/capture",
   "license": "MIT",
-  "repository": ""
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshwcomeau/redux-vcr.git"
+  }
 }

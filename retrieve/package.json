@@ -1,7 +1,7 @@
 {
-  "name": "retrieve",
-  "version": "1.0.0",
-  "description": "Describe retrieve here",
+  "name": "redux-vcr.retrieve",
+  "version": "0.0.1",
+  "description": "ReduxVCR retrieve module",
   "main": "lib/index.js",
   "jsnext:main": "es6/index.js",
   "files": [
@@ -13,15 +13,28 @@
     "build": "nwb build",
     "clean": "nwb clean",
     "test": "nwb test",
-    "test:watch": "nwb test --server"
+    "test:watch": "nwb test --server",
+    "lint": "eslint -c ../.eslintrc src/** --ext .js"
   },
   "dependencies": {
   },
   "devDependencies": {
-    "nwb": "0.11.x"
+    "chai": "^3.5.0",
+    "eslint": "^3.2.2",
+    "eslint-config-airbnb": "^10.0.0",
+    "eslint-plugin-import": "^1.12.0",
+    "eslint-plugin-jsx-a11y": "^2.1.0",
+    "eslint-plugin-react": "^6.0.0",
+    "invariant": "^2.2.1",
+    "nwb": "0.11.x",
+    "redux": "^3.5.2",
+    "sinon": "^2.0.0-pre.2"
   },
-  "author": "",
-  "homepage": "",
+  "author": "Joshua Comeau",
+  "homepage": "https://github.com/joshwcomeau/redux-vcr/tree/master/persist",
   "license": "MIT",
-  "repository": ""
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshwcomeau/redux-vcr.git"
+  }
 }
