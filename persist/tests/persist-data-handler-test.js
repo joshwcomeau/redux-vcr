@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import DataHandler from '../src';
+import { PersistDataHandler } from '../src';
 
 const firebaseAuth = {
   apiKey: 'abc123',
@@ -11,12 +11,12 @@ const firebaseAuth = {
 };
 
 
-describe('Persist DataHandler', () => {
+describe('PersistDataHandler', () => {
   describe('authentication', () => {
     it('fails when invoked immediately', () => {
       // This test fails because the constructor needs some time
       // to authenticate with firebase.
-      const handler = new DataHandler({
+      const handler = new PersistDataHandler({
         firebaseAuth,
       });
 
@@ -26,7 +26,7 @@ describe('Persist DataHandler', () => {
     });
 
     it('succeeds when a debounce is used', done => {
-      const handler = new DataHandler({
+      const handler = new PersistDataHandler({
         firebaseAuth,
         debounceLength: 50,
       });
@@ -56,7 +56,7 @@ describe('Persist DataHandler', () => {
   describe('cassette validation', () => {
     let handler;
     before(done => {
-      handler = new DataHandler({ firebaseAuth });
+      handler = new PersistDataHandler({ firebaseAuth });
       window.setTimeout(done, 100);
     });
 
@@ -93,7 +93,7 @@ describe('Persist DataHandler', () => {
     };
 
     beforeEach(done => {
-      handler = new DataHandler({ firebaseAuth });
+      handler = new PersistDataHandler({ firebaseAuth });
       firebase = handler.firebaseHandler.firebase;
 
       window.setTimeout(() => {
@@ -142,7 +142,7 @@ describe('Persist DataHandler', () => {
       // and check to see that:
       //   - it isn't invoked at all right away
       //   - it is only invoked once, at the end of the debounce.
-      const handler = new DataHandler({
+      const handler = new PersistDataHandler({
         firebaseAuth,
         debounceLength: 200,
       });
