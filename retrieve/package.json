@@ -1,0 +1,27 @@
+{
+  "name": "retrieve",
+  "version": "1.0.0",
+  "description": "Describe retrieve here",
+  "main": "lib/index.js",
+  "jsnext:main": "es6/index.js",
+  "files": [
+    "es6",
+    "lib",
+    "umd"
+  ],
+  "scripts": {
+    "build": "nwb build",
+    "clean": "nwb clean",
+    "test": "nwb test",
+    "test:watch": "nwb test --server"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "nwb": "0.11.x"
+  },
+  "author": "",
+  "homepage": "",
+  "license": "MIT",
+  "repository": ""
+}
