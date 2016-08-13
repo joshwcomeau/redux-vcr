@@ -27,7 +27,7 @@ export default {
       typeof firebaseAuth === 'object' &&
       typeof firebaseAuth.apiKey === 'string' &&
       typeof firebaseAuth.authDomain === 'string' &&
-      typeof firebaseAuth.databaseUrl === 'string',
+      typeof firebaseAuth.databaseURL === 'string',
       `Please supply a valid 'firebaseAuth' object to ReduxVCR/persist.
 
       To persist data to firebase, we need an 'apiKey', an 'authDomain',
@@ -43,11 +43,12 @@ export default {
 
     this.firebase.initializeApp(firebaseAuth);
 
-    // Sign the user in anonymously.
-    this.firebase.auth().signInAnonymously();
+    const auth = this.firebase.auth();
 
-    this.firebase.auth().onAuthStateChanged(u => {
-      user = u;
+    auth.signInAnonymously();
+
+    auth.onAuthStateChanged(session => {
+      this.sessionId = session.uid;
     });
 
     // Debounce our `persist` method, to avoid spamming firebase whenever
@@ -59,8 +60,21 @@ export default {
 
   persist(casette) {
     const { data, actions } = casette;
-    const sessionId = user.uid;
     const database = this.firebase.database();
+
+    invariant(
+      typeof this.sessionId !== 'undefined',
+      `It seems you're trying to persist a casette before firebase
+      authentication is complete.
+
+      Either this means that you're persisting too quickly, or there's
+      a problem with firebase authentication.
+
+      Ensure that your credentials are valid, and that you're debouncing
+      all persist requests.
+
+      For more information, see PLACEHOLDER.`
+    );
 
     // For efficiency, we want our firebase structure to look like:
     /*
@@ -85,12 +99,12 @@ export default {
       }
     */
 
-    database.ref(`casettes/${sessionId}`).set({
+    database.ref(`casettes/${this.sessionId}`).set({
       data,
       timestamp: sessionStart,
       numOfActions: actions.length,
     });
 
-    database.ref(`actions/${sessionId}`).set(actions);
+    database.ref(`actions/${this.sessionId}`).set(actions);
   },
 };

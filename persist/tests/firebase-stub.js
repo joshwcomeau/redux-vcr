@@ -1,22 +1,32 @@
-module.exports = {
-  testProp: 5,
+
+let stateChangeCallback;
+
+export default {
   initializeApp() {},
+
   auth() {
-    return {
-      signInAnonymously() {},
-      onAuthStateChanged(callback) {
-        const user = { uid: 'abc123' };
-        callback(user);
-      },
-    };
+    return this;
   },
+
   database() {
-    return {
-      ref() {
-        return {
-          set() {},
-        };
-      },
-    };
+    return this;
   },
+
+  signInAnonymously() {
+    // asynchronously invoke the authStateChanged callback
+    const session = { uid: 'abc123' };
+    window.setTimeout(() => {
+      stateChangeCallback(session);
+    }, 10);
+  },
+
+  onAuthStateChanged(callback) {
+    stateChangeCallback = callback;
+  },
+
+  ref() {
+    return this;
+  },
+
+  set() {},
 };
