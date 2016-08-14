@@ -1,0 +1,37 @@
+{
+  "name": "redux-vcr.replay",
+  "version": "0.0.1",
+  "description": "ReduxVCR replay module",
+  "main": "lib/index.js",
+  "jsnext:main": "es6/index.js",
+  "files": [
+    "css",
+    "es6",
+    "lib",
+    "umd"
+  ],
+  "scripts": {
+    "build": "nwb build",
+    "clean": "nwb clean",
+    "start": "nwb serve",
+    "test": "nwb test",
+    "test:watch": "nwb test --server",
+    "lint": "eslint -c ../.eslintrc src/** --ext .js"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "react": "15.x"
+  },
+  "devDependencies": {
+    "nwb": "0.11.x",
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0"
+  },
+  "author": "Joshua Comeau",
+  "homepage": "https://github.com/joshwcomeau/redux-vcr/tree/master/persist",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshwcomeau/redux-vcr.git"
+  }
+}
