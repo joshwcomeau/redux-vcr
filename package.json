@@ -10,10 +10,12 @@
     "umd"
   ],
   "scripts": {
-    "build": "nwb build",
-    "clean": "nwb clean",
-    "test": "nwb test",
-    "test:watch": "nwb test --server",
+    "buildCapture": "cd capture && npm run build && cd ..",
+    "buildPersist": "cd persist && npm run build && cd ..",
+    "buildRetrieve": "cd retrieve && npm run build && cd ..",
+    "buildReplay": "cd replay && npm run build && cd ..",
+    "buildShared": "cd shared && npm run build && cd ..",
+    "buildAll": "npm run buildCapture && npm run buildPersist && npm run buildRetrieve && npm run buildReplay && npm run buildShared",
     "lint": "eslint -c ../.eslintrc src/** --ext .js"
   },
   "devDependencies": {
