@@ -1,4 +1,4 @@
-export const SELECT_ANSWER = 'REDUX_VCR_DEMO/SELECT_ANSWER';
+export const SELECT_ANSWER = 'SELECT_ANSWER';
 
 
 export function selectAnswer({ id }) {

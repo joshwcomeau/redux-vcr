@@ -11,22 +11,22 @@ const defaultAnswers = {
   dab: 'Dan Abramov',
 };
 
-const byId = (state = defaultAnswers, action) => {
-  return state;
-};
-
-const allIds = (state = Object.keys(defaultAnswers), action) => {
-  return state;
-};
+// Because we don't have ways of adding/removing answers,
+// we don't even need the switch for these reducers.
+const byId = (state = defaultAnswers, action) => state;
+const allIds = (state = Object.keys(defaultAnswers), action) => state;
 
 const selected = (state = null, action) => {
+  console.log("Dispatched", action);
   switch (action.type) {
     case SELECT_ANSWER: return action.id;
     default: return state;
   }
 };
 
+
 export default combineReducers({ byId, allIds, selected });
+
 
 export const getAnswers = state => (
   state.allIds.map(id => ({
