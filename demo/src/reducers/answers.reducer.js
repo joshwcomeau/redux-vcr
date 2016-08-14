@@ -17,7 +17,6 @@ const byId = (state = defaultAnswers, action) => state;
 const allIds = (state = Object.keys(defaultAnswers), action) => state;
 
 const selected = (state = null, action) => {
-  console.log("Dispatched", action);
   switch (action.type) {
     case SELECT_ANSWER: return action.id;
     default: return state;

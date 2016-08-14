@@ -9,7 +9,7 @@ import {
   HIDE_CASSETTES,
   SELECT_CASSETTE,
   VIEW_CASSETTES,
-} from '../vcr-actions';
+} from '../actions';
 
 
 const defaultStates = {

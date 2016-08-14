@@ -9,9 +9,9 @@ import VCRButton from './components/VCRButton';
 import VCRPowerLight from './components/VCRPowerLight';
 
 // Core logic
-import playActions from './playActions';
-import replayMiddleware from './replayMiddleware';
-import wrapReducer from './wrapReducer';
+import playActions from './play-actions';
+import replayMiddleware from './replay-middleware';
+import wrapReducer from './wrap-reducer';
 
 
 export {

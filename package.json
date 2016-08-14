@@ -10,12 +10,20 @@
     "umd"
   ],
   "scripts": {
-    "buildCapture": "cd capture && npm run build && cd ..",
-    "buildPersist": "cd persist && npm run build && cd ..",
-    "buildRetrieve": "cd retrieve && npm run build && cd ..",
-    "buildReplay": "cd replay && npm run build && cd ..",
-    "buildShared": "cd shared && npm run build && cd ..",
-    "buildAll": "npm run buildCapture && npm run buildPersist && npm run buildRetrieve && npm run buildReplay && npm run buildShared",
+    "build:capture": "cd capture && npm run build && cd ..",
+    "build:persist": "cd persist && npm run build && cd ..",
+    "build:retrieve": "cd retrieve && npm run build && cd ..",
+    "build:replay": "cd replay && npm run build && cd ..",
+    "build:shared": "cd shared && npm run build && cd ..",
+    "build:all": "npm run build:capture && npm run build:persist && npm run build:retrieve && npm run build:replay && npm run build:shared",
+
+    "test:capture": "cd capture && npm run test && cd ..",
+    "test:persist": "cd persist && npm run test && cd ..",
+    "test:retrieve": "cd retrieve && npm run test && cd ..",
+    "test:replay": "cd replay && npm run test && cd ..",
+    "test:shared": "cd shared && npm run test && cd ..",
+    "test:all": "npm run test:capture && npm run test:persist && npm run test:retrieve && npm run test:replay && npm run test:shared",
+
     "lint": "eslint -c ../.eslintrc src/** --ext .js"
   },
   "devDependencies": {

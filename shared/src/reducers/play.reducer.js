@@ -6,7 +6,7 @@ import {
   PAUSE_CASSETTE,
   PLAY_CASSETTE,
   STOP_CASSETTE,
-} from '../vcr-actions';
+} from '../actions';
 
 
 const defaultStates = {

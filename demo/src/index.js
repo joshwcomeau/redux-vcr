@@ -3,11 +3,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import captureMiddleware from '../../capture/lib';
-import PersistHandler from '../../persist/lib';
-import RetrieveHandler from '../../retrieve/lib/retrieve-data-handler';
-import retrieveMiddleware from '../../retrieve/lib';
-import replayMiddleware from '../../replay/lib/replay-middleware';
+import { captureMiddleware } from '../../capture/lib';
+import { PersistHandler } from '../../persist/lib';
+import { RetrieveHandler, retrieveMiddleware } from '../../retrieve/lib';
+import { replayMiddleware } from '../../replay/lib';
 
 import App from './components/App';
 import reducer from './reducers';

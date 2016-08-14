@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
 
-import PersistDataHandler from '../src';
+import { PersistHandler } from '../src';
 
 const firebaseAuth = {
   apiKey: 'abc123',
@@ -10,12 +10,12 @@ const firebaseAuth = {
 };
 
 
-describe('PersistDataHandler', () => {
+describe('PersistHandler', () => {
   describe('authentication', () => {
     it('fails when invoked immediately', () => {
       // This test fails because the constructor needs some time
       // to authenticate with firebase.
-      const handler = new PersistDataHandler({
+      const handler = new PersistHandler({
         firebaseAuth,
       });
 
@@ -25,7 +25,7 @@ describe('PersistDataHandler', () => {
     });
 
     it('succeeds when a debounce is used', done => {
-      const handler = new PersistDataHandler({
+      const handler = new PersistHandler({
         firebaseAuth,
         debounceLength: 50,
       });
@@ -55,7 +55,7 @@ describe('PersistDataHandler', () => {
   describe('cassette validation', () => {
     let handler;
     before(done => {
-      handler = new PersistDataHandler({ firebaseAuth });
+      handler = new PersistHandler({ firebaseAuth });
       window.setTimeout(done, 100);
     });
 
@@ -92,7 +92,7 @@ describe('PersistDataHandler', () => {
     };
 
     beforeEach(done => {
-      handler = new PersistDataHandler({ firebaseAuth });
+      handler = new PersistHandler({ firebaseAuth });
       firebase = handler.firebaseHandler.firebase;
 
       window.setTimeout(() => {
@@ -141,7 +141,7 @@ describe('PersistDataHandler', () => {
       // and check to see that:
       //   - it isn't invoked at all right away
       //   - it is only invoked once, at the end of the debounce.
-      const handler = new PersistDataHandler({
+      const handler = new PersistHandler({
         firebaseAuth,
         debounceLength: 200,
       });

@@ -1,7 +1,7 @@
 import FirebaseHandler from '../../shared/lib/utils/firebase-handler';
 
 
-export default class RetrieveDataHandler {
+export default class RetrieveHandler {
   constructor({ firebaseAuth }) {
     // Create a Firebase handler
     this.firebaseHandler = new FirebaseHandler({

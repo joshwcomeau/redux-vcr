@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
 
-import RetrieveDataHandler from '../src/retrieve-data-handler';
+import { RetrieveHandler } from '../src';
 
 const firebaseAuth = {
   apiKey: 'abc123',
@@ -9,15 +9,13 @@ const firebaseAuth = {
   databaseURL: 'https://test.firebaseio.com',
 };
 
-describe('RetrieveDataHandler', () => {
+describe('RetrieveHandler', () => {
   describe('retrieveList', () => {
     let handler;
     let firebase;
     beforeEach(() => {
-      handler = new RetrieveDataHandler({ firebaseAuth });
+      handler = new RetrieveHandler({ firebaseAuth });
       firebase = handler.firebaseHandler.firebase;
-
-      console.log(handler);
 
       handler.retrieveList();
     });
@@ -43,7 +41,7 @@ describe('RetrieveDataHandler', () => {
     let handler;
     let firebase;
     beforeEach(() => {
-      handler = new RetrieveDataHandler({ firebaseAuth });
+      handler = new RetrieveHandler({ firebaseAuth });
       firebase = handler.firebaseHandler.firebase;
 
       handler.retrieveActions({ id: '123' });

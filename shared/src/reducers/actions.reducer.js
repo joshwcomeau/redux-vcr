@@ -4,7 +4,7 @@ import {
   CASSETTE_ACTIONS_RECEIVE,
   INCREMENT_ACTIONS_PLAYED,
   STOP_CASSETTE,
-} from '../vcr-actions';
+} from '../actions';
 
 
 const defaultStates = {
