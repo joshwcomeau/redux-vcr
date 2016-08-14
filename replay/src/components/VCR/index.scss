@@ -1,0 +1,275 @@
+@import '../variables';
+
+$vcr-button-radius: 3px;
+$standard-padding: 10px;
+$primary-actions-width: 100px;
+$primary-action-button-height: 30px;
+
+.redux-vcr-component .vcr {
+  position: relative;
+  z-index: 2;
+  background: $darkgray;
+  width: $vcr-width;
+  height: 100px;
+  color: $white;
+  border-radius: 8px 8px 5px 5px;
+
+  .primary-action-buttons, .secondary-action-buttons {
+    position: absolute;
+    width: 100px;
+    right: $standard-padding * 2;
+    display: flex;
+  }
+
+  .primary-action-buttons {
+    justify-content: space-between;
+    top: $standard-padding;
+
+    .vcr-button {
+      height: $primary-action-button-height;
+      width: ($primary-actions-width / 2) - ($standard-padding / 2);
+    }
+  }
+
+  .secondary-action-buttons {
+    top: $primary-action-button-height + $standard-padding * 2;
+
+    .vcr-button {
+      border-radius: 0;
+      flex: 1;
+    }
+
+    .vcr-button:first-of-type {
+      border-radius: $vcr-button-radius 0 0 $vcr-button-radius;
+    }
+
+    .vcr-button:last-of-type {
+      border-radius: 0 $vcr-button-radius $vcr-button-radius 0;
+    }
+  }
+
+  .casette-slot-door, .casette-slot {
+    position: absolute;
+    top: $standard-padding - 2px;
+    left: 75px;
+    height: 48px;
+    line-height: 44px;
+    width: 305px;
+  }
+
+  .casette-slot-door {
+    pointer-events: none;
+    z-index: 2;
+    border-top: 2px solid rgba(0,0,0,0.2);
+    border-left: 1px solid rgba(0,0,0,0.2);
+    border-right: 1px solid rgba(0,0,0,0.2);
+    border-bottom: 2px solid rgba(0,0,0,0.2);
+    border-radius: 2px;
+    background: $darkgray;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: -0.5px;
+    font-weight: bold;
+    text-align: center;
+    transition: transform 500ms;
+    transform-origin: top center;
+    transform: perspective(300px);
+
+    &:before, &:after {
+      content: '';
+      position: absolute;
+      top: 5px;
+      bottom: 5px;
+      width: 1px;
+      margin: auto;
+      background: $mediumgray;
+      opacity: 0.5;
+    }
+
+    &:before {
+      left: 10px;
+    }
+
+    &:after {
+      right: 10px;
+    }
+
+    &.is-open {
+      transform: perspective(300px) rotateX(-90deg);
+      transform-origin: top center;
+
+      .casette-slot-door-label {
+        opacity: 0;
+      }
+    }
+
+    .casette-slot-door-label {
+      opacity: 1;
+      transition: opacity 500ms;
+    }
+  }
+
+  .casette-slot {
+    z-index: 1;
+    cursor: default;
+    background: darken($darkgray, 13%);
+    border-radius: 2px;
+    border-bottom: 15px solid darken($darkgray, 10%);
+    border-left: 15px solid darken($darkgray, 5%);
+    border-right: 15px solid darken($darkgray, 5%);
+    border-top: 1px solid rgba(255,255,255,0.2);
+
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
+    }
+  }
+
+  .vcr-screen {
+    position: absolute;
+    bottom: $standard-padding;
+    left: 80px;
+    height: 30px;
+    width: 295px;
+    background: rgba(0,0,0,0.5);
+    color: $neon-green;
+    font-family: "Lucida Console", Monaco5, monospace;
+    font-size: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 4px 12px;
+    border-radius: 2px;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    cursor: pointer;
+
+    .vcr-screen-label {
+      content: 'Now Playing';
+      position: absolute;
+      top: 0;
+      left: 10px;
+
+      font-size: 8px;
+      line-height: 16px;
+      color: $white;
+    }
+
+    .vcr-screen-session-name {
+      line-height: 30px;
+    }
+
+    .vcr-screen-idle, .vcr-screen-selecting {
+      text-align: center;
+      line-height: 20px;
+      width: 65%;
+      margin: 0 auto;
+    }
+  }
+
+  .decorative-outputs {
+    position: absolute;
+    left: $standard-padding + 3px;
+    bottom: $standard-padding;
+    border-radius: 30px;
+    background: rgba(0,0,0,0.3);
+    padding: 4px;
+    display: flex;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+
+    .decorative-output {
+      position: relative;
+      width: 12px;
+      height: 12px;
+      margin-right: 4px;
+      // border: 1px solid rgba(255,255,255,0.25);
+      box-shadow: inset 0px 1px 0 rgba(255,255,255,0.75);
+      border-radius: 100%;
+
+      &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        width: 4px;
+        height: 4px;
+        border-radius: 100%;
+        background: $darkgray;
+      }
+
+      &:last-of-type {
+        margin-right: 0;
+      }
+
+      &.yellow {
+        background: $rca-yellow;
+      }
+      &.red {
+        background: $rca-red;
+        box-shadow: inset 0px 1px 0 rgba(255,255,255,0.35);
+      }
+      &.white {
+        background: $rca-white;
+      }
+    }
+  }
+
+  .vcr-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    border-radius: 8px 8px 5px 5px;
+    border-top: 1px solid rgba(255,255,255,0.3);
+    background: $darkgray;
+  }
+
+  .vcr-top {
+    position: absolute;
+    width: 100%;
+    height: 30px;
+    top: -26px;
+    z-index: -1;
+    background: lighten($darkgray, 13%);
+    border-radius: 4px;
+    transform: perspective(250px) rotateX(45deg);
+    transform-origin: bottom center;
+  }
+
+  .vcr-top-edge {
+    position: absolute;
+    top: -1px;
+    left: 0;
+    right: 0;
+    height: 5px;
+    border-radius: 5px 5px 0 0;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .vcr-foot {
+    position: absolute;
+    bottom: -4px;
+    height: 4px;
+    width: 45px;
+    border-radius: 0 0 4px 4px;
+    background: $black;
+
+    &.vcr-foot-left {
+      left: 4%;
+    }
+
+    &.vcr-foot-right {
+      right: 4%;
+    }
+  }
+}

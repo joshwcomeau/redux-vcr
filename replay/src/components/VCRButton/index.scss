@@ -1,0 +1,63 @@
+@import '../variables';
+
+.redux-vcr-component .vcr-button {
+  position: relative;
+  padding: 2px 10px;
+  border: 0;
+  border-top: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0px 0px 1px rgba(0,0,0,0.8);
+  border-radius: $vcr-button-radius;
+  background: $darkgray;
+  color: $white;
+  font-size: 10px;
+  cursor: pointer;
+  outline: none;
+
+  &.vcr-button-rounded {
+    border-radius: 100%;
+    padding: 5px;
+    border-top: 1px solid rgba(255,255,255,0.4);
+    border-bottom: 1px solid rgba(0,0,0,0.6);
+  }
+
+  &.vcr-button-glowing {
+    animation: vcrButtonGlow 3s linear infinite;
+  }
+
+  &.vcr-button-toggleable {
+    padding-bottom: 10px;
+  }
+
+  &:active {
+    background: darken($darkgray, 2%);
+    border-top: none;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transform: translateY(1px);
+  }
+
+  &.eject-button {
+    position: absolute;
+    top: $standard-padding;
+    left: $standard-padding * 2;
+  }
+
+  .toggle-indicator {
+    position: absolute;
+    height: 3px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 1px;
+
+    &.toggled {
+      background: $neon-green;
+    }
+  }
+}
+
+@keyframes vcrButtonGlow {
+  0% { background: darken($darkgray, 3%); }
+  50% { background: lighten($darkgray, 5%); }
+  100% { background: darken($darkgray, 3%); }
+}
