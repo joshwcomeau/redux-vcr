@@ -4,7 +4,9 @@ let stateChangeCallback;
 
 const firebaseStubFactory = () => {
   const firebaseStub = {
-    initializeApp() {},
+    initializeApp() {
+      return this;
+    },
 
     auth() {
       return this;

@@ -4,7 +4,10 @@ import FirebaseHandler from '../../shared/lib/utils/firebase-handler';
 export default class RetrieveDataHandler {
   constructor({ firebaseAuth }) {
     // Create a Firebase handler
-    this.firebaseHandler = new FirebaseHandler({ firebaseAuth });
+    this.firebaseHandler = new FirebaseHandler({
+      firebaseAuth,
+      source: 'retrieve',
+    });
   }
 
   retrieveList() {

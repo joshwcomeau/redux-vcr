@@ -8,7 +8,10 @@ import './polyfills';
 export default class PersistDataHandler {
   constructor({ firebaseAuth, debounceLength }) {
     // Create a Firebase handler
-    this.firebaseHandler = new FirebaseHandler({ firebaseAuth });
+    this.firebaseHandler = new FirebaseHandler({
+      firebaseAuth,
+      source: 'persist',
+    });
 
     this.sessionStart = Date.now();
 
