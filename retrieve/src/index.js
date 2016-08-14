@@ -3,7 +3,7 @@ import {
   SELECT_CASSETTE,
   cassetteActionsReceive,
   cassettesListReceive,
-} from '../../shared/actions';
+} from '../../shared/lib/actions';
 
 
 const retrieveMiddleware = dataHandler => store => next => action => {

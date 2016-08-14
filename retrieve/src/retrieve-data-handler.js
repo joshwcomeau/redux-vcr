@@ -1,4 +1,4 @@
-import FirebaseHandler from '../../shared/utils/firebase-handler';
+import FirebaseHandler from '../../shared/lib/utils/firebase-handler';
 
 
 export default class RetrieveDataHandler {

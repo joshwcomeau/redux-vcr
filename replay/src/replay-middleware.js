@@ -2,7 +2,7 @@ import playActions from './play-actions';
 import {
   PLAY_CASSETTE,
   rewindCassetteAndRestoreApp,
-} from '../../shared/actions';
+} from '../../shared/lib/actions';
 
 
 const replayMiddleware = store => next => action => {

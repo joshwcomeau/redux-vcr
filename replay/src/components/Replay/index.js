@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import * as actionCreators from '../../../../shared/actions';
+import * as actionCreators from '../../../../shared/lib/actions';
 import VCR from '../VCR';
 import CasetteList from '../CasetteList';
 import Backdrop from '../Backdrop';

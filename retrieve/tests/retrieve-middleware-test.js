@@ -8,7 +8,7 @@ import {
   CASSETTES_LIST_RECEIVE,
   CASSETTE_ACTIONS_RECEIVE,
   SELECT_CASSETTE,
-} from '../../shared/actions';
+} from '../../shared/lib/actions';
 
 
 const firebaseAuth = {
