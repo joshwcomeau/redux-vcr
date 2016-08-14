@@ -1,4 +1,3 @@
-import RetrieveDataHandler from './retrieve-data-handler';
 import {
   CASSETTES_LIST_REQUEST,
   SELECT_CASSETTE,
@@ -7,10 +6,10 @@ import {
 } from '../../shared/actions';
 
 
-const retrieveMiddleware = store => next => action => {
+const retrieveMiddleware = dataHandler => store => next => action => {
   switch (action.type) {
     case CASSETTES_LIST_REQUEST: {
-      RetrieveDataHandler
+      dataHandler
         .retrieveList()
         .then(snapshot => snapshot.val())
         .then(cassettes => next(cassettesListReceive({ cassettes })));
@@ -25,8 +24,8 @@ const retrieveMiddleware = store => next => action => {
         return next(action);
       }
 
-      RetrieveDataHandler
-        .retrieveAction({ id: action.id })
+      dataHandler
+        .retrieveActions({ id: action.id })
         .then(snapshot => snapshot.val())
         .then(cassetteActions => {
           next(cassetteActionsReceive({

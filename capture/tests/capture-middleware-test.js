@@ -23,6 +23,13 @@ describe('captureMiddleware', () => {
     next.reset();
   });
 
+  it('forwards unrelated actions through the middleware', () => {
+    const action = { type: 'UNRELATED_BUSINESS' };
+    middleware(store)(next)(action);
+
+    expect(next.callCount).to.equal(1);
+    expect(next.firstCall.args[0]).to.equal(action);
+  });
 
   context('with invalid arguments', () => {
     it('throws when no dataHandler is provided', () => {

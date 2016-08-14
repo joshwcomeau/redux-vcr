@@ -32,7 +32,15 @@ const firebaseStubFactory = () => {
 
     set() {},
 
-    once() {},
+    once() {
+      return new Promise((resolve) => {
+        resolve({
+          val() {
+            return [{ id: 'cassette1' }];
+          },
+        });
+      });
+    },
   };
 
   sinon.spy(firebaseStub, 'initializeApp');

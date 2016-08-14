@@ -2,13 +2,13 @@ import { combineReducers } from 'redux';
 import { createSelector } from 'reselect';
 
 import {
-  CASETTES_LIST_RECEIVE,
-  EJECT_CASETTE,
-  GO_TO_NEXT_CASETTE_PAGE,
-  GO_TO_PREVIOUS_CASETTE_PAGE,
-  HIDE_CASETTES,
-  SELECT_CASETTE,
-  VIEW_CASETTES,
+  CASSETTES_LIST_RECEIVE,
+  EJECT_CASSETTE,
+  GO_TO_NEXT_CASSETTE_PAGE,
+  GO_TO_PREVIOUS_CASSETTE_PAGE,
+  HIDE_CASSETTES,
+  SELECT_CASSETTE,
+  VIEW_CASSETTES,
 } from '../vcr-actions';
 
 
@@ -25,32 +25,32 @@ const defaultStates = {
 
 function statusReducer(state = defaultStates.status, action) {
   switch (action.type) {
-    case VIEW_CASETTES: return 'selecting';
-    case EJECT_CASETTE:
-    case HIDE_CASETTES: return 'idle';
-    case SELECT_CASETTE: return 'loaded';
+    case VIEW_CASSETTES: return 'selecting';
+    case EJECT_CASSETTE:
+    case HIDE_CASSETTES: return 'idle';
+    case SELECT_CASSETTE: return 'loaded';
     default: return state;
   }
 }
 
 function selectedReducer(state = defaultStates.selected, action) {
   switch (action.type) {
-    case SELECT_CASETTE: return action.id;
+    case SELECT_CASSETTE: return action.id;
     default: return state;
   }
 }
 
 function byIdReducer(state = defaultStates.byId, action) {
   switch (action.type) {
-    case CASETTES_LIST_RECEIVE: return action.casettes;
+    case CASSETTES_LIST_RECEIVE: return action.cassettes;
     default: return state;
   }
 }
 
 function pageNumberReducer(state = defaultStates.page.number, action) {
   switch (action.type) {
-    case GO_TO_NEXT_CASETTE_PAGE: return state + 1;
-    case GO_TO_PREVIOUS_CASETTE_PAGE: return state - 1;
+    case GO_TO_NEXT_CASSETTE_PAGE: return state + 1;
+    case GO_TO_PREVIOUS_CASSETTE_PAGE: return state - 1;
     default: return state;
   }
 }
@@ -76,44 +76,44 @@ export default combineReducers({
 // ////////////////////////
 // SELECTORS /////////////
 // //////////////////////
-const casettesById = state => state.reduxVCR.casettes.byId;
-const casettePageNumberSelector = state => state.reduxVCR.casettes.page.number;
-const casettePageLimitSelector = state => state.reduxVCR.casettes.page.limit;
+const cassettesById = state => state.reduxVCR.cassettes.byId;
+const cassettePageNumberSelector = state => state.reduxVCR.cassettes.page.number;
+const cassettePageLimitSelector = state => state.reduxVCR.cassettes.page.limit;
 
-export const casetteListSelector = createSelector(
-  casettesById,
-  (casettes) => {
-    const casetteIds = Object.keys(casettes);
+export const cassetteListSelector = createSelector(
+  cassettesById,
+  (cassettes) => {
+    const cassetteIds = Object.keys(cassettes);
 
-    return casetteIds
-      .map(id => ({ id, ...casettes[id] }))
+    return cassetteIds
+      .map(id => ({ id, ...cassettes[id] }))
       .sort((a, b) => b.timestamp - a.timestamp);
   }
 );
 
 export const paginatedCasetteListSelector = createSelector(
-  casetteListSelector,
-  casettePageNumberSelector,
-  casettePageLimitSelector,
-  (casetteList, pageNumber, pageLimit) => {
+  cassetteListSelector,
+  cassettePageNumberSelector,
+  cassettePageLimitSelector,
+  (cassetteList, pageNumber, pageLimit) => {
     const startIndex = pageNumber * pageLimit;
     const endIndex = startIndex + pageLimit;
 
-    return casetteList.slice(startIndex, endIndex);
+    return cassetteList.slice(startIndex, endIndex);
   }
 );
 
 export const isFirstPageSelector = createSelector(
-  casettePageNumberSelector,
+  cassettePageNumberSelector,
   (pageNumber) => pageNumber === 0
 );
 
 export const isLastPageSelector = createSelector(
-  casetteListSelector,
-  casettePageNumberSelector,
-  casettePageLimitSelector,
-  (casetteList, pageNumber, pageLimit) => {
-    const numOfCasettes = casetteList.length;
+  cassetteListSelector,
+  cassettePageNumberSelector,
+  cassettePageLimitSelector,
+  (cassetteList, pageNumber, pageLimit) => {
+    const numOfCasettes = cassetteList.length;
     const numOfPages = Math.floor(numOfCasettes / pageLimit);
 
     return pageNumber >= numOfPages;

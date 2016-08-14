@@ -2,10 +2,10 @@ import { combineReducers } from 'redux';
 
 import {
   CHANGE_PLAYBACK_SPEED,
-  EJECT_CASETTE,
-  PAUSE_CASETTE,
-  PLAY_CASETTE,
-  STOP_CASETTE,
+  EJECT_CASSETTE,
+  PAUSE_CASSETTE,
+  PLAY_CASSETTE,
+  STOP_CASSETTE,
 } from '../vcr-actions';
 
 
@@ -17,10 +17,10 @@ const defaultStates = {
 
 function statusReducer(state = defaultStates.status, action) {
   switch (action.type) {
-    case EJECT_CASETTE:
-    case STOP_CASETTE: return 'stopped';
-    case PAUSE_CASETTE: return 'paused';
-    case PLAY_CASETTE: return 'playing';
+    case EJECT_CASSETTE:
+    case STOP_CASSETTE: return 'stopped';
+    case PAUSE_CASSETTE: return 'paused';
+    case PLAY_CASSETTE: return 'playing';
     default: return state;
   }
 }
