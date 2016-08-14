@@ -1,7 +1,5 @@
 @import '../variables';
 
-$vcr-button-radius: 3px;
-$standard-padding: 10px;
 $primary-actions-width: 100px;
 $primary-action-button-height: 30px;
 
@@ -17,22 +15,22 @@ $primary-action-button-height: 30px;
   .primary-action-buttons, .secondary-action-buttons {
     position: absolute;
     width: 100px;
-    right: $standard-padding * 2;
+    right: $vcr-standard-padding * 2;
     display: flex;
   }
 
   .primary-action-buttons {
     justify-content: space-between;
-    top: $standard-padding;
+    top: $vcr-standard-padding;
 
     .vcr-button {
       height: $primary-action-button-height;
-      width: ($primary-actions-width / 2) - ($standard-padding / 2);
+      width: ($primary-actions-width / 2) - ($vcr-standard-padding / 2);
     }
   }
 
   .secondary-action-buttons {
-    top: $primary-action-button-height + $standard-padding * 2;
+    top: $primary-action-button-height + $vcr-standard-padding * 2;
 
     .vcr-button {
       border-radius: 0;
@@ -48,16 +46,16 @@ $primary-action-button-height: 30px;
     }
   }
 
-  .casette-slot-door, .casette-slot {
+  .cassette-slot-door, .cassette-slot {
     position: absolute;
-    top: $standard-padding - 2px;
+    top: $vcr-standard-padding - 2px;
     left: 75px;
     height: 48px;
     line-height: 44px;
     width: 305px;
   }
 
-  .casette-slot-door {
+  .cassette-slot-door {
     pointer-events: none;
     z-index: 2;
     border-top: 2px solid rgba(0,0,0,0.2);
@@ -98,18 +96,18 @@ $primary-action-button-height: 30px;
       transform: perspective(300px) rotateX(-90deg);
       transform-origin: top center;
 
-      .casette-slot-door-label {
+      .cassette-slot-door-label {
         opacity: 0;
       }
     }
 
-    .casette-slot-door-label {
+    .cassette-slot-door-label {
       opacity: 1;
       transition: opacity 500ms;
     }
   }
 
-  .casette-slot {
+  .cassette-slot {
     z-index: 1;
     cursor: default;
     background: darken($darkgray, 13%);
@@ -133,7 +131,7 @@ $primary-action-button-height: 30px;
 
   .vcr-screen {
     position: absolute;
-    bottom: $standard-padding;
+    bottom: $vcr-standard-padding;
     left: 80px;
     height: 30px;
     width: 295px;
@@ -174,8 +172,8 @@ $primary-action-button-height: 30px;
 
   .decorative-outputs {
     position: absolute;
-    left: $standard-padding + 3px;
-    bottom: $standard-padding;
+    left: $vcr-standard-padding + 3px;
+    bottom: $vcr-standard-padding;
     border-radius: 30px;
     background: rgba(0,0,0,0.3);
     padding: 4px;

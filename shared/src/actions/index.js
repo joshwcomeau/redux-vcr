@@ -29,46 +29,46 @@ export const cassettesListReceive = ({ cassettes }) => ({
   cassettes,
 });
 
-export const viewCasettes = () => ({
+export const viewCassettes = () => ({
   type: VIEW_CASSETTES,
 });
 
-export const hideCasettes = () => ({
+export const hideCassettes = () => ({
   type: HIDE_CASSETTES,
 });
 
-export const selectCasette = ({ id }) => ({
+export const selectCassette = ({ id }) => ({
   type: SELECT_CASSETTE,
   id,
 });
 
-export const ejectCasette = () => ({
+export const ejectCassette = () => ({
   type: EJECT_CASSETTE,
 });
 
-export const playCasette = () => ({
+export const playCassette = () => ({
   type: PLAY_CASSETTE,
 });
 
-export const pauseCasette = () => ({
+export const pauseCassette = () => ({
   type: PAUSE_CASSETTE,
 });
 
-export const stopCasette = () => ({
+export const stopCassette = () => ({
   type: STOP_CASSETTE,
 });
 
 // This is a special action, used by our higher-order reducer to wipe the state.
 // It ensures that when a tape is played, it plays in the right context.
-export const rewindCasetteAndRestoreApp = () => ({
+export const rewindCassetteAndRestoreApp = () => ({
   type: REWIND_CASSETTE_AND_RESTORE_APP,
 });
 
-export const goToNextCasettePage = () => ({
+export const goToNextCassettePage = () => ({
   type: GO_TO_NEXT_CASSETTE_PAGE,
 });
 
-export const goToPreviousCasettePage = () => ({
+export const goToPreviousCassettePage = () => ({
   type: GO_TO_PREVIOUS_CASSETTE_PAGE,
 });
 

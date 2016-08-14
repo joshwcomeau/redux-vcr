@@ -4,9 +4,9 @@ import moment from 'moment';
 import './index.scss';
 
 
-const Casette = ({ id, label, timestamp, numOfActions, handleClick }) => {
+const Cassette = ({ id, label, timestamp, numOfActions, handleClick }) => {
   return (
-    <div className="casette" onClick={() => handleClick({ id })}>
+    <div className="cassette" onClick={() => handleClick({ id })}>
       <div className="front">
         <div className="head" />
         <div className="spool left-spool">
@@ -40,7 +40,7 @@ const Casette = ({ id, label, timestamp, numOfActions, handleClick }) => {
   );
 };
 
-Casette.propTypes = {
+Cassette.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string,
   timestamp: PropTypes.number.isRequired,
@@ -49,10 +49,10 @@ Casette.propTypes = {
   // theme: PropTypes.oneOf(['rainbow', ''])
 };
 
-Casette.defaultProps = {
+Cassette.defaultProps = {
   // TODO: Make this randomly select from the list.
   theme: 'rainbow',
   handleClick() {},
 };
 
-export default Casette;
+export default Cassette;

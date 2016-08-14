@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import * as actionCreators from '../../../../shared/lib/actions';
 import VCR from '../VCR';
-import CasetteList from '../CasetteList';
+import CassetteList from '../CassetteList';
 import Backdrop from '../Backdrop';
 
 import './index.scss';
@@ -11,22 +11,22 @@ import './index.scss';
 
 class ReduxVCR extends Component {
   componentDidMount() {
-    this.props.casettesListRequest();
+    this.props.cassettesListRequest();
   }
 
   render() {
     const {
-      casetteStatus,
-      hideCasettes,
+      cassetteStatus,
+      hideCassettes,
     } = this.props;
 
     return (
       <div className="redux-vcr-component">
         <VCR />
-        { casetteStatus === 'selecting' ? <CasetteList /> : null }
+        { cassetteStatus === 'selecting' ? <CassetteList /> : null }
         <Backdrop
-          isShown={casetteStatus === 'selecting'}
-          handleClickClose={hideCasettes}
+          isShown={cassetteStatus === 'selecting'}
+          handleClickClose={hideCassettes}
           opacity={0.9}
           background="#FFF"
         />
@@ -36,9 +36,9 @@ class ReduxVCR extends Component {
 }
 
 ReduxVCR.propTypes = {
-  casetteStatus: PropTypes.string,
-  hideCasettes: PropTypes.func,
-  casettesListRequest: PropTypes.func,
+  cassetteStatus: PropTypes.string,
+  hideCassettes: PropTypes.func,
+  cassettesListRequest: PropTypes.func,
 };
 
 ReduxVCR.defaultProps = {
@@ -46,14 +46,14 @@ ReduxVCR.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  casetteStatus: state.reduxVCR.casettes.status,
+  cassetteStatus: state.reduxVCR.cassettes.status,
 });
 
 
 export default connect(
   mapStateToProps,
   {
-    hideCasettes: actionCreators.hideCasettes,
-    casettesListRequest: actionCreators.casettesListRequest,
+    hideCassettes: actionCreators.hideCassettes,
+    cassettesListRequest: actionCreators.cassettesListRequest,
   }
 )(ReduxVCR);

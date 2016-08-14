@@ -64,10 +64,10 @@ describe('PersistDataHandler', () => {
     });
 
     it('fails when no action array is provided', () => {
-      const faultyCasette = {};
+      const faultyCassette = {};
 
       expect(() => (
-        handler.persist(faultyCasette)
+        handler.persist(faultyCassette)
       )).to.throw(/cassette/);
     });
 
@@ -121,11 +121,11 @@ describe('PersistDataHandler', () => {
     });
 
     it('passes along the right data for the cassette', () => {
-      const setCasette = firebase.set.args[0][0];
+      const setCassette = firebase.set.args[0][0];
 
-      expect(setCasette.data).to.equal(cassette.data);
-      expect(setCasette.timestamp).to.be.a('number');
-      expect(setCasette.numOfActions).to.equal(cassette.actions.length);
+      expect(setCassette.data).to.equal(cassette.data);
+      expect(setCassette.timestamp).to.be.a('number');
+      expect(setCassette.numOfActions).to.equal(cassette.actions.length);
     });
 
     it('passes along the actions as-is', () => {

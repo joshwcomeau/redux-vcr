@@ -7,7 +7,7 @@ import captureMiddleware from '../../capture/lib';
 import PersistHandler from '../../persist/lib';
 import RetrieveHandler from '../../retrieve/lib/retrieve-data-handler';
 import retrieveMiddleware from '../../retrieve/lib';
-import replayMiddleware from '../../replay/replay-middleware';
+import replayMiddleware from '../../replay/lib/replay-middleware';
 
 import App from './components/App';
 import reducer from './reducers';

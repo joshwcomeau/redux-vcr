@@ -1,15 +1,15 @@
 @import '../variables';
 
-$casette-width: 340px;
+$cassette-width: 340px;
 $front-height: 120px;
 $spine-height: 45px;
 $square-offset: 12px;
 $square-size: $spine-height / 2 - 5px;
 $spool-size: 60px;
 
-.redux-vcr-component .casette {
+.redux-vcr-component .cassette {
   position: relative;
-  width: $casette-width;
+  width: $cassette-width;
   height: $spine-height;
   margin: 1px;
   background: $darkgray;

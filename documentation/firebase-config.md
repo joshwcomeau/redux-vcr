@@ -44,7 +44,7 @@ Here are the rules you'll want to implement:
 {
   "rules": {
     ".read": true,
-    "casettes": {
+    "cassettes": {
       ".indexOn": ["timestamp"],
       "$uid": {
         ".write": "$uid === auth.uid"

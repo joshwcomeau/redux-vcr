@@ -1,5 +1,6 @@
 @import '../variables';
 
+
 .redux-vcr-component .vcr-button {
   position: relative;
   padding: 2px 10px;
@@ -37,8 +38,8 @@
 
   &.eject-button {
     position: absolute;
-    top: $standard-padding;
-    left: $standard-padding * 2;
+    top: $vcr-standard-padding;
+    left: $vcr-standard-padding * 2;
   }
 
   .toggle-indicator {

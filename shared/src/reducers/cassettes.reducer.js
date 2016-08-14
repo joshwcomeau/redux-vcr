@@ -91,7 +91,7 @@ export const cassetteListSelector = createSelector(
   }
 );
 
-export const paginatedCasetteListSelector = createSelector(
+export const paginatedCassetteListSelector = createSelector(
   cassetteListSelector,
   cassettePageNumberSelector,
   cassettePageLimitSelector,
@@ -113,8 +113,8 @@ export const isLastPageSelector = createSelector(
   cassettePageNumberSelector,
   cassettePageLimitSelector,
   (cassetteList, pageNumber, pageLimit) => {
-    const numOfCasettes = cassetteList.length;
-    const numOfPages = Math.floor(numOfCasettes / pageLimit);
+    const numOfCassettes = cassetteList.length;
+    const numOfPages = Math.floor(numOfCassettes / pageLimit);
 
     return pageNumber >= numOfPages;
   }

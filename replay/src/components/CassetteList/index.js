@@ -6,55 +6,55 @@ import * as actionCreators from '../../../../shared/lib/actions';
 import {
   isFirstPageSelector,
   isLastPageSelector,
-  paginatedCasetteListSelector,
-} from '../../../../shared/lib/reducers/casettes.reducer';
+  paginatedCassetteListSelector,
+} from '../../../../shared/lib/reducers/cassettes.reducer';
 
-import Casette from '../Casette';
+import Cassette from '../Cassette';
 import Icon from '../Icon';
 import './index.scss';
 
 
-class CasetteList extends Component {
+class CassetteList extends Component {
   constructor(props) {
     super(props);
 
-    this.animateCasetteSelection = this.animateCasetteSelection.bind(this);
-    this.renderCasette = this.renderCasette.bind(this);
+    this.animateCassetteSelection = this.animateCassetteSelection.bind(this);
+    this.renderCassette = this.renderCassette.bind(this);
 
-    // While the actual `selectedCasette` value lives in the redux store,
+    // While the actual `selectedCassette` value lives in the redux store,
     // we want to animate the selection process. Therefore, we first set this
     // component's local state, base the animation off of it, and when it's
     // complete we dispatch the action to change the actual value.
     this.state = {
-      selectedCasette: null,
+      selectedCassette: null,
     };
   }
 
-  animateCasetteSelection({ id }) {
+  animateCassetteSelection({ id }) {
     this.setState({
-      selectedCasette: id,
+      selectedCassette: id,
     });
 
     window.setTimeout(() => {
-      this.props.selectCasette({ id });
+      this.props.selectCassette({ id });
     }, 1000);
   }
 
-  renderCasette(casette) {
-    const { selectedCasette } = this.state;
-    const { id } = casette;
+  renderCassette(cassette) {
+    const { selectedCassette } = this.state;
+    const { id } = cassette;
 
     const classes = classNames({
-      'casette-wrapper': true,
-      'fading-away': selectedCasette && selectedCasette !== id,
-      'selected': selectedCasette === id,
+      'cassette-wrapper': true,
+      'fading-away': selectedCassette && selectedCassette !== id,
+      'selected': selectedCassette === id,
     });
 
     return (
       <div key={id} className={classes}>
-        <Casette
-          {...casette}
-          handleClick={this.animateCasetteSelection}
+        <Cassette
+          {...cassette}
+          handleClick={this.animateCassetteSelection}
         />
       </div>
     );
@@ -62,11 +62,11 @@ class CasetteList extends Component {
 
   render() {
     const {
-      casettes,
+      cassettes,
       isFirstPage,
       isLastPage,
-      goToNextCasettePage,
-      goToPreviousCasettePage,
+      goToNextCassettePage,
+      goToPreviousCassettePage,
     } = this.props;
 
     const previousButtonClasses = classNames([
@@ -75,19 +75,19 @@ class CasetteList extends Component {
     ]);
 
     return (
-      <div className="casette-list">
-        {casettes.map(this.renderCasette)}
+      <div className="cassette-list">
+        {cassettes.map(this.renderCassette)}
 
         <button
           className={previousButtonClasses}
-          onClick={goToPreviousCasettePage}
+          onClick={goToPreviousCassettePage}
           disabled={isFirstPage}
         >
           <Icon value="arrow_up" />
         </button>
         <button
           className="vcr-pagination-control next"
-          onClick={goToNextCasettePage}
+          onClick={goToNextCassettePage}
           disabled={isLastPage}
         >
           <Icon value="arrow_down" />
@@ -97,28 +97,28 @@ class CasetteList extends Component {
   }
 }
 
-CasetteList.propTypes = {
-  casettes: PropTypes.array,
+CassetteList.propTypes = {
+  cassettes: PropTypes.array,
   isFirstPage: PropTypes.bool,
   isLastPage: PropTypes.bool,
-  selectCasette: PropTypes.func,
-  goToNextCasettePage: PropTypes.func,
-  goToPreviousCasettePage: PropTypes.func,
+  selectCassette: PropTypes.func,
+  goToNextCassettePage: PropTypes.func,
+  goToPreviousCassettePage: PropTypes.func,
 };
 
-CasetteList.defaultProps = {
+CassetteList.defaultProps = {
 };
 
 const mapStateToProps = state => {
   return {
-    casettes: paginatedCasetteListSelector(state),
+    cassettes: paginatedCassetteListSelector(state),
     isFirstPage: isFirstPageSelector(state),
     isLastPage: isLastPageSelector(state),
   };
 };
 
 export default connect(mapStateToProps, {
-  selectCasette: actionCreators.selectCasette,
-  goToNextCasettePage: actionCreators.goToNextCasettePage,
-  goToPreviousCasettePage: actionCreators.goToPreviousCasettePage,
-})(CasetteList);
+  selectCassette: actionCreators.selectCassette,
+  goToNextCassettePage: actionCreators.goToNextCassettePage,
+  goToPreviousCassettePage: actionCreators.goToPreviousCassettePage,
+})(CassetteList);

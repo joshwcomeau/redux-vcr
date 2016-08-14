@@ -10,9 +10,9 @@ import './index.scss';
 
 class VCR extends Component {
   renderScreen() {
-    const { playStatus, casetteStatus } = this.props;
+    const { playStatus, cassetteStatus } = this.props;
 
-    if (casetteStatus === 'idle') {
+    if (cassetteStatus === 'idle') {
       return (
         <div className="vcr-screen-contents">
           <div className="vcr-screen-idle">
@@ -21,11 +21,11 @@ class VCR extends Component {
               why not go oldschool? >:D
               TODO: Replace this with a Marquee component?
             */}
-            <marquee>Click to Select a Casette</marquee>
+            <marquee>Click to Select a Cassette</marquee>
           </div>
         </div>
       );
-    } else if (casetteStatus === 'selecting') {
+    } else if (cassetteStatus === 'selecting') {
       return (
         <div className="vcr-screen-contents">
           <div className="vcr-screen-selecting">Selecting...</div>
@@ -44,7 +44,7 @@ class VCR extends Component {
       <div className="vcr-screen-contents">
         <div className="vcr-screen-label">{labelText}</div>
         <div className="vcr-screen-session-name">
-          {this.props.selectedCasette}
+          {this.props.selectedCassette}
         </div>
       </div>
     );
@@ -54,25 +54,25 @@ class VCR extends Component {
     const {
       doorLabel,
       playStatus,
-      casetteStatus,
+      cassetteStatus,
       playbackSpeed,
-      playCasette,
-      pauseCasette,
-      stopCasette,
-      viewCasettes,
-      ejectCasette,
+      playCassette,
+      pauseCassette,
+      stopCassette,
+      viewCassettes,
+      ejectCassette,
       changePlaybackSpeed,
     } = this.props;
 
-    const doorOpen = casetteStatus === 'selecting';
+    const doorOpen = cassetteStatus === 'selecting';
 
     let playPauseAction;
-    if (casetteStatus !== 'loaded') {
+    if (cassetteStatus !== 'loaded') {
       playPauseAction = () => {};
     } else if (playStatus === 'playing') {
-      playPauseAction = pauseCasette;
+      playPauseAction = pauseCassette;
     } else {
-      playPauseAction = playCasette;
+      playPauseAction = playCassette;
     }
 
     return (
@@ -82,20 +82,20 @@ class VCR extends Component {
         <div className="vcr-bg" />
         <VCRButton
           className="eject-button"
-          onClick={ejectCasette}
+          onClick={ejectCassette}
           iconValue="eject"
           iconSize={16}
         />
         <div
-          className={`casette-slot-door ${doorOpen ? 'is-open' : ''}`}
+          className={`cassette-slot-door ${doorOpen ? 'is-open' : ''}`}
         >
-          <span className="casette-slot-door-label">
+          <span className="cassette-slot-door-label">
             {doorLabel}
           </span>
         </div>
-        <div className="casette-slot" onClick={viewCasettes} />
+        <div className="cassette-slot" onClick={viewCassettes} />
 
-        <div className="vcr-screen" onClick={viewCasettes}>
+        <div className="vcr-screen" onClick={viewCassettes}>
           {this.renderScreen()}
         </div>
 
@@ -105,11 +105,11 @@ class VCR extends Component {
             onClick={playPauseAction}
             iconValue={playStatus === 'playing' ? 'pause' : 'play'}
             iconSize={20}
-            glowing={casetteStatus === 'loaded' && playStatus === 'stopped'}
+            glowing={cassetteStatus === 'loaded' && playStatus === 'stopped'}
           />
           <VCRButton
             className="stop-button"
-            onClick={stopCasette}
+            onClick={stopCassette}
             iconValue={'stop'}
             iconSize={20}
             glowing={playStatus === 'playing' || playStatus === 'paused'}
@@ -161,14 +161,14 @@ class VCR extends Component {
 VCR.propTypes = {
   doorLabel: PropTypes.string,
   playStatus: PropTypes.string,
-  casetteStatus: PropTypes.string,
-  selectedCasette: PropTypes.string,
+  cassetteStatus: PropTypes.string,
+  selectedCassette: PropTypes.string,
   playbackSpeed: PropTypes.number,
-  playCasette: PropTypes.func.isRequired,
-  pauseCasette: PropTypes.func.isRequired,
-  stopCasette: PropTypes.func.isRequired,
-  viewCasettes: PropTypes.func.isRequired,
-  ejectCasette: PropTypes.func.isRequired,
+  playCassette: PropTypes.func.isRequired,
+  pauseCassette: PropTypes.func.isRequired,
+  stopCassette: PropTypes.func.isRequired,
+  viewCassettes: PropTypes.func.isRequired,
+  ejectCassette: PropTypes.func.isRequired,
   changePlaybackSpeed: PropTypes.func.isRequired,
 };
 
@@ -178,17 +178,17 @@ VCR.defaultProps = {
 
 const mapStateToProps = state => ({
   playStatus: state.reduxVCR.play.status,
-  casetteStatus: state.reduxVCR.casettes.status,
-  selectedCasette: state.reduxVCR.casettes.selected,
+  cassetteStatus: state.reduxVCR.cassettes.status,
+  selectedCassette: state.reduxVCR.cassettes.selected,
   playbackSpeed: state.reduxVCR.play.speed,
 });
 
 
 export default connect(mapStateToProps, {
-  playCasette: actionCreators.playCasette,
-  pauseCasette: actionCreators.pauseCasette,
-  stopCasette: actionCreators.stopCasette,
-  ejectCasette: actionCreators.ejectCasette,
-  viewCasettes: actionCreators.viewCasettes,
+  playCassette: actionCreators.playCassette,
+  pauseCassette: actionCreators.pauseCassette,
+  stopCassette: actionCreators.stopCassette,
+  ejectCassette: actionCreators.ejectCassette,
+  viewCassettes: actionCreators.viewCassettes,
   changePlaybackSpeed: actionCreators.changePlaybackSpeed,
 })(VCR);
