@@ -1,0 +1,33 @@
+.button {
+  position: relative;
+  background: #F2F2F2;
+  padding: 1rem 2rem;
+  font-size: 18px;
+  border: 0;
+  border-right: 1px solid rgba(0,0,0,0.05);
+  border-radius: 0;
+  box-shadow: 0px 4px 0px #CCC;
+  outline: none;
+  transition: background 100ms;
+}
+
+.button:active {
+  transform: translateY(3px);
+  box-shadow: 0px 1px 0px #AAA;
+}
+
+.button:first-of-type {
+  border-radius: 10px 0 0 10px;
+}
+
+.button:last-of-type {
+  border-radius: 0 10px 10px 0;
+  border-right: 0;
+}
+
+.button.toggled {
+  background: #333;
+  color: #FFF;
+  transform: translateY(2px);
+  box-shadow: 0px 2px 0px #111;
+}
