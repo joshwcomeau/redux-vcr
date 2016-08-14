@@ -18,9 +18,15 @@
     "test:watch": "nwb test --server",
     "lint": "eslint -c ../.eslintrc src/** --ext .js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "classnames": "^2.2.5",
+    "moment": "^2.14.1",
+    "react-flip-move": "^2.4.2"
+  },
   "peerDependencies": {
-    "react": "15.x"
+    "react": "0.14.x || 15.x",
+    "redux": "3.x",
+    "react-redux": "4.x"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -33,6 +39,7 @@
     "nwb": "0.11.x",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
+    "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "sinon": "^2.0.0-pre.2"
   },

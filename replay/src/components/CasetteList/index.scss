@@ -1,0 +1,78 @@
+.redux-vcr-component .casette-list {
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 400px;
+  height: 300px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .casette-wrapper {
+    &:nth-of-type(1) {
+      z-index: 3
+    }
+    &:nth-of-type(2) {
+      z-index: 2
+    }
+    &:nth-of-type(3) {
+      z-index: 1
+    }
+    &.fading-away {
+      animation: fadeAway 1s forwards;
+    }
+
+    &.selected {
+      animation: selected 1s forwards;
+    }
+  }
+
+  .vcr-pagination-control {
+    position: absolute;
+    border: 0;
+    background: none;
+    right: 0;
+    outline: none;
+
+    &:disabled {
+      opacity: 0.5;
+    }
+
+    &.previous {
+      top: 0;
+
+      &:active:not(:disabled) svg {
+        transform: translateY(-10px);
+        transition: transform 500ms;
+      }
+    }
+
+    &.next {
+      bottom: 0;
+
+      &:active:not(:disabled) svg {
+        transform: translateY(10px);
+      }
+    }
+
+    svg {
+      transition: transform 250ms;
+    }
+  }
+}
+
+@keyframes fadeAway {
+  from { opacity: 1 }
+  to { opacity: 0; }
+}
+
+@keyframes selected {
+  0% { transform: scale(1) translateY(0); }
+  75% { transform: scale(1.25) translateY(50px); opacity: 1; }
+  100% {transform: scale(1.25) translateY(250px); opacity: 0; }
+}

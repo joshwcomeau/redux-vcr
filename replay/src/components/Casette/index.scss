@@ -1,0 +1,149 @@
+@import '../variables';
+
+$casette-width: 340px;
+$front-height: 120px;
+$spine-height: 45px;
+$square-offset: 12px;
+$square-size: $spine-height / 2 - 5px;
+$spool-size: 60px;
+
+.redux-vcr-component .casette {
+  position: relative;
+  width: $casette-width;
+  height: $spine-height;
+  margin: 1px;
+  background: $darkgray;
+  border-radius: 1px 1px 2px 2px;
+  cursor: default;
+
+  .front {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: $front-height;
+    background: lighten($darkgray, 10%);
+    transform: translateY(-100%) perspective(200px) rotateX(60deg);
+    transform-origin: bottom center;
+
+    .head {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: $front-height * 0.25;
+      background: rgba(0,0,0,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .spool {
+      position: absolute;
+      width: $spool-size;
+      height: $spool-size;
+      background: #FFF;
+      bottom: 20%;
+      overflow: hidden;
+
+      &.left-spool {
+        left: 3px;
+        .tape {
+          right: -$spool-size * 0.45;
+        }
+      }
+      &.right-spool {
+        right: 3px;
+        .tape {
+          left: -$spool-size * 0.45;
+        }
+
+      }
+
+      .tape {
+        position: absolute;
+        width: $spool-size * 0.9;
+        height: $spool-size * 0.9;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        border-radius: 100%;
+        border: 20px solid $darkgray;
+      }
+    }
+  }
+
+  .mould-marks {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    .seam {
+      position: absolute;
+      height: 1px;
+      width: 100%;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .square {
+      position: absolute;
+      width: $square-size;
+      height: $square-size;
+      top: 50%;
+      left: $square-offset;
+      background: rgba(0,0,0,0.3);
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+  }
+
+  .label {
+    position: absolute;
+    z-index: 2;
+    top: 5px;
+    left: $square-offset * 2 + $square-size;
+    right: 30px;
+    bottom: 5px;
+    background: $offwhite;
+    border-radius: 4px;
+    font-size: 10px;
+
+    .line {
+      margin: 3px 6px;
+      padding: 0 4px 2px;
+      border-bottom: 1px solid $lightgray;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .line-name {
+      font-weight: bold;
+
+      &.indented {
+        margin-left: 20px;
+      }
+    }
+  }
+
+  .vhs-footer {
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 16px;
+    line-height: 15px;
+    font-size: 13px;
+    transform: rotate(-90deg);
+    color: $lightgray;
+    background: $darkgray;
+    border: 1px solid $lightgray;
+    border-radius: 2px;
+    padding: 0 1px;
+  }
+}

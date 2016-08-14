@@ -1,0 +1,20 @@
+.redux-vcr-component .backdrop-wrapper {
+  z-index: 0;
+
+  .backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    .close-backdrop {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      background: transparent;
+      border: none;
+      padding: 1rem;
+    }
+  }
+}
