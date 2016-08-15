@@ -1,6 +1,6 @@
 {
   "name": "redux-vcr.shared",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "Shared Redux logic for various Redux VCR modules",
   "main": "lib/index.js",
   "files": [
@@ -13,7 +13,8 @@
     "clean": "nwb clean",
     "test": "nwb test",
     "test:watch": "nwb test --server",
-    "lint": "eslint -c ../.eslintrc src/** --ext .js"
+    "lint": "eslint -c ../.eslintrc src/** --ext .js",
+    "prepublish": "npm run build"
   },
   "dependencies": {
     "firebase": "3.2.1",
