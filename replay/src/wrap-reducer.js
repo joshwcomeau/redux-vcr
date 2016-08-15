@@ -1,4 +1,4 @@
-import { REWIND_CASSETTE_AND_RESTORE_APP } from '../../shared/lib/actions';
+import { REWIND_CASSETTE_AND_RESTORE_APP } from 'redux-vcr.shared/actions';
 
 // A higher-order reducer that watches for a very specific action, and wipes
 // all non-VCR state when it sees it.

@@ -9,6 +9,28 @@
     "lib",
     "umd"
   ],
+  "watch": {
+    "build:capture": {
+      "patterns": ["capture/src/**"],
+      "extensions": "js,scss"
+    },
+    "build:persist": {
+      "patterns": ["persist/src/**"],
+      "extensions": "js,scss"
+    },
+    "build:retrieve": {
+      "patterns": ["retrieve/src/**"],
+      "extensions": "js,scss"
+    },
+    "build:replay": {
+      "patterns": ["replay/src/**"],
+      "extensions": "js,scss"
+    },
+    "build:shared": {
+      "patterns": ["shared/src/**"],
+      "extensions": "js,scss"
+    }
+  },
   "scripts": {
     "build:capture": "cd capture && npm run build && cd ..",
     "build:persist": "cd persist && npm run build && cd ..",
@@ -24,6 +46,8 @@
     "test:shared": "cd shared && npm run test && cd ..",
     "test:all": "npm run test:capture && npm run test:persist && npm run test:retrieve && npm run test:replay && npm run test:shared",
 
+    "watch": "npm-watch",
+
     "lint": "eslint -c ../.eslintrc src/** --ext .js"
   },
   "devDependencies": {
@@ -34,6 +58,7 @@
     "eslint-plugin-jsx-a11y": "^2.1.0",
     "eslint-plugin-react": "^6.0.0",
     "invariant": "^2.2.1",
+    "npm-watch": "^0.1.6",
     "nwb": "0.11.x",
     "redux": "^3.5.2",
     "sinon": "^2.0.0-pre.2"

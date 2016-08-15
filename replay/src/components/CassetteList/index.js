@@ -2,12 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 
-import * as actionCreators from '../../../../shared/lib/actions';
+import * as actionCreators from 'redux-vcr.shared/actions';
 import {
   isFirstPageSelector,
   isLastPageSelector,
   paginatedCassetteListSelector,
-} from '../../../../shared/lib/reducers/cassettes.reducer';
+} from 'redux-vcr.shared/reducers/cassettes.reducer';
 
 import Cassette from '../Cassette';
 import Icon from '../Icon';

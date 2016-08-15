@@ -2,7 +2,7 @@ import playActions from './play-actions';
 import {
   PLAY_CASSETTE,
   rewindCassetteAndRestoreApp,
-} from '../../shared/lib/actions';
+} from 'redux-vcr.shared/actions';
 
 
 const replayMiddleware = store => next => action => {

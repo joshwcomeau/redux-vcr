@@ -1,4 +1,4 @@
-import FirebaseHandler from '../../shared/lib/utils/firebase-handler';
+import FirebaseHandler from 'redux-vcr.shared/utils/firebase-handler';
 
 
 export default class RetrieveHandler {

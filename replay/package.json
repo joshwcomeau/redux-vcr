@@ -1,6 +1,6 @@
 {
   "name": "redux-vcr.replay",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "ReduxVCR replay module",
   "main": "lib/index.js",
   "jsnext:main": "es6/index.js",
@@ -23,7 +23,7 @@
     "classnames": "^2.2.5",
     "moment": "^2.14.1",
     "react-flip-move": "^2.4.2",
-    "reselect": "^2.5.3"
+    "redux-vcr.shared": "0.0.2"
   },
   "peerDependencies": {
     "react": "0.14.x || 15.x",

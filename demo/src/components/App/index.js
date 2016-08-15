@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Replay } from '../../../../replay/src';
+import { Replay } from 'redux-vcr.replay';
 
 import { selectAnswer } from '../../actions';
 import { getAnswers } from '../../reducers/answers.reducer';

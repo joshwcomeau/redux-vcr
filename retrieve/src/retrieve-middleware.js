@@ -3,10 +3,10 @@ import {
   SELECT_CASSETTE,
   cassetteActionsReceive,
   cassettesListReceive,
-} from '../../shared/lib/actions';
+} from 'redux-vcr.shared/actions';
 
 
-const retrieveMiddleware = dataHandler => store => next => action => {
+const retrieveMiddleware = ({ dataHandler }) => store => next => action => {
   switch (action.type) {
     case CASSETTES_LIST_REQUEST: {
       dataHandler
