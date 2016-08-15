@@ -19,7 +19,8 @@
   "dependencies": {
     "firebase": "3.2.1",
     "invariant": "2.2.1",
-    "lodash.debounce": "4.0.7"
+    "lodash.debounce": "4.0.7",
+    "redux-vcr.replay": "0.0.3"
   },
   "devDependencies": {
     "chai": "^3.5.0",
