@@ -1,6 +1,6 @@
 {
   "name": "redux-vcr.replay",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "ReduxVCR replay module",
   "main": "lib/index.js",
   "jsnext:main": "es6/index.js",
@@ -17,7 +17,8 @@
     "test": "nwb test",
     "test:watch": "nwb test --server",
     "scss:transpile": "node-sass src -o lib && replace .scss .css ./lib -r",
-    "lint": "eslint -c ../.eslintrc src/** --ext .js"
+    "lint": "eslint -c ../.eslintrc src/** --ext .js",
+    "prepublish": "npm run build"
   },
   "dependencies": {
     "classnames": "^2.2.5",
