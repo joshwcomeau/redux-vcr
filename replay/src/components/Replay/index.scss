@@ -8,4 +8,8 @@
   right: 0;
   margin: 0 auto;
   width: $vcr-width;
+
+  * {
+    box-sizing: border-box;
+  }
 }
