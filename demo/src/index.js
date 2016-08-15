@@ -3,14 +3,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import { captureMiddleware } from '../../capture/lib';
-import { PersistHandler } from '../../persist/lib';
-import { RetrieveHandler, retrieveMiddleware } from '../../retrieve/lib';
-import { replayMiddleware } from '../../replay/lib';
+import { captureMiddleware } from '../../capture/src';
+import { PersistHandler } from '../../persist/src';
+import { RetrieveHandler, retrieveMiddleware } from '../../retrieve/src';
+import { replayMiddleware, wrapReducer } from '../../replay/src';
 
 import App from './components/App';
 import reducer from './reducers';
-import './index.css';
+
 
 // Firebase credentials are safe to distribute in the client;
 // on their own, they don't grant any authorization.
@@ -48,7 +48,9 @@ const middlewares = [
 ];
 
 const store = createStore(
-  reducer,
+  // This higher-order reducer exists purely to tackle resetting the state
+  // before a cassette is played. It ensures recordings will run smoothly.
+  wrapReducer(reducer),
   applyMiddleware.apply(this, middlewares)
 );
 

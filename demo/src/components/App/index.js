@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import Backdrop from 'redux-vcr.replay/lib/components/Backdrop';
+import { Replay } from '../../../../replay/src';
 
 import { selectAnswer } from '../../actions';
 import { getAnswers } from '../../reducers/answers.reducer';
@@ -45,7 +45,7 @@ class App extends Component {
           {this.renderButtons()}
         </section>
 
-        <Backdrop />
+        <Replay />
       </div>
     );
   }
