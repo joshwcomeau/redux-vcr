@@ -1,8 +1,8 @@
+import { actionTypes, actionCreators } from 'redux-vcr.shared';
 import playActions from './play-actions';
-import {
-  PLAY_CASSETTE,
-  rewindCassetteAndRestoreApp,
-} from 'redux-vcr.shared/actions';
+
+const { PLAY_CASSETTE } = actionTypes;
+const { rewindCassetteAndRestoreApp } = actionCreators;
 
 
 const replayMiddleware = store => next => action => {

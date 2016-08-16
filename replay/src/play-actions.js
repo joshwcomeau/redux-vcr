@@ -1,7 +1,7 @@
-import {
-  incrementActionsPlayed,
-  stopCassette,
-} from 'redux-vcr.shared/actions';
+import { actionCreators } from 'redux-vcr.shared';
+
+const { incrementActionsPlayed, stopCassette } = actionCreators;
+
 
 export default function playActions({ store, next }) {
   const state = store.getState().reduxVCR;

@@ -2,16 +2,17 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 
-import * as actionCreators from 'redux-vcr.shared/actions';
-import {
-  isFirstPageSelector,
-  isLastPageSelector,
-  paginatedCassetteListSelector,
-} from 'redux-vcr.shared/reducers/cassettes.reducer';
+import { actionCreators, cassetteSelectors } from 'redux-vcr.shared';
 
 import Cassette from '../Cassette';
 import Icon from '../Icon';
 import './index.scss';
+
+const {
+  isFirstPageSelector,
+  isLastPageSelector,
+  paginatedCassetteListSelector,
+} = cassetteSelectors;
 
 
 class CassetteList extends Component {

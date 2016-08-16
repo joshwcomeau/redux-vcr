@@ -1,8 +1,10 @@
 import debounce from 'lodash.debounce';
 import invariant from 'invariant';
 
-import FirebaseHandler from 'redux-vcr.shared/utils/firebase-handler';
+import { FirebaseHandler } from 'redux-vcr.shared';
 import './polyfills';
+
+console.log("Imported", FirebaseHandler)
 
 
 export default class PersistHandler {

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import * as actionCreators from 'redux-vcr.shared/actions';
+import { actionCreators } from 'redux-vcr.shared';
 import VCR from '../VCR';
 import CassetteList from '../CassetteList';
 import Backdrop from '../Backdrop';

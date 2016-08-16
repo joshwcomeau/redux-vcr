@@ -2,7 +2,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import * as actionCreators from 'redux-vcr.shared/actions';
+import { actionCreators } from 'redux-vcr.shared';
 import VCRButton from '../VCRButton';
 import VCRPowerLight from '../VCRPowerLight';
 import './index.scss';
