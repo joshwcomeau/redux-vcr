@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import sinon from 'sinon';
 
 import reducer from '../src/reducers/cassettes.reducer';
 import {
@@ -14,7 +13,8 @@ import {
   ejectCassette,
   goToNextCassettePage,
   goToPreviousCassettePage,
-  hideCassettes,selectCassette,
+  hideCassettes,
+  selectCassette,
   viewCassettes,
 } from '../src/actions';
 
@@ -26,12 +26,15 @@ describe('cassette reducer', () => {
       const action = cassettesListReceive({ cassettes: {
         abc: '123',
         xyz: '789',
-      }});
+      } });
 
-      const expectedState = { ...state, byId: {
-        abc: '123',
-        xyz: '789',
-      }};
+      const expectedState = {
+        ...state,
+        byId: {
+          abc: '123',
+          xyz: '789',
+        }
+      };
       const actualState = reducer(state, action);
 
       expect(actualState).to.deep.equal(expectedState);

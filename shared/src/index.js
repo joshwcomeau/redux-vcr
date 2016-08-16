@@ -17,15 +17,18 @@ import FirebaseHandler from './utils/firebase-handler';
 
 
 // We want to split our action types from our action creators.
-const { actionTypes, actionCreators } = actions.reduce((memo, actionItem) => {
-  if (typeof actionItem === 'function') {
-    memo.actionCreators.push(actionItem);
-  } else {
-    memo.actionTypes.push(actionItem);
-  }
+const actionTypes = {};
+const actionCreators = {};
 
-  return memo;
-}, { actionTypes: [], actionCreators: [] });
+for (let key in actions) {
+  const actionItem = actions[key];
+
+  if (typeof actionItem === 'function') {
+    actionCreators[key] = actionItem;
+  } else {
+    actionTypes[key] = actionItem;
+  }
+}
 
 
 export {
