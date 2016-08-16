@@ -22,7 +22,7 @@ import {
 describe('cassette reducer', () => {
   describe(CASSETTES_LIST_RECEIVE, () => {
     it('populates the list of cassettes', () => {
-      const state = reducer(null, {});
+      const state = reducer({}, {});
       const action = cassettesListReceive({ cassettes: {
         abc: '123',
         xyz: '789',
@@ -34,7 +34,7 @@ describe('cassette reducer', () => {
       }};
       const actualState = reducer(state, action);
 
-      expect(actualState).to.equal(expectedState);
+      expect(actualState).to.deep.equal(expectedState);
     });
   });
 
@@ -51,7 +51,7 @@ describe('cassette reducer', () => {
       };
       const actualState = reducer(state, action);
 
-      expect(actualState).to.equal(expectedState);
+      expect(actualState).to.deep.equal(expectedState);
     });
   });
 
@@ -66,7 +66,7 @@ describe('cassette reducer', () => {
       }};
       const actualState = reducer(state, action);
 
-      expect(actualState).to.equal(expectedState);
+      expect(actualState).to.deep.equal(expectedState);
     });
   });
 
@@ -81,7 +81,7 @@ describe('cassette reducer', () => {
       }};
       const actualState = reducer(state, action);
 
-      expect(actualState).to.equal(expectedState);
+      expect(actualState).to.deep.equal(expectedState);
     });
   });
 
@@ -93,7 +93,7 @@ describe('cassette reducer', () => {
       const expectedState = { ...state, status: 'idle' };
       const actualState = reducer(state, action);
 
-      expect(actualState).to.equal(expectedState);
+      expect(actualState).to.deep.equal(expectedState);
     });
   });
 
@@ -105,7 +105,7 @@ describe('cassette reducer', () => {
       const expectedState = { ...state, status: 'selecting' };
       const actualState = reducer(state, action);
 
-      expect(actualState).to.equal(expectedState);
+      expect(actualState).to.deep.equal(expectedState);
     });
   });
 

@@ -1,12 +1,11 @@
 {
   "name": "redux-vcr.shared",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "Shared Redux logic for various Redux VCR modules",
   "main": "lib/index.js",
   "files": [
-    "es6",
-    "lib",
-    "umd"
+    "README.md",
+    "lib"
   ],
   "scripts": {
     "build": "nwb build",
@@ -17,7 +16,6 @@
   },
   "dependencies": {
     "firebase": "3.2.1",
-    "invariant": "^2.2.1",
     "reselect": "^2.5.3"
   },
   "peerDependencies": {
@@ -31,6 +29,7 @@
     "eslint-plugin-import": "^1.12.0",
     "eslint-plugin-jsx-a11y": "^2.1.0",
     "eslint-plugin-react": "^6.0.0",
+    "invariant": "^2.2.1",
     "lodash": "^4.15.0",
     "nwb": "0.11.x",
     "redux": "^3.5.2",
