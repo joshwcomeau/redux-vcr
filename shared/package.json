@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "firebase": "3.2.1",
+    "invariant": "^2.2.1",
     "reselect": "^2.5.3"
   },
   "peerDependencies": {
