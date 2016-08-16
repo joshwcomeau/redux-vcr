@@ -4,8 +4,6 @@ import invariant from 'invariant';
 import { FirebaseHandler } from 'redux-vcr.shared';
 import './polyfills';
 
-console.log("Imported", FirebaseHandler)
-
 
 export default class PersistHandler {
   constructor({ firebaseAuth, debounceLength }) {

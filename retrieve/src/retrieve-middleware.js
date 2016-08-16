@@ -1,9 +1,7 @@
-import {
-  CASSETTES_LIST_REQUEST,
-  SELECT_CASSETTE,
-  cassetteActionsReceive,
-  cassettesListReceive,
-} from 'redux-vcr.shared/actions';
+import { actionTypes, actionCreators } from 'redux-vcr.shared';
+
+const { CASSETTES_LIST_REQUEST, SELECT_CASSETTE } = actionTypes;
+const { cassetteActionsReceive, cassettesListReceive } = actionCreators;
 
 
 const retrieveMiddleware = ({ dataHandler }) => store => next => action => {

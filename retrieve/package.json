@@ -1,6 +1,6 @@
 {
   "name": "redux-vcr.retrieve",
-  "version": "0.0.1",
+  "version": "0.0.10",
   "description": "ReduxVCR retrieve module",
   "main": "lib/index.js",
   "jsnext:main": "es6/index.js",
@@ -14,10 +14,11 @@
     "clean": "nwb clean",
     "test": "nwb test",
     "test:watch": "nwb test --server",
-    "lint": "eslint -c ../.eslintrc src/** --ext .js"
+    "lint": "eslint -c ../.eslintrc src/** --ext .js",
+    "prepublish": "npm run build"
   },
   "dependencies": {
-    "redux-vcr.shared": "0.0.1"
+    "redux-vcr.shared": "0.0.10"
   },
   "devDependencies": {
     "chai": "^3.5.0",

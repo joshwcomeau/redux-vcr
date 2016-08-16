@@ -46,6 +46,13 @@
     "test:shared": "cd shared && npm run test && cd ..",
     "test:all": "npm run test:capture && npm run test:persist && npm run test:retrieve && npm run test:replay && npm run test:shared",
 
+    "publish:capture": "cd capture && npm version patch && npm publish && cd ..",
+    "publish:persist": "cd persist && npm version patch && npm publish && cd ..",
+    "publish:retrieve": "cd retrieve && npm version patch && npm publish && cd ..",
+    "publish:replay": "cd replay && npm version patch && npm publish && cd ..",
+    "publish:shared": "cd shared && npm version patch && npm publish && cd ..",
+    "publish:all": "npm run publish:capture && npm run publish:persist && npm run publish:retrieve && npm run publish:replay && npm run publish:shared",
+
     "watch": "npm-watch",
 
     "lint": "eslint -c ../.eslintrc src/** --ext .js"
