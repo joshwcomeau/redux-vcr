@@ -52,7 +52,7 @@ const middlewares = [
   // Finally, the replay middleware is in charge of intercepting the
   // PLAY_CASSETTE action, which allows previously-recorded sessions
   // to be replayed.
-  replayMiddleware,
+  replayMiddleware(),
 ];
 
 const store = createStore(

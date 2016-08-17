@@ -46,6 +46,13 @@
     "test:shared": "cd shared && npm run test && cd ..",
     "test:all": "npm run test:capture && npm run test:persist && npm run test:retrieve && npm run test:replay && npm run test:shared",
 
+    "install:capture": "cd capture && npm i && cd ..",
+    "install:persist": "cd persist && npm i && cd ..",
+    "install:retrieve": "cd retrieve && npm i && cd ..",
+    "install:replay": "cd replay && npm i && cd ..",
+    "install:shared": "cd shared && npm i && cd ..",
+    "install:all": "npm run install:capture && npm run install:persist && npm run install:retrieve && npm run install:replay && npm run install:shared",
+
     "publish:capture": "cd capture && npm version patch && npm publish && cd ..",
     "publish:persist": "cd persist && npm version patch && npm publish && cd ..",
     "publish:retrieve": "cd retrieve && npm version patch && npm publish && cd ..",

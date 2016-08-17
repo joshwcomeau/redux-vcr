@@ -3,7 +3,7 @@ import { actionCreators } from 'redux-vcr.shared';
 const { incrementActionsPlayed, stopCassette } = actionCreators;
 
 
-export default function playActions({ store, next }) {
+export default function playHandler({ store, next }) {
   const state = store.getState().reduxVCR;
   const selectedCassetteId = state.cassettes.selected;
 
@@ -29,7 +29,7 @@ export default function playActions({ store, next }) {
   }
 
   window.setTimeout(
-    () => playActions({ store, next }),
+    () => playHandler({ store, next }),
     // TODO: Implement playbackSpeed here
     nextAction.delay
   );
