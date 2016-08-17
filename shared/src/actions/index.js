@@ -84,7 +84,7 @@ export const incrementActionsPlayed = () => ({
   type: INCREMENT_ACTIONS_PLAYED,
 });
 
-export const changePlaybackSpeed = playbackSpeed => ({
+export const changePlaybackSpeed = ({ playbackSpeed }) => ({
   type: CHANGE_PLAYBACK_SPEED,
   playbackSpeed,
 });

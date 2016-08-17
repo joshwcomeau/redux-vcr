@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { expect } from 'chai';
 
-import reducer from '../src/reducers/user.reducer';
+import reducer from '../../src/reducers/user.reducer';
 import {
   SIGN_IN_REQUEST,
   SIGN_IN_RECEIVE,
@@ -9,7 +9,7 @@ import {
   signInRequest,
   signInReceive,
   signInFailure,
-} from '../src/actions';
+} from '../../src/actions';
 
 
 describe('user reducer', () => {

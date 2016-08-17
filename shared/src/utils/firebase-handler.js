@@ -4,7 +4,7 @@ import invariant from 'invariant';
 let firebase;
 let firebaseStubFactory;
 if (process.env.NODE_ENV === 'test') {
-  firebaseStubFactory = require('./firebase-stub-factory');
+  firebaseStubFactory = require('../../tests/stubs/firebase-stub-factory');
 } else {
   firebase = require('firebase/app');
   require('firebase/auth');

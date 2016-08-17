@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import reducer from '../src/reducers/cassettes.reducer';
+import reducer from '../../src/reducers/cassettes.reducer';
 import {
   CASSETTES_LIST_RECEIVE,
   EJECT_CASSETTE,
@@ -16,7 +16,7 @@ import {
   hideCassettes,
   selectCassette,
   viewCassettes,
-} from '../src/actions';
+} from '../../src/actions';
 
 
 describe('cassette reducer', () => {
