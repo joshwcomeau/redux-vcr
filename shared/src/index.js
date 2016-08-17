@@ -12,6 +12,7 @@ import actionsReducer, * as actionSelectors from './reducers/actions.reducer';
 
 import cassettesReducer, * as cassetteSelectors from './reducers/cassettes.reducer';
 import playReducer, * as playSelectors from './reducers/play.reducer';
+import userReducer, * as userSelectors from './reducers/user.reducer';
 
 import FirebaseHandler from './utils/firebase-handler';
 
@@ -20,7 +21,10 @@ import FirebaseHandler from './utils/firebase-handler';
 const actionTypes = {};
 const actionCreators = {};
 
-for (let key in actions) {
+// While for...in loops without checking the prototype is frowned upon,
+// it's safe to use here because I'm explicitly creating the object above.
+// eslint-disable-next-line guard-for-in, no-restricted-syntax
+for (const key in actions) {
   const actionItem = actions[key];
 
   if (typeof actionItem === 'function') {
@@ -40,5 +44,7 @@ export {
   cassetteSelectors,
   playReducer,
   playSelectors,
+  userReducer,
+  userSelectors,
   FirebaseHandler,
 };

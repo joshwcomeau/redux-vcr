@@ -17,6 +17,7 @@
     "arrow-body-style": 0,
     "no-return-assign": 0,
     "no-mixed-operators": 0,
+    "no-console": ["warn", {allow: ["info", "warn", "error"] }],
     "prefer-template": 0,
     "quote-props": 0,
   },

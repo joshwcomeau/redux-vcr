@@ -9,6 +9,8 @@ import {
   cassetteSelectors,
   playReducer,
   playSelectors,
+  userReducer,
+  userSelectors,
   FirebaseHandler,
 } from '../src';
 
@@ -43,15 +45,29 @@ describe('shared export', () => {
   });
 
   it('exports all reducer functions', () => {
-    const reducers = [actionsReducer, cassettesReducer, playReducer];
+    // For most reducers, we use `combineReducers`, which creates functions
+    // that don't really look like reducers.
+    // The exception ATM is `user`, which uses a regular reducer.
+    const combinedReducers = [
+      actionsReducer,
+      cassettesReducer,
+      playReducer,
+    ];
 
-    reducers.forEach(reducer => {
+    const regularReducers = [
+      userReducer,
+    ];
+
+    combinedReducers.forEach(reducer => {
       expect(reducer).to.be.a('function');
-      // We use combineReducers, which produces functions that do not
-      // quite look like reducers. TO ensure these are the right functions,
-      // we'll do a match on their function body.
       expect(reducer.length).to.equal(0);
-      expect(reducer.toString()).to.match(/combination()/i);
+      expect(reducer.toString()).to.match(/combination\(\)/i);
+    });
+
+    regularReducers.forEach(reducer => {
+      expect(reducer).to.be.a('function');
+      expect(reducer.length).to.equal(2);
+      expect(reducer.toString()).to.match(/reducer\(state, action\)/i);
     });
   });
 
@@ -84,6 +100,16 @@ describe('shared export', () => {
 
     expect(selectors).to.have.length.of(0);
   });
+
+  it('exports user selectors', () => {
+    const selectors = Object.keys(userSelectors).filter(selector => (
+      selector !== 'default'
+    ));
+
+    expect(selectors).to.have.length.of(1);
+    expect(selectors).to.deep.equal(['loggedInSelector']);
+  });
+
 
   it('exports FirebaseHandler', () => {
     expect(FirebaseHandler).to.be.a('function');

@@ -17,11 +17,13 @@ class ReduxVCR extends Component {
   render() {
     const {
       cassetteStatus,
+      loggedIn,
       hideCassettes,
     } = this.props;
 
     return (
       <div className="redux-vcr-component">
+        {!loggedIn ? <SignInCTA /> : null}
         <VCR />
         { cassetteStatus === 'selecting' ? <CassetteList /> : null }
         <Backdrop
@@ -36,7 +38,8 @@ class ReduxVCR extends Component {
 }
 
 ReduxVCR.propTypes = {
-  cassetteStatus: PropTypes.string,
+  cassetteStatus: PropTypes.string.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
   hideCassettes: PropTypes.func,
   cassettesListRequest: PropTypes.func,
 };
@@ -47,6 +50,7 @@ ReduxVCR.defaultProps = {
 
 const mapStateToProps = state => ({
   cassetteStatus: state.reduxVCR.cassettes.status,
+  loggedIn: loggedInSelector(state),
 });
 
 

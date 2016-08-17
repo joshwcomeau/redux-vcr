@@ -15,7 +15,9 @@ export const CASSETTE_ACTIONS_RECEIVE = 'REDUX_VCR/CASSETTE_ACTIONS_RECEIVE';
 export const TOGGLE_PLAY_PAUSE = 'REDUX_VCR/TOGGLE_PLAY_PAUSE';
 export const INCREMENT_ACTIONS_PLAYED = 'REDUX_VCR/INCREMENT_ACTIONS_PLAYED';
 export const CHANGE_PLAYBACK_SPEED = 'REDUX_VCR/CHANGE_PLAYBACK_SPEED';
-
+export const SIGN_IN_REQUEST = 'REDUX_VCR/SIGN_IN_REQUEST';
+export const SIGN_IN_RECEIVE = 'REDUX_VCR/SIGN_IN_RECEIVE';
+export const SIGN_IN_FAILURE = 'REDUX_VCR/SIGN_IN_FAILURE';
 
 // ////////////////////////
 // ACTION CREATORS ///////
@@ -85,4 +87,19 @@ export const incrementActionsPlayed = () => ({
 export const changePlaybackSpeed = playbackSpeed => ({
   type: CHANGE_PLAYBACK_SPEED,
   playbackSpeed,
+});
+
+export const signInRequest = ({ provider }) => ({
+  type: SIGN_IN_REQUEST,
+  provider,
+});
+
+export const signInReceive = ({ user }) => ({
+  type: SIGN_IN_RECEIVE,
+  user,
+});
+
+export const signInFailure = ({ error }) => ({
+  type: SIGN_IN_FAILURE,
+  error,
 });

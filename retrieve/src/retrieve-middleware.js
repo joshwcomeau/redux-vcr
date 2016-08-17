@@ -1,11 +1,15 @@
 import { actionTypes, actionCreators } from 'redux-vcr.shared';
 
-const { CASSETTES_LIST_REQUEST, SELECT_CASSETTE } = actionTypes;
+const { SIGN_IN, CASSETTES_LIST_REQUEST, SELECT_CASSETTE } = actionTypes;
 const { cassetteActionsReceive, cassettesListReceive } = actionCreators;
 
 
 const retrieveMiddleware = ({ dataHandler }) => store => next => action => {
   switch (action.type) {
+    case SIGN_IN: {
+      return dataHandler.signIn(action.provider);
+    }
+
     case CASSETTES_LIST_REQUEST: {
       dataHandler
         .retrieveList()

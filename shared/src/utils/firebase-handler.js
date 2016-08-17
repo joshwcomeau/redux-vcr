@@ -47,15 +47,46 @@ export default class FirebaseHandler {
 
     const auth = this.firebaseConnection.auth();
 
-    auth.signInAnonymously();
+    // For retrieval, we want to send github-authenticated requests.
+    // For persist, though, we can use anonymous authentication.
+    if (source === 'persist') {
+      auth.signInAnonymously();
+    }
 
-    auth.onAuthStateChanged(session => {
-      this.firebaseSessionId = session.uid;
+    auth.onAuthStateChanged(user => {
+      this.firebaseUser = user;
+      this.firebaseSessionId = user.uid;
     });
+  }
+
+  signIn(provider) {
+    invariant(
+      provider === 'github',
+      `Invalid Firebase sign-in attempt.
+
+      At the moment, we only accept 'github' providers. You attempted to sign
+      in with '${provider}'.
+
+      For more information, see PLACEHOLDER.`
+    );
+
+    return this.firebaseConnection
+      .auth()
+      .signInWithPopup(provider)
+      .then(({ credential }) => {
+        this.token = credential.accessToken;
+      })
+      .catch(error => {
+        console.error('OH NO!', error);
+      });
   }
 
   get sessionId() {
     return this.firebaseSessionId;
+  }
+
+  get user() {
+    return this.firebaseUser;
   }
 
   get firebase() {

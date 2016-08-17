@@ -1,16 +1,20 @@
-# retrieve
+# Redux VCR / retrieve
 
 [![Travis][build-badge]][build]
 [![npm package][npm-badge]][npm]
 [![Coveralls][coveralls-badge]][coveralls]
 
-Describe retrieve here.
+Retrieve handles fetching the cassettes so that they are available to /replay. It also handles authentication, to ensure that only the admin of the application can watch user sessions.
 
-[build-badge]: https://img.shields.io/travis/user/repo/master.svg?style=flat-square
-[build]: https://travis-ci.org/user/repo
+Its responsibilities include:
 
-[npm-badge]: https://img.shields.io/npm/v/npm-package.svg?style=flat-square
-[npm]: https://www.npmjs.org/package/npm-package
+- Connecting to Firebase
+- Fetching a list of cassettes, likely on pageload
+- Fetching the actions for a specific cassette, when it's selected.
+- Handling developer authentication, with GitHub (more providers can be added if requested)
 
-[coveralls-badge]: https://img.shields.io/coveralls/user/repo/master.svg?style=flat-square
-[coveralls]: https://coveralls.io/github/user/repo
+--------
+
+### How It Works
+
+TODO

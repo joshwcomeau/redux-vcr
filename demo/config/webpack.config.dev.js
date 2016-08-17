@@ -15,8 +15,6 @@ var reduxVCRPaths = reduxVCRProjectNames.map(function(projectName) {
   return path.join(__dirname, '../../' + projectName + '/src');
 });
 
-console.log(reduxVCRPaths);
-
 
 module.exports = {
   devtool: 'eval',
