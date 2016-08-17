@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-import iconMap from '../../utils/icon-map';
+import iconMap from '../../data/icon-map';
 
 
 const Icon = ({ color, size, value, ...delegated }) => {
