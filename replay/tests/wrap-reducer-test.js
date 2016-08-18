@@ -2,7 +2,8 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { wrapMiddleware } from '../src';
+import { wrapReducer } from '../src';
+import { rewindCassetteAndRestoreApp } from '../../shared/src/actions';
 
 
 describe('wrapReducer', () => {
@@ -14,93 +15,33 @@ describe('wrapReducer', () => {
   });
 
   it('passes unrelated actions through to the default reducer', () => {
-    const store = {};
+    const state = {};
     const action = { type: 'UNRELATED_ACTION' };
-    middleware(store)(next)(action);
+    wrappedReducer(state, action);
 
-    expect(next.callCount).to.equal(1);
-    expect(next.firstCall.args[0]).to.equal(action);
+    expect(originalReducer.callCount).to.equal(1);
+    expect(originalReducer.firstCall.args[0]).to.equal(state);
+    expect(originalReducer.firstCall.args[1]).to.equal(action);
   });
 
-  describe(PLAY_CASSETTE, () => {
-    context('while playing', () => {
-      const store = {
-        getState() {
-          return {
-            reduxVCR: { play: { status: 'playing' } },
-          };
-        },
-      };
-      const action = playCassette();
+  it('resets all but the reduxVCR slice when requested', () => {
+    const state = {
+      reduxVCR: {
+        cassettes: [1, 2, 3],
+      },
+      calendarMonths: ['January', 'February', 'etc'],
+    };
 
-      beforeEach(() => {
-        middleware(store)(next)(action);
-      });
+    const action = rewindCassetteAndRestoreApp();
 
-      it('passes the action through without rewinding', () => {
-        expect(next.callCount).to.equal(1);
-        expect(next.firstCall.args[0]).to.equal(action);
-      });
+    wrappedReducer(state, action);
 
-      it('does not invoke the playHandler', () => {
-        expect(playHandler.callCount).to.equal(0);
-      });
+    expect(originalReducer.callCount).to.equal(1);
+    expect(originalReducer.firstCall.args[0]).to.deep.equal({
+      reduxVCR: {
+        cassettes: [1, 2, 3],
+      },
     });
-
-    context('while paused', () => {
-      const store = {
-        getState() {
-          return {
-            reduxVCR: { play: { status: 'paused' } },
-          };
-        },
-      };
-      const action = playCassette();
-
-      beforeEach(() => {
-        middleware(store)(next)(action);
-      });
-
-      it('passes the action through without rewinding', () => {
-        expect(next.callCount).to.equal(1);
-        expect(next.firstCall.args[0]).to.equal(action);
-      });
-
-      it('does not invoke the playHandler', () => {
-        expect(playHandler.callCount).to.equal(0);
-      });
-    });
-
-    context('while stopped', () => {
-      const store = {
-        getState() {
-          return {
-            reduxVCR: { play: { status: 'stopped' } },
-          };
-        },
-      };
-      const action = playCassette();
-
-      beforeEach(() => {
-        middleware(store)(next)(action);
-      });
-
-      it('rewinds and passes the action through', () => {
-        expect(next.callCount).to.equal(2);
-
-        expect(next.firstCall.args[0]).to.deep.equal(
-          rewindCassetteAndRestoreApp()
-        );
-        expect(next.secondCall.args[0]).to.equal(action);
-      });
-
-      it('invokes the playHandler', () => {
-        expect(playHandler.callCount).to.equal(1);
-        expect(playHandler.firstCall.args[0]).to.deep.equal({
-          store,
-          next,
-        });
-      });
-    });
+    expect(originalReducer.firstCall.args[1]).to.deep.equal({});
   });
 });

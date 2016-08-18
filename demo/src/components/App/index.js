@@ -7,6 +7,7 @@ import { Replay } from 'redux-vcr.replay';
 import { selectAnswer } from '../../actions';
 import { getAnswers } from '../../reducers/answers.reducer';
 import Button from '../Button';
+import DevTools from '../DevTools';
 
 import './index.css';
 
@@ -47,6 +48,7 @@ class App extends Component {
           {this.renderButtons()}
         </section>
 
+        <DevTools />
         <Replay />
       </div>
     );

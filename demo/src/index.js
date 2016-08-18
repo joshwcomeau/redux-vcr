@@ -2,7 +2,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import DevTools from './components/DevTools';
+
 
 // // LOCAL IMPORTS. Useful for dev
 import { captureMiddleware } from '../../capture/src';
@@ -59,7 +61,10 @@ const store = createStore(
   // This higher-order reducer exists purely to tackle resetting the state
   // before a cassette is played. It ensures recordings will run smoothly.
   wrapReducer(reducer),
-  applyMiddleware.apply(this, middlewares)
+  compose(
+    applyMiddleware.apply(this, middlewares),
+    DevTools.instrument()
+  )
 );
 
 ReactDOM.render(

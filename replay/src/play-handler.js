@@ -3,14 +3,19 @@ import { actionCreators } from 'redux-vcr.shared';
 const { incrementActionsPlayed, stopCassette } = actionCreators;
 
 
-export default function playHandler({ store, next }) {
+export default function playHandler({ store, next, maximumDelay = Infinity }) {
   const state = store.getState().reduxVCR;
-  const selectedCassetteId = state.cassettes.selected;
+  const selectedId = state.cassettes.selected;
+
+  // If no cassette is selected, we cannot possibly play it.
+  if (selectedId === null || typeof selectedId === 'undefined') {
+    return;
+  }
 
   const { status } = state.play;
   const { currentIndex } = state.actions;
 
-  const actions = state.actions.byId[selectedCassetteId];
+  const actions = state.actions.byId[selectedId];
 
   if (status !== 'playing') {
     return;
@@ -28,9 +33,15 @@ export default function playHandler({ store, next }) {
     return;
   }
 
+  // If our delay is larger than our maximum specified delay,
+  // clamp it to that max.
+  const delay = nextAction.delay > maximumDelay
+    ? maximumDelay
+    : nextAction.delay;
+
   window.setTimeout(
     () => playHandler({ store, next }),
     // TODO: Implement playbackSpeed here
-    nextAction.delay
+    delay
   );
 }

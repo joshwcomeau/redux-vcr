@@ -14,6 +14,10 @@ export default function wrapReducer(reducer) {
       // When our special action is dispatched, we want to re-initialize
       // the state, so that our cassette can be played from a blank state.
       case REWIND_CASSETTE_AND_RESTORE_APP:
+        // By passing an initial state solely consisting of our reduxVCR
+        // slice, we force all other combined reducers to use their default
+        // (initial) state. The action has no type, so no possible side
+        // effects can occur.
         return reducer({ reduxVCR: state.reduxVCR }, {});
 
       default:
