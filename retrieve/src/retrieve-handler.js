@@ -1,4 +1,5 @@
-import { FirebaseHandler } from 'redux-vcr.shared';
+// import { FirebaseHandler } from 'redux-vcr.shared';
+import { FirebaseHandler } from '../../shared/src';
 
 
 export default class RetrieveHandler {

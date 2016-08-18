@@ -1,7 +1,8 @@
 import debounce from 'lodash.debounce';
 import invariant from 'invariant';
 
-import { FirebaseHandler } from 'redux-vcr.shared';
+// import { FirebaseHandler } from 'redux-vcr.shared';
+import { FirebaseHandler } from '../../shared/src';
 import './polyfills';
 
 

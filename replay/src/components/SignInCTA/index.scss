@@ -1,0 +1,42 @@
+@import '../variables';
+
+.redux-vcr-component .sign-in-cta {
+  margin: 16px 0;
+
+  button {
+    position: relative;
+    width: 180px;
+    height: 46px;
+    background: #1c8e4d;
+    color: $white;
+    font-size: 16px;
+    border: 0;
+    border-bottom: 3px solid rgba(0,0,0,0.25);
+    border-radius: 4px;
+
+    &:hover {
+      background: #19ac57;
+    }
+
+    .icon {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      left: 8px;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+    }
+  }
+  .explanation {
+    line-height: 3em;
+    font-size: 12px;
+    color: $white;
+    font-family: sans-serif;
+    text-shadow: 1px 1px 3px #000;
+
+    a {
+      color: $white;
+    }
+  }
+}

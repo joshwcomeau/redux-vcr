@@ -6,15 +6,59 @@ $primary-action-button-height: 30px;
 .redux-vcr-component .vcr {
   position: relative;
   z-index: 2;
-  background: $darkgray;
   width: $vcr-width;
-  height: 100px;
+  height: $vcr-height;
   color: $white;
   border-radius: 8px 8px 5px 5px;
 
+  &.asleep {
+    .vcr-bg {
+      background: darken($darkgray, 10%);
+    }
+
+    .vcr-top {
+      background: $darkgray;
+    }
+
+    .vcr-button {
+      opacity: 0.5;
+      cursor: default;
+
+      .toggle-indicator.toggled {
+        background: rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    .vcr-screen {
+      background: rgba(255,255,255,0.05);
+
+      .vcr-screen-contents {
+        opacity: 0;
+      }
+    }
+
+    .cassette-slot-door {
+      background: darken($darkgray, 10%);
+      color: darken($white, 50%);
+    }
+
+    .decorative-outputs {
+      opacity: 0.6;
+    }
+
+    .sign-in-cta {
+      position: absolute;
+      z-index: 3;
+      width: $vcr-width;
+      height: $vcr-height;
+      top: 0;
+      left: 0;
+    }
+  }
+
   .primary-action-buttons, .secondary-action-buttons {
     position: absolute;
-    width: 100px;
+    width: $primary-actions-width;
     right: $vcr-standard-padding * 2;
     display: flex;
   }

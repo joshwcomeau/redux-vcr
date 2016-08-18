@@ -1,12 +1,17 @@
 /* eslint-disable jsx-a11y/no-marquee */
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 
-import { actionCreators } from 'redux-vcr.shared';
+// import { actionCreators, userSelectors } from 'redux-vcr.shared';
+import { actionCreators, userSelectors } from '../../../../shared/src';
 import VCRButton from '../VCRButton';
 import VCRPowerLight from '../VCRPowerLight';
+import SignInCTA from '../SignInCTA';
 import './index.scss';
 
+
+const { loggedInSelector } = userSelectors;
 
 class VCR extends Component {
   renderScreen() {
@@ -56,12 +61,14 @@ class VCR extends Component {
       playStatus,
       cassetteStatus,
       playbackSpeed,
+      loggedIn,
       playCassette,
       pauseCassette,
       stopCassette,
       viewCassettes,
       ejectCassette,
       changePlaybackSpeed,
+      signInRequest,
     } = this.props;
 
     const doorOpen = cassetteStatus === 'selecting';
@@ -75,9 +82,13 @@ class VCR extends Component {
       playPauseAction = playCassette;
     }
 
-    return (
-      <div className="vcr">
+    const vcrClasses = classNames('vcr', {
+      asleep: !loggedIn,
+    });
 
+    return (
+      <div className={vcrClasses}>
+        {!loggedIn ? <SignInCTA onClick={signInRequest} /> : null}
         <div className="vcr-top" />
         <div className="vcr-bg" />
         <VCRButton
@@ -164,6 +175,7 @@ VCR.propTypes = {
   cassetteStatus: PropTypes.string,
   selectedCassette: PropTypes.string,
   playbackSpeed: PropTypes.number,
+  loggedIn: PropTypes.bool.isRequired,
   playCassette: PropTypes.func.isRequired,
   pauseCassette: PropTypes.func.isRequired,
   stopCassette: PropTypes.func.isRequired,
@@ -181,6 +193,7 @@ const mapStateToProps = state => ({
   cassetteStatus: state.reduxVCR.cassettes.status,
   selectedCassette: state.reduxVCR.cassettes.selected,
   playbackSpeed: state.reduxVCR.play.speed,
+  loggedIn: loggedInSelector(state),
 });
 
 
@@ -191,4 +204,5 @@ export default connect(mapStateToProps, {
   ejectCassette: actionCreators.ejectCassette,
   viewCassettes: actionCreators.viewCassettes,
   changePlaybackSpeed: actionCreators.changePlaybackSpeed,
+  signInRequest: actionCreators.signInRequest,
 })(VCR);
