@@ -89,9 +89,9 @@ export const changePlaybackSpeed = ({ playbackSpeed }) => ({
   playbackSpeed,
 });
 
-export const signInRequest = ({ provider }) => ({
+export const signInRequest = ({ authMethod }) => ({
   type: SIGN_IN_REQUEST,
-  provider,
+  authMethod,
 });
 
 export const signInReceive = ({ user }) => ({

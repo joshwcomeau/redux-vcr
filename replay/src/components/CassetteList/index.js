@@ -102,9 +102,10 @@ CassetteList.propTypes = {
   cassettes: PropTypes.array,
   isFirstPage: PropTypes.bool,
   isLastPage: PropTypes.bool,
-  selectCassette: PropTypes.func,
-  goToNextCassettePage: PropTypes.func,
-  goToPreviousCassettePage: PropTypes.func,
+  cassettesListRequest: PropTypes.func.isRequired,
+  selectCassette: PropTypes.func.isRequired,
+  goToNextCassettePage: PropTypes.func.isRequired,
+  goToPreviousCassettePage: PropTypes.func.isRequired,
 };
 
 CassetteList.defaultProps = {
@@ -119,6 +120,7 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, {
+  cassettesListRequest: actionCreators.cassettesListRequest,
   selectCassette: actionCreators.selectCassette,
   goToNextCassettePage: actionCreators.goToNextCassettePage,
   goToPreviousCassettePage: actionCreators.goToPreviousCassettePage,

@@ -1,13 +1,30 @@
-import { actionTypes, actionCreators } from 'redux-vcr.shared';
+// import { actionTypes, actionCreators } from 'redux-vcr.shared';
+import { actionTypes, actionCreators } from '../../shared/src';
 
-const { SIGN_IN_REQUEST, CASSETTES_LIST_REQUEST, SELECT_CASSETTE } = actionTypes;
-const { cassetteActionsReceive, cassettesListReceive } = actionCreators;
-
+const {
+  SIGN_IN_REQUEST,
+  CASSETTES_LIST_REQUEST,
+  SELECT_CASSETTE,
+} = actionTypes;
+const {
+  cassetteActionsReceive,
+  cassettesListReceive,
+  signInReceive,
+  signInFailure,
+} = actionCreators;
 
 const retrieveMiddleware = ({ dataHandler }) => store => next => action => {
   switch (action.type) {
     case SIGN_IN_REQUEST: {
-      return dataHandler.signIn(action.provider);
+      return dataHandler
+        .signIn(action.authMethod)
+        .then(({ credential }) => {
+          next(signInReceive({ user: credential }));
+        })
+        .catch(error => {
+          console.error('OH NO!', error);
+          next(signInFailure({ error }));
+        });
     }
 
     case CASSETTES_LIST_REQUEST: {

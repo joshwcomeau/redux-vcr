@@ -59,26 +59,24 @@ export default class FirebaseHandler {
     });
   }
 
-  signIn(provider) {
+  createProvider(authMethod) {
     invariant(
-      provider === 'github',
+      authMethod === 'github',
       `Invalid Firebase sign-in attempt.
 
-      At the moment, we only accept 'github' providers. You attempted to sign
-      in with '${provider}'.
+      At the moment, we only accept 'github' authentication.
+      You attempted to sign in with '${authMethod}'.
 
       For more information, see PLACEHOLDER.`
     );
 
-    return this.firebaseConnection
-      .auth()
-      .signInWithPopup(provider)
-      .then(({ credential }) => {
-        this.token = credential.accessToken;
-      })
-      .catch(error => {
-        console.error('OH NO!', error);
-      });
+    switch (authMethod) {
+      case 'github': return new firebase.auth.GithubAuthProvider();
+
+      // the default case should never actually be hit. It's a fallback in case
+      // the invariant above misses something.
+      default: throw new Error('Please supply a valid provider');
+    }
   }
 
   get sessionId() {
@@ -92,7 +90,7 @@ export default class FirebaseHandler {
   get firebase() {
     // Normally, we wouldn't want to expose an internal module like this.
     // However, the entire FirebaseHandler class is itself an internal module.
-    // Because access to FirebaseHandler is so limited, I feel alright.
+    // Because access to FirebaseHandler is so limited, I feel alright with it.
     return this.firebaseConnection;
   }
 }

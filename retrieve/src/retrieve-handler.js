@@ -1,5 +1,8 @@
+import invariant from 'invariant';
+
 // import { FirebaseHandler } from 'redux-vcr.shared';
 import { FirebaseHandler } from '../../shared/src';
+
 
 
 export default class RetrieveHandler {
@@ -9,6 +12,18 @@ export default class RetrieveHandler {
       firebaseAuth,
       source: 'retrieve',
     });
+  }
+
+  // Authenticate developers with a specified provider source
+  // returns a promise, that the middleware can use to dispatch whichever action
+  // (success or failure) is appropriate.
+  signIn(authMethod) {
+    const provider = this.firebaseHandler.createProvider(authMethod);
+
+    return this.firebaseHandler
+      .firebase
+      .auth()
+      .signInWithPopup(provider);
   }
 
   retrieveList() {

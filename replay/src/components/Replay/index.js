@@ -9,16 +9,14 @@ import Backdrop from '../Backdrop';
 import './index.scss';
 
 
-class ReduxVCR extends Component {
-  componentDidMount() {
-    this.props.cassettesListRequest();
-  }
-
+class Replay extends Component {
   render() {
     const {
       cassetteStatus,
       hideCassettes,
     } = this.props;
+
+    console.log('Cassette status', cassetteStatus);
 
     return (
       <div className="redux-vcr-component">
@@ -37,13 +35,12 @@ class ReduxVCR extends Component {
   }
 }
 
-ReduxVCR.propTypes = {
+Replay.propTypes = {
   cassetteStatus: PropTypes.string.isRequired,
   hideCassettes: PropTypes.func,
-  cassettesListRequest: PropTypes.func,
 };
 
-ReduxVCR.defaultProps = {
+Replay.defaultProps = {
   position: 'bottom-left',
 };
 
@@ -56,6 +53,5 @@ export default connect(
   mapStateToProps,
   {
     hideCassettes: actionCreators.hideCassettes,
-    cassettesListRequest: actionCreators.cassettesListRequest,
   }
-)(ReduxVCR);
+)(Replay);
