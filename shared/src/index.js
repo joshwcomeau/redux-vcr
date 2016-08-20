@@ -14,6 +14,10 @@ import cassettesReducer, * as cassetteSelectors from './reducers/cassettes.reduc
 import playReducer, * as playSelectors from './reducers/play.reducer';
 import userReducer, * as userSelectors from './reducers/user.reducer';
 
+// In addition to all the individual reducers, we want to export their combined
+// root reducer.
+import reduxVCRReducer from './reducers';
+
 import FirebaseHandler from './utils/firebase-handler';
 
 
@@ -46,5 +50,6 @@ export {
   playSelectors,
   userReducer,
   userSelectors,
+  reduxVCRReducer,
   FirebaseHandler,
 };

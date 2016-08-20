@@ -16,8 +16,6 @@ class Replay extends Component {
       hideCassettes,
     } = this.props;
 
-    console.log('Cassette status', cassetteStatus);
-
     return (
       <div className="redux-vcr-component">
         <VCR />
