@@ -13,13 +13,13 @@ module.exports = {
   parser: 'babel-eslint',
 
   // import plugin is termporarily disabled, scroll below to see why
-  plugins: [/*'import', */'flowtype', 'jsx-a11y', 'react'],
+  plugins: [/* 'import', */'jsx-a11y', 'react'],
 
   env: {
     browser: true,
     commonjs: true,
     es6: true,
-    node: true
+    node: true,
   },
 
   parserOptions: {
@@ -28,8 +28,8 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
       generators: true,
-      experimentalObjectRestSpread: true
-    }
+      experimentalObjectRestSpread: true,
+    },
   },
 
   settings: {
@@ -40,9 +40,9 @@ module.exports = {
     'import/extensions': ['.js'],
     'import/resolver': {
       node: {
-        extensions: ['.js', '.json']
-      }
-    }
+        extensions: ['.js', '.json'],
+      },
+    },
   },
 
   rules: {
@@ -85,9 +85,9 @@ module.exports = {
         ['&', '|', '^', '~', '<<', '>>', '>>>'],
         ['==', '!=', '===', '!==', '>', '>=', '<', '<='],
         ['&&', '||'],
-        ['in', 'instanceof']
+        ['in', 'instanceof'],
       ],
-      allowSamePrecedence: false
+      allowSamePrecedence: false,
     }],
     'no-multi-str': 'warn',
     'no-native-reassign': 'warn',
@@ -187,10 +187,5 @@ module.exports = {
     'jsx-a11y/img-has-alt': 'warn',
     'jsx-a11y/img-redundant-alt': 'warn',
     'jsx-a11y/no-access-key': 'warn',
-
-    // https://github.com/gajus/eslint-plugin-flowtype
-    'flowtype/define-flow-type': 'warn',
-    'flowtype/require-valid-file-annotation': 'warn',
-    'flowtype/use-flow-type': 'warn'
-  }
+  },
 };

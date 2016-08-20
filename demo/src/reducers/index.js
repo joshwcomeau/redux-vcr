@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
+// import { reduxVCRReducer } from 'redux-vcr.replay';
+import { reduxVCRReducer } from '../../../replay/src';
 
 import answers from './answers.reducer';
-import reduxVCR from '../../../shared/lib/reducers';
 
-export default combineReducers({ answers, reduxVCR });
+
+export default combineReducers({ answers, reduxVCR: reduxVCRReducer });
