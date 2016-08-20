@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-// import { Replay } from 'redux-vcr.replay';
-import Replay from '../../../../replay/src/components/Replay';
+import { Replay } from 'redux-vcr.replay';
+import FlipMove from 'react-flip-move';
+// import Replay from '../../../../replay/src/components/Replay';
 
 
 import { selectAnswer } from '../../actions';
@@ -11,6 +12,14 @@ import DevTools from '../DevTools';
 
 import './index.css';
 
+
+class Thing extends Component {
+  render() {
+    return (
+      <div className="hello">Hi there</div>
+    );
+  }
+}
 
 class App extends Component {
   constructor(props) {
@@ -45,7 +54,10 @@ class App extends Component {
         </header>
 
         <section className="main-content">
-          {this.renderButtons()}
+          <FlipMove>
+            <Thing key="1" />
+            <Thing key="2" />
+          </FlipMove>
         </section>
 
         <DevTools />

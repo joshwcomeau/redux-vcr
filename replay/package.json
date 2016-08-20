@@ -26,6 +26,7 @@
     "classnames": "^2.2.5",
     "moment": "^2.14.1",
     "react-flip-move": "^2.4.2",
+    "react-select": "^1.0.0-beta14",
     "redux-vcr.shared": "0.0.10"
   },
   "peerDependencies": {

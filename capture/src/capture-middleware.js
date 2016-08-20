@@ -3,6 +3,8 @@ import './polyfills.js';
 
 import { isActionBlacklisted } from './helpers';
 
+console.log('CAPTURE MIDDLEWARE FIRED');
+
 const generateCassette = () => ({
   data: {},
   actions: [],

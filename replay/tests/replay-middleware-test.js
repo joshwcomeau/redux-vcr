@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import { replayMiddleware } from '../src';
-import { actionTypes, actionCreators } from '../../shared/src';
+import { actionTypes, actionCreators } from 'redux-vcr.shared';
 import playHandler from './stubs/play-handler-stub.js';
 
 const { PLAY_CASSETTE, STOP_CASSETTE } = actionTypes;

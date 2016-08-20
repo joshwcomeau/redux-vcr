@@ -2,8 +2,10 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
+import { actionCreators } from 'redux-vcr.shared';
 import { wrapReducer } from '../src';
-import { rewindCassetteAndRestoreApp } from '../../shared/src/actions';
+
+const { rewindCassetteAndRestoreApp } = actionCreators;
 
 
 describe('wrapReducer', () => {

@@ -29,13 +29,11 @@ const Backdrop = ({
   }
 
   return (
-    <FlipMove
-      enterAnimation={animation}
-      leaveAnimation={animation}
+    <div
       className="backdrop-wrapper"
     >
       {isShown ? backdropMarkup : <div />}
-    </FlipMove>
+    </div>
   );
 };
 

@@ -20,6 +20,7 @@
     "no-console": ["warn", {allow: ["info", "warn", "error"] }],
     "prefer-template": 0,
     "quote-props": 0,
+    react/jsx-sort-props: 0
   },
   env: {
     browser: true,

@@ -3,8 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 
-// import { actionCreators, userSelectors } from 'redux-vcr.shared';
-import { actionCreators, userSelectors } from '../../../../shared/src';
+import { actionCreators, userSelectors } from 'redux-vcr.shared';
 import VCRButton from '../VCRButton';
 import VCRPowerLight from '../VCRPowerLight';
 import SignInCTA from '../SignInCTA';

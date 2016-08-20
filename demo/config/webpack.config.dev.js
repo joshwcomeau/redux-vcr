@@ -12,7 +12,7 @@ var reduxVCRProjectNames = [
 ];
 
 var reduxVCRPaths = reduxVCRProjectNames.map(function(projectName) {
-  return path.join(__dirname, '../../' + projectName + '/src');
+  return path.join(__dirname, '../../' + projectName + '/lib');
 });
 
 

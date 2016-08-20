@@ -1,5 +1,5 @@
-// import { actionTypes, actionCreators } from 'redux-vcr.shared';
-import { actionTypes, actionCreators } from '../../shared/src';
+import { actionTypes, actionCreators } from 'redux-vcr.shared';
+
 
 const {
   SIGN_IN_REQUEST,
