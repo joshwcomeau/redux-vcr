@@ -12,15 +12,14 @@ import {
   stopCassette,
   cassettesListReceive,
   cassetteActionsReceive,
+  INCREMENT_ACTIONS_PLAYED,
+  STOP_CASSETTE,
 } from '../../shared/src/actions';
 
-// TODO: Because next() actually does stuff, we need to import and build
-// a proper store. And then pass its dispatcher to the playHandler.
 
 function createNewStore() {
   return createStore(
-    combineReducers({ reduxVCR: reducer }),
-    applyMiddleware.apply(this, [replayMiddleware()])
+    combineReducers({ reduxVCR: reducer })
   );
 }
 
@@ -36,7 +35,7 @@ function loadAndSelectCassette(store, id = 'abc123') {
   store.dispatch(selectCassette({ id: 'abc' }));
 }
 
-function loadActionsForCassette(store, id = 'abc123') {
+function loadActionsForCassette(store, id = 'abc') {
   store.dispatch(cassetteActionsReceive({
     id,
     cassetteActions: [
@@ -96,6 +95,8 @@ describe('playHandler', () => {
     before(() => {
       loadAndSelectCassette(store);
       loadActionsForCassette(store);
+      store.dispatch(playCassette());
+      store.dispatch.reset();
     });
 
     it('invokes `next` 7 times, to dispatch various actions', done => {
@@ -106,9 +107,18 @@ describe('playHandler', () => {
       playHandler({ store, next: store.dispatch });
 
       window.setTimeout(() => {
-        console.log("ARGS")
-        store.dispatch.args.forEach(arg => console.log(arg))
         expect(store.dispatch.callCount).to.equal(7);
+        const [
+          call1, call2, call3, call4, call5, call6, call7
+        ] = store.dispatch.args;
+
+        expect(call1[0].type).to.equal('ACTION_1')
+        expect(call2[0].type).to.equal(INCREMENT_ACTIONS_PLAYED)
+        expect(call3[0].type).to.equal('ACTION_2')
+        expect(call4[0].type).to.equal(INCREMENT_ACTIONS_PLAYED)
+        expect(call5[0].type).to.equal('ACTION_3')
+        expect(call6[0].type).to.equal(INCREMENT_ACTIONS_PLAYED)
+        expect(call7[0].type).to.equal(STOP_CASSETTE)
 
         done();
       }, 250);
