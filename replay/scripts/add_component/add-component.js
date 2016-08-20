@@ -108,14 +108,15 @@ function buildCSSTemplate(componentName, className) {
 
 function buildStoryTemplate(componentName) {
   return `\
+/* eslint-disable semi, no-unused-vars */
 import React from 'react';
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import ${componentName} from '../src/components/${componentName}';
 
 storiesOf('${componentName}', module)
   .add('default', () => (
     <${componentName} />
-  ));
+  ))
 `;
 }
 

@@ -1,0 +1,21 @@
+body {
+  background: #FAFAFA;
+}
+
+html, body, #root, .redux-vcr-component {
+  height: 100%;
+}
+
+.story-vertically-centered {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  justify-content: center;
+}
+
+.story-horizontally-centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
