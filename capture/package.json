@@ -1,6 +1,6 @@
 {
   "name": "redux-vcr.capture",
-  "version": "0.0.10",
+  "version": "0.0.14",
   "description": "ReduxVCR capture module",
   "main": "lib/index.js",
   "jsnext:main": "es6/index.js",
@@ -18,7 +18,7 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "redux-vcr.shared": "0.0.10"
+    "redux-vcr.shared": "0.0.13"
   },
   "devDependencies": {
     "chai": "^3.5.0",

@@ -11,23 +11,33 @@
   ],
   "watch": {
     "build:capture": {
-      "patterns": ["capture/src/**"],
+      "patterns": [
+        "capture/src/**"
+      ],
       "extensions": "js,scss"
     },
     "build:persist": {
-      "patterns": ["persist/src/**"],
+      "patterns": [
+        "persist/src/**"
+      ],
       "extensions": "js,scss"
     },
     "build:retrieve": {
-      "patterns": ["retrieve/src/**"],
+      "patterns": [
+        "retrieve/src/**"
+      ],
       "extensions": "js,scss"
     },
     "build:replay": {
-      "patterns": ["replay/src/**"],
+      "patterns": [
+        "replay/src/**"
+      ],
       "extensions": "js,scss"
     },
     "build:shared": {
-      "patterns": ["shared/src/**"],
+      "patterns": [
+        "shared/src/**"
+      ],
       "extensions": "js,scss"
     }
   },
@@ -38,30 +48,25 @@
     "build:replay": "cd replay && npm run build && cd ..",
     "build:shared": "cd shared && npm run build && cd ..",
     "build:all": "npm run build:capture && npm run build:persist && npm run build:retrieve && npm run build:replay && npm run build:shared",
-
     "test:capture": "cd capture && npm run test && cd ..",
     "test:persist": "cd persist && npm run test && cd ..",
     "test:retrieve": "cd retrieve && npm run test && cd ..",
     "test:replay": "cd replay && npm run test && cd ..",
     "test:shared": "cd shared && npm run test && cd ..",
     "test:all": "npm run test:capture && npm run test:persist && npm run test:retrieve && npm run test:replay && npm run test:shared",
-
     "install:capture": "cd capture && npm i && cd ..",
     "install:persist": "cd persist && npm i && cd ..",
     "install:retrieve": "cd retrieve && npm i && cd ..",
     "install:replay": "cd replay && npm i && cd ..",
     "install:shared": "cd shared && npm i && cd ..",
     "install:all": "npm run install:capture && npm run install:persist && npm run install:retrieve && npm run install:replay && npm run install:shared",
-
     "publish:capture": "cd capture && npm version patch && npm publish && cd ..",
     "publish:persist": "cd persist && npm version patch && npm publish && cd ..",
     "publish:retrieve": "cd retrieve && npm version patch && npm publish && cd ..",
     "publish:replay": "cd replay && npm version patch && npm publish && cd ..",
     "publish:shared": "cd shared && npm version patch && npm publish && cd ..",
     "publish:all": "npm run publish:capture && npm run publish:persist && npm run publish:retrieve && npm run publish:replay && npm run publish:shared",
-
     "watch": "npm-watch",
-
     "lint": "eslint -c ./.eslintrc src/** --ext .js"
   },
   "devDependencies": {
@@ -76,6 +81,7 @@
     "npm-watch": "^0.1.6",
     "nwb": "0.11.x",
     "redux": "^3.5.2",
+    "semver": "^5.3.0",
     "sinon": "^2.0.0-pre.2"
   },
   "author": "Joshua Comeau",
