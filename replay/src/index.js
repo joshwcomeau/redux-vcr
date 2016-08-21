@@ -13,7 +13,7 @@ import VCRPowerLight from './components/VCRPowerLight';
 
 // Core logic
 import playHandler from './play-handler';
-import replayMiddleware from './replay-middleware';
+import createReplayMiddleware from './create-replay-middleware';
 import wrapReducer from './wrap-reducer';
 
 
@@ -28,6 +28,6 @@ export {
   VCRButton,
   VCRPowerLight,
   playHandler,
-  replayMiddleware,
+  createReplayMiddleware,
   wrapReducer,
 };

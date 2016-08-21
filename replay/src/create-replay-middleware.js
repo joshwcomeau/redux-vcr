@@ -5,7 +5,7 @@ const { PLAY_CASSETTE, STOP_CASSETTE } = actionTypes;
 const { rewindCassetteAndRestoreApp } = actionCreators;
 
 
-const replayMiddleware = ({
+const createReplayMiddleware = ({
   playHandler = defaultPlayHandler,
   maximumDelay,
 } = {}) => (
@@ -53,4 +53,4 @@ const replayMiddleware = ({
   }
 );
 
-export default replayMiddleware;
+export default createReplayMiddleware;

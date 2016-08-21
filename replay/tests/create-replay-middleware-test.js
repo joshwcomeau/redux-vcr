@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { replayMiddleware } from '../src';
+import { createReplayMiddleware } from '../src';
 import { actionTypes, actionCreators } from '../../shared/src';
 import playHandler from './stubs/play-handler-stub.js';
 
@@ -14,8 +14,8 @@ const {
 } = actionCreators;
 
 
-describe('replayMiddleware', () => {
-  const middleware = replayMiddleware({
+describe('createReplayMiddleware', () => {
+  const middleware = createReplayMiddleware({
     playHandler,
     maximumDelay: 100,
   });

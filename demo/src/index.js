@@ -7,16 +7,16 @@ import DevTools from './components/DevTools';
 
 
 // // LOCAL IMPORTS. Useful for dev
-import { captureMiddleware } from '../../capture/src';
+import { createCaptureMiddleware } from '../../capture/src';
 import { PersistHandler } from '../../persist/src';
-import { RetrieveHandler, retrieveMiddleware } from '../../retrieve/src';
-import { replayMiddleware, wrapReducer } from '../../replay/src';
+import { RetrieveHandler, createRetrieveMiddleware } from '../../retrieve/src';
+import { createReplayMiddleware, wrapReducer } from '../../replay/src';
 
 // PUBLISHED IMPORTS. Useful to ensure what gets published works.
-// import { captureMiddleware } from 'redux-vcr.capture';
+// import { createCaptureMiddleware } from 'redux-vcr.capture';
 // import { PersistHandler } from 'redux-vcr.persist';
-// import { RetrieveHandler, retrieveMiddleware } from 'redux-vcr.retrieve';
-// import { replayMiddleware, wrapReducer } from 'redux-vcr.replay';
+// import { RetrieveHandler, createRetrieveMiddleware } from 'redux-vcr.retrieve';
+// import { createReplayMiddleware, wrapReducer } from 'redux-vcr.replay';
 
 import App from './components/App';
 import reducer from './reducers';
@@ -49,7 +49,7 @@ if (settings.runAsUser) {
     // The capture middleware chronicles, filters, and timestamps actions
     // as they're dispatched to the store. It needs to be passed the
     // PersistHandler so it can send them to Firebase.
-    captureMiddleware({ dataHandler: persister }),
+    createCaptureMiddleware({ dataHandler: persister }),
   );
 }
 
@@ -61,12 +61,12 @@ if (settings.runAsAdmin) {
   middlewares.push(
     // The retrieve middleware listens for specific actions dispatched
     // from the Replay components, to fetch the recordings needed.
-    retrieveMiddleware({ dataHandler: retriever }),
+    createRetrieveMiddleware({ dataHandler: retriever }),
 
     // Finally, the replay middleware is in charge of intercepting the
     // PLAY_CASSETTE action, which allows previously-recorded sessions
     // to be replayed.
-    replayMiddleware(),
+    createReplayMiddleware(),
   );
 }
 
