@@ -55,12 +55,27 @@ const packages = [
   sharedPackage,
 ];
 
+console.info(`
+  =======================
+  Starting publish.
+  =======================
+
+`);
+
 // Step 1: Figure out what the next version should be.
 // Take the highest version from all current packages
 const highestPackage = _.maxBy(packages, _.property('version'));
 const currentVersion = highestPackage.version;
 const nextVersion = semver.inc(currentVersion, versionType);
 
+console.info(`
+  =======================
+  Current package versions: ${packages.map(p => p.version)}.
+  Highest is ${currentVersion}.
+  About to publish ${nextVersion}.
+  =======================
+
+`);
 
 // Step 2: Increment shared to this new version, and publish.
 // Start by writing the package.json.
@@ -69,11 +84,14 @@ writePackageJson('shared', sharedPackage);
 
 
 // Step 3: Build and publish new `shared` version
-// const sharedCode = exec('npm run publish:shared');
-//
-// if (sharedCode !== 0) {
-//   throw new Error('Shared could not be published :(');
-// }
+exec('npm run publish:shared');
+
+console.info(`
+  =======================
+  'shared' module published!
+  =======================
+
+`);
 
 
 // Step 4: Update the 'shared' dependency / increment the version
@@ -98,3 +116,11 @@ exec('npm run publish:all');
 
 
 // TODO: publish the 'parent' module that allows for a single-import.
+
+console.info(`
+  =======================
+  Successfully published!
+  New current version is v${nextVersion}, a ${versionType} increment from v${currentVersion}.
+  =======================
+
+`);
