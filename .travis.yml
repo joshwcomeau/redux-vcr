@@ -6,6 +6,9 @@ node_js:
 env:
   - PROJECT_NAME=capture
   - PROJECT_NAME=persist
+  - PROJECT_NAME=retrieve
+  - PROJECT_NAME=replay
+  - PROJECT_NAME=shared
 git:
   depth: 1
 script: cd $PROJECT_NAME && npm install && npm test
