@@ -3,12 +3,10 @@ import { expect } from 'chai';
 
 import reducer from '../../src/reducers/user.reducer';
 import {
-  SIGN_IN_REQUEST,
   SIGN_IN_RECEIVE,
-  SIGN_IN_FAILURE,
-  signInRequest,
+  SIGN_OUT,
   signInReceive,
-  signInFailure,
+  signOut,
 } from '../../src/actions';
 
 
@@ -28,6 +26,19 @@ describe('user reducer', () => {
       const actualState = reducer(state, action);
 
       expect(actualState).to.deep.equal(expectedState);
+    });
+  });
+
+  describe(SIGN_OUT, () => {
+    it('removes the user data', () => {
+      const state = reducer({}, {});
+
+      const action = signOut();
+
+      const expectedState = null;
+      const actualState = reducer(state, action);
+
+      expect(actualState).to.equal(expectedState);
     });
   });
 });

@@ -18,6 +18,7 @@ export const CHANGE_PLAYBACK_SPEED = 'REDUX_VCR/CHANGE_PLAYBACK_SPEED';
 export const SIGN_IN_REQUEST = 'REDUX_VCR/SIGN_IN_REQUEST';
 export const SIGN_IN_RECEIVE = 'REDUX_VCR/SIGN_IN_RECEIVE';
 export const SIGN_IN_FAILURE = 'REDUX_VCR/SIGN_IN_FAILURE';
+export const SIGN_OUT = 'REDUX_VCR/SIGN_OUT';
 
 // ////////////////////////
 // ACTION CREATORS ///////
@@ -102,4 +103,8 @@ export const signInReceive = ({ user }) => ({
 export const signInFailure = ({ error }) => ({
   type: SIGN_IN_FAILURE,
   error,
+});
+
+export const signOut = () => ({
+  type: SIGN_OUT,
 });

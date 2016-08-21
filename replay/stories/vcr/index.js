@@ -11,7 +11,7 @@ storiesOf('VCR', module)
       {story()}
     </div>
   ))
-  .add('default (stopped, idle, unauthenticated)', () => (
+  .add('Default (stopped, idle, unauthenticated)', () => (
     <VCR
       playStatus="stopped"
       cassetteStatus="idle"
@@ -24,9 +24,10 @@ storiesOf('VCR', module)
       viewCassettes={action('View cassettes')}
       ejectCassette={action('Eject cassette')}
       changePlaybackSpeed={action('Change playback speed')}
+      signInRequest={action('Sign-in request')}
     />
   ))
-  .add('authenticated', () => (
+  .add('Authenticated', () => (
     <VCR
       playStatus="stopped"
       cassetteStatus="idle"
@@ -39,5 +40,22 @@ storiesOf('VCR', module)
       viewCassettes={action('View cassettes')}
       ejectCassette={action('Eject cassette')}
       changePlaybackSpeed={action('Change playback speed')}
+      signInRequest={action('Sign-in request')}
+    />
+  ))
+  .add('Loaded and stopped', () => (
+    <VCR
+      playStatus="stopped"
+      cassetteStatus="loaded"
+      selectedCassette="abc123"
+      playbackSpeed={1}
+      loggedIn
+      playCassette={action('Play cassette')}
+      pauseCassette={action('Pause cassette')}
+      stopCassette={action('Stop cassette')}
+      viewCassettes={action('View cassettes')}
+      ejectCassette={action('Eject cassette')}
+      changePlaybackSpeed={action('Change playback speed')}
+      signInRequest={action('Sign-in request')}
     />
   ))

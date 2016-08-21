@@ -106,8 +106,7 @@ describe('shared export', () => {
       selector !== 'default'
     ));
 
-    expect(selectors).to.have.length.of(1);
-    expect(selectors).to.deep.equal(['loggedInSelector']);
+    expect(selectors).to.have.length.of(0);
   });
 
 

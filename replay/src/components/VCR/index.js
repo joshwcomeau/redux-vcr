@@ -4,15 +4,13 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import Draggable from 'react-draggable';
 
-import { actionCreators, userSelectors } from 'redux-vcr.shared';
-// import { actionCreators, userSelectors } from '../../../../shared/src';
+import { actionCreators } from 'redux-vcr.shared';
+// import { actionCreators } from '../../../../shared/src';
 import VCRButton from '../VCRButton';
 import VCRPowerLight from '../VCRPowerLight';
 import SignInCTA from '../SignInCTA';
 import './index.scss';
 
-
-const { loggedInSelector } = userSelectors;
 
 class VCR extends Component {
   renderScreen() {
@@ -185,6 +183,7 @@ VCR.propTypes = {
   viewCassettes: PropTypes.func.isRequired,
   ejectCassette: PropTypes.func.isRequired,
   changePlaybackSpeed: PropTypes.func.isRequired,
+  signInRequest: PropTypes.func.isRequired,
 };
 
 VCR.defaultProps = {
@@ -196,7 +195,7 @@ const mapStateToProps = state => ({
   cassetteStatus: state.reduxVCR.cassettes.status,
   selectedCassette: state.reduxVCR.cassettes.selected,
   playbackSpeed: state.reduxVCR.play.speed,
-  loggedIn: loggedInSelector(state),
+  loggedIn: state.reduxVCR.authentication.loggedIn,
 });
 
 export { VCR };
