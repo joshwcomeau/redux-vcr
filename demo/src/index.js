@@ -3,21 +3,21 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
-import DevTools from './components/DevTools';
 
 
 // // LOCAL IMPORTS. Useful for dev
-// import { createCaptureMiddleware } from '../../capture/src';
-// import { PersistHandler } from '../../persist/src';
-// import { RetrieveHandler, createRetrieveMiddleware } from '../../retrieve/src';
-// import { createReplayMiddleware, wrapReducer } from '../../replay/src';
+import { createCaptureMiddleware } from '../../capture/src';
+import { PersistHandler } from '../../persist/src';
+import { RetrieveHandler, createRetrieveMiddleware } from '../../retrieve/src';
+import { createReplayMiddleware, wrapReducer } from '../../replay/src';
 
 // PUBLISHED IMPORTS. Useful to ensure what gets published works.
-import { createCaptureMiddleware } from 'redux-vcr.capture';
-import { PersistHandler } from 'redux-vcr.persist';
-import { RetrieveHandler, createRetrieveMiddleware } from 'redux-vcr.retrieve';
-import { createReplayMiddleware, wrapReducer } from 'redux-vcr.replay';
+// import { createCaptureMiddleware } from 'redux-vcr.capture';
+// import { PersistHandler } from 'redux-vcr.persist';
+// import { RetrieveHandler, createRetrieveMiddleware } from 'redux-vcr.retrieve';
+// import { createReplayMiddleware, wrapReducer } from 'redux-vcr.replay';
 
+import DevTools from './components/DevTools';
 import App from './components/App';
 import reducer from './reducers';
 

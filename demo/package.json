@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "classnames": "^2.2.5",
-    "react": "^15.2.1",
+    "react": "15.3.0",
     "react-dom": "^15.2.1",
     "react-flip-move": "^2.4.2",
     "react-redux": "^4.4.5",
@@ -64,7 +64,8 @@
   "scripts": {
     "start": "node ./scripts/start.js",
     "build": "node ./scripts/build.js",
-    "lint": "node ./scripts/lint.js"
+    "lint": "node ./scripts/lint.js",
+    "refresh:replay": "npm r -S redux-vcr.replay && cd .. && npm run build:replay && cd demo && npm i -S redux-vcr.replay"
   },
   "author": "Joshua Comeau",
   "homepage": "https://github.com/joshwcomeau/redux-vcr/tree/master/persist",

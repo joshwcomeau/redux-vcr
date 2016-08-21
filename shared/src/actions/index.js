@@ -32,6 +32,11 @@ export const cassettesListReceive = ({ cassettes }) => ({
   cassettes,
 });
 
+export const cassettesListFailure = ({ error }) => ({
+  type: CASSETTES_LIST_FAILURE,
+  error,
+});
+
 export const viewCassettes = () => ({
   type: VIEW_CASSETTES,
 });

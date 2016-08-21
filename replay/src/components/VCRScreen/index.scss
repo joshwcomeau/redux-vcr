@@ -1,0 +1,53 @@
+@import '../variables';
+
+.redux-vcr-component {
+  .vcr-screen {
+    position: absolute;
+    bottom: $vcr-standard-padding;
+    left: 80px;
+    height: 30px;
+    width: 295px;
+    background: rgba(0,0,0,0.5);
+    color: $neon-green;
+    font-family: "Lucida Console", Monaco5, monospace;
+    font-size: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 12px;
+    border-radius: 2px;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    cursor: pointer;
+
+    .red {
+      color: #ef4b3f;
+    }
+
+    .green {
+      color: $neon-green;
+    }
+
+    .vcr-screen-label {
+      content: 'Now Playing';
+      position: absolute;
+      top: 0;
+      left: 10px;
+
+      font-size: 8px;
+      line-height: 16px;
+      color: $white;
+    }
+
+    .vcr-screen-contents {
+      line-height: 30px;
+    }
+
+    .vcr-screen-idle, .vcr-screen-selecting {
+      text-align: center;
+      line-height: 20px;
+      width: 65%;
+      margin: 0 auto;
+    }
+  }
+
+}

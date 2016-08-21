@@ -8,50 +8,53 @@ import { actionCreators } from 'redux-vcr.shared';
 // import { actionCreators } from '../../../../shared/src';
 import VCRButton from '../VCRButton';
 import VCRPowerLight from '../VCRPowerLight';
-import SignInCTA from '../SignInCTA';
+import VCRScreen from '../VCRScreen';
+import Icon from '../Icon';
 import './index.scss';
 
 
 class VCR extends Component {
-  renderScreen() {
-    const { playStatus, cassetteStatus } = this.props;
-
-    if (cassetteStatus === 'idle') {
-      return (
-        <div className="vcr-screen-contents">
-          <div className="vcr-screen-idle">
-            {/*
-              Well, since this is a retro-themed devtool,
-              why not go oldschool? >:D
-              TODO: Replace this with a Marquee component?
-            */}
-            <marquee>Click to Select a Cassette</marquee>
-          </div>
-        </div>
-      );
-    } else if (cassetteStatus === 'selecting') {
-      return (
-        <div className="vcr-screen-contents">
-          <div className="vcr-screen-selecting">Selecting...</div>
-        </div>
-      );
+  getScreenLabel() {
+    const { cassetteStatus, playStatus } = this.props;
+    if (!cassetteStatus.loaded) {
+      return '';
     }
-
-    let labelText;
     switch (playStatus) {
-      case 'playing': labelText = 'Now Playing'; break;
-      case 'paused': labelText = 'Paused'; break;
-      default: labelText = 'Selected'; break;
+      case 'playing': return 'Now Playing';
+      case 'paused': return 'Paused';
+      default: return 'Selected';
+    }
+  }
+
+  getScreenContents() {
+    const {
+      isLoggedIn,
+      hasAuthError,
+      cassetteStatus,
+      selectedCassette,
+    } = this.props;
+
+    if (hasAuthError) {
+      return 'ERROR. See console for details.';
     }
 
-    return (
-      <div className="vcr-screen-contents">
-        <div className="vcr-screen-label">{labelText}</div>
-        <div className="vcr-screen-session-name">
-          {this.props.selectedCassette}
-        </div>
-      </div>
-    );
+    if (!isLoggedIn) {
+      return 'Click to authenticate with GitHub';
+    }
+
+    switch (cassetteStatus) {
+      case 'idle': return 'Click to select a cassette';
+      case 'selecting': return 'Selecting...';
+      default: return selectedCassette;
+    }
+  }
+
+  getVCRClickHandler() {
+    if (!this.props.isLoggedIn) {
+      return () => this.props.signInRequest({ authMethod: 'github' });
+    }
+
+    return this.props.viewCassettes;
   }
 
   render() {
@@ -60,14 +63,13 @@ class VCR extends Component {
       playStatus,
       cassetteStatus,
       playbackSpeed,
-      loggedIn,
+      hasAuthError,
       playCassette,
       pauseCassette,
       stopCassette,
       viewCassettes,
       ejectCassette,
       changePlaybackSpeed,
-      signInRequest,
     } = this.props;
 
     const doorOpen = cassetteStatus === 'selecting';
@@ -81,14 +83,9 @@ class VCR extends Component {
       playPauseAction = playCassette;
     }
 
-    const vcrClasses = classNames('vcr', {
-      asleep: !loggedIn,
-    });
-
     return (
       <Draggable>
-        <div className={vcrClasses}>
-          {!loggedIn ? <SignInCTA onClick={signInRequest} /> : null}
+        <div className="vcr">
           <div className="vcr-top" />
           <div className="vcr-bg" />
           <VCRButton
@@ -106,9 +103,14 @@ class VCR extends Component {
           </div>
           <div className="cassette-slot" onClick={viewCassettes} />
 
-          <div className="vcr-screen" onClick={viewCassettes}>
-            {this.renderScreen()}
-          </div>
+          <VCRScreen
+            label={this.getScreenLabel()}
+            textColor={hasAuthError ? 'red' : 'green'}
+            scrolling={false}
+            onClick={this.getVCRClickHandler()}
+          >
+            {this.getScreenContents()}
+          </VCRScreen>
 
           <div className="primary-action-buttons">
             <VCRButton
@@ -176,7 +178,8 @@ VCR.propTypes = {
   cassetteStatus: PropTypes.string,
   selectedCassette: PropTypes.string,
   playbackSpeed: PropTypes.number,
-  loggedIn: PropTypes.bool.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+  hasAuthError: PropTypes.bool.isRequired,
   playCassette: PropTypes.func.isRequired,
   pauseCassette: PropTypes.func.isRequired,
   stopCassette: PropTypes.func.isRequired,
@@ -195,7 +198,8 @@ const mapStateToProps = state => ({
   cassetteStatus: state.reduxVCR.cassettes.status,
   selectedCassette: state.reduxVCR.cassettes.selected,
   playbackSpeed: state.reduxVCR.play.speed,
-  loggedIn: state.reduxVCR.authentication.loggedIn,
+  isLoggedIn: state.reduxVCR.authentication.loggedIn,
+  hasAuthError: !!state.reduxVCR.authentication.error,
 });
 
 export { VCR };

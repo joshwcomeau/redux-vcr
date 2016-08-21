@@ -12,14 +12,6 @@ $primary-action-button-height: 30px;
   border-radius: 8px 8px 5px 5px;
 
   &.asleep {
-    .vcr-bg {
-      background: darken($darkgray, 10%);
-    }
-
-    .vcr-top {
-      background: $darkgray;
-    }
-
     .vcr-button {
       opacity: 0.5;
       cursor: default;
@@ -27,32 +19,6 @@ $primary-action-button-height: 30px;
       .toggle-indicator.toggled {
         background: rgba(0, 0, 0, 0.3);
       }
-    }
-
-    .vcr-screen {
-      background: rgba(255,255,255,0.05);
-
-      .vcr-screen-contents {
-        opacity: 0;
-      }
-    }
-
-    .cassette-slot-door {
-      background: darken($darkgray, 10%);
-      color: darken($white, 50%);
-    }
-
-    .decorative-outputs {
-      opacity: 0.6;
-    }
-
-    .sign-in-cta {
-      position: absolute;
-      z-index: 3;
-      width: $vcr-width;
-      height: $vcr-height;
-      top: 0;
-      left: 0;
     }
   }
 
@@ -170,47 +136,6 @@ $primary-action-button-height: 30px;
       right: 0;
       bottom: 0;
       box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
-    }
-  }
-
-  .vcr-screen {
-    position: absolute;
-    bottom: $vcr-standard-padding;
-    left: 80px;
-    height: 30px;
-    width: 295px;
-    background: rgba(0,0,0,0.5);
-    color: $neon-green;
-    font-family: "Lucida Console", Monaco5, monospace;
-    font-size: 10px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    padding: 4px 12px;
-    border-radius: 2px;
-    border-bottom: 1px solid rgba(255,255,255,0.3);
-    cursor: pointer;
-
-    .vcr-screen-label {
-      content: 'Now Playing';
-      position: absolute;
-      top: 0;
-      left: 10px;
-
-      font-size: 8px;
-      line-height: 16px;
-      color: $white;
-    }
-
-    .vcr-screen-session-name {
-      line-height: 30px;
-    }
-
-    .vcr-screen-idle, .vcr-screen-selecting {
-      text-align: center;
-      line-height: 20px;
-      width: 65%;
-      margin: 0 auto;
     }
   }
 

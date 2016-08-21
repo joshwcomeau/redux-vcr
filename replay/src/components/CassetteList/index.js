@@ -31,6 +31,11 @@ class CassetteList extends Component {
     };
   }
 
+  componentWillMount() {
+    // Fetch an up-to-date list of the cassettes.
+    this.props.cassettesListRequest();
+  }
+
   animateCassetteSelection({ id }) {
     this.setState({
       selectedCassette: id,

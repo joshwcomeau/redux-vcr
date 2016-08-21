@@ -9,6 +9,7 @@ const {
 const {
   cassetteActionsReceive,
   cassettesListReceive,
+  cassettesListFailure,
   signInReceive,
   signInFailure,
 } = actionCreators;
@@ -22,7 +23,7 @@ const createRetrieveMiddleware = ({ dataHandler }) => store => next => action =>
           next(signInReceive({ user: credential }));
         })
         .catch(error => {
-          console.error('OH NO!', error);
+          console.error('Problem authenticating with Firebase:', error);
           next(signInFailure({ error }));
         });
     }
@@ -31,7 +32,8 @@ const createRetrieveMiddleware = ({ dataHandler }) => store => next => action =>
       dataHandler
         .retrieveList()
         .then(snapshot => snapshot.val())
-        .then(cassettes => next(cassettesListReceive({ cassettes })));
+        .then(cassettes => next(cassettesListReceive({ cassettes })))
+        .catch(error => next(cassettesListFailure({ error })));
 
       return next(action);
     }

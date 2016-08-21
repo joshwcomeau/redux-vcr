@@ -5,6 +5,7 @@ import {
   SIGN_IN_RECEIVE,
   SIGN_IN_FAILURE,
   SIGN_OUT,
+  CASSETTES_LIST_FAILURE,
 } from '../actions';
 
 
@@ -25,6 +26,7 @@ function errorReducer(state = defaultStates.error, action) {
   switch (action.type) {
     case SIGN_IN_REQUEST:
     case SIGN_IN_RECEIVE: return null;
+    case CASSETTES_LIST_FAILURE:
     case SIGN_IN_FAILURE: return action.error;
     default: return state;
   }
