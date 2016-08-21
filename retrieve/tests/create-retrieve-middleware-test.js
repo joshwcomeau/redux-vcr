@@ -1,20 +1,23 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
+import { actionTypes } from 'redux-vcr.shared';
 
 import { RetrieveHandler, createRetrieveMiddleware } from '../src';
-import {
+
+
+const {
   CASSETTES_LIST_REQUEST,
   CASSETTES_LIST_RECEIVE,
   CASSETTE_ACTIONS_RECEIVE,
   SELECT_CASSETTE,
-} from '../../shared/lib/actions';
-
+} = actionTypes;
 
 const firebaseAuth = {
   apiKey: 'abc123',
   authDomain: 'test.firebaseapp.com',
   databaseURL: 'https://test.firebaseio.com',
 };
+
 
 describe('createRetrieveMiddleware', () => {
   const dataHandler = new RetrieveHandler({ firebaseAuth });

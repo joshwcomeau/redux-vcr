@@ -1,15 +1,19 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
 import { combineReducers } from 'redux';
-import sinon from 'sinon';
+import { actionTypes, actionCreators } from 'redux-vcr.shared';
 
 import { wrapReducer } from '../src';
-import {
-  changePlaybackSpeed,
-  rewindCassetteAndRestoreApp,
+
+const {
   CHANGE_PLAYBACK_SPEED,
   REWIND_CASSETTE_AND_RESTORE_APP,
-} from '../../shared/src/actions';
+} = actionTypes;
+
+const {
+  changePlaybackSpeed,
+  rewindCassetteAndRestoreApp,
+} = actionCreators;
 
 
 const applesReducer = (state = 5, action) => {

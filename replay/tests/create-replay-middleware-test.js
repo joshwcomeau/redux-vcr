@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
 import sinon from 'sinon';
+import { actionTypes, actionCreators } from 'redux-vcr.shared';
 
 import { createReplayMiddleware } from '../src';
-import { actionTypes, actionCreators } from '../../shared/src';
 import playHandler from './stubs/play-handler-stub.js';
 
 const { PLAY_CASSETTE, STOP_CASSETTE } = actionTypes;

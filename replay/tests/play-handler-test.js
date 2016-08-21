@@ -2,10 +2,17 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 import { createStore, combineReducers } from 'redux';
+import { actionTypes, actionCreators, reduxVCRReducer } from 'redux-vcr.shared';
 
 import { playHandler } from '../src';
-import reducer from '../../shared/src/reducers';
-import {
+
+
+const {
+  INCREMENT_ACTIONS_PLAYED,
+  STOP_CASSETTE,
+} = actionTypes;
+
+const {
   selectCassette,
   playCassette,
   pauseCassette,
@@ -13,14 +20,12 @@ import {
   cassettesListReceive,
   cassetteActionsReceive,
   changePlaybackSpeed,
-  INCREMENT_ACTIONS_PLAYED,
-  STOP_CASSETTE,
-} from '../../shared/src/actions';
+} = actionCreators;
 
 
 function createNewStore() {
   return createStore(
-    combineReducers({ reduxVCR: reducer })
+    combineReducers({ reduxVCR: reduxVCRReducer })
   );
 }
 
