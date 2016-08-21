@@ -8,10 +8,10 @@
     "react-flip-move": "^2.4.2",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
-    "redux-vcr.capture": "0.0.27",
-    "redux-vcr.persist": "0.0.27",
-    "redux-vcr.replay": "0.0.27",
-    "redux-vcr.retrieve": "0.0.27"
+    "redux-vcr.capture": "0.0.28",
+    "redux-vcr.persist": "0.0.28",
+    "redux-vcr.replay": "0.0.28",
+    "redux-vcr.retrieve": "0.0.28"
   },
   "devDependencies": {
     "autoprefixer": "6.3.7",
