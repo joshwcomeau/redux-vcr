@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 
 const Centered = ({ children, vertical, horizontal, className, styles }) => {
-  const classes = classNames(className, {
+  const classes = classNames(className, 'centered', {
     'story-horizontally-centered': horizontal,
     'story-vertically-centered': vertical,
   });
@@ -23,7 +23,7 @@ Centered.propTypes = {
 };
 
 Centered.defaultProps = {
-  styles: { padding: '2rem' },
+  styles: { padding: '0 2rem' },
   vertical: true,
   horizontal: true,
 };

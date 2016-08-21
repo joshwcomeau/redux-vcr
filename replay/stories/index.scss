@@ -1,19 +1,39 @@
+@import '../src/components/variables';
+
 body {
   background: #FAFAFA;
 }
 
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
 html, body, #root, .redux-vcr-component {
+  padding: 0;
+  margin: 0;
   height: 100%;
 }
 
-.story-vertically-centered {
+.redux-vcr-component.at-bottom {
+  position: fixed;
+  z-index: 99999;
+  bottom: 1rem;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  height: auto;
+  width: $vcr-width;
+}
+
+
+.centered.story-vertically-centered {
   display: flex;
   flex-direction: column;
   min-height: 100%;
   justify-content: center;
 }
 
-.story-horizontally-centered {
+.centered.story-horizontally-centered {
   display: flex;
   flex-direction: column;
   align-items: center;

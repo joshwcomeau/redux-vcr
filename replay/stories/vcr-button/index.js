@@ -6,12 +6,15 @@ import Centered from '../Centered';
 import VCRButton from '../../src/components/VCRButton';
 
 storiesOf('VCRButton', module)
-  .add('Play', () => (
+  .addDecorator(story => (
     <div className="redux-vcr-component">
       <Centered>
-        <VCRButton iconValue="play" iconSize={48} />
+        {story()}
       </Centered>
     </div>
+  ))
+  .add('Play', () => (
+    <VCRButton iconValue="play" iconSize={48} />
   ))
 
   .add('Toggleable Play/Pause', () => {
@@ -35,19 +38,9 @@ storiesOf('VCRButton', module)
       }
     }
 
-    return (
-      <div className="redux-vcr-component">
-        <Centered>
-          <Toggleable />
-        </Centered>
-      </div>
-    );
+    return <Toggleable />;
   })
 
   .add('Glowing', () => (
-    <div className="redux-vcr-component">
-      <Centered>
-        <VCRButton iconValue="stop" iconSize={48} glowing />
-      </Centered>
-    </div>
+    <VCRButton iconValue="stop" iconSize={48} glowing />
   ))

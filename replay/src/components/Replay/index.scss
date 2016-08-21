@@ -9,7 +9,7 @@
   margin: 0 auto;
   width: $vcr-width;
 
-  * {
+  *, *:before, *:after {
     box-sizing: border-box;
   }
 }
