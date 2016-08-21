@@ -2,6 +2,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
+import Draggable from 'react-draggable';
 
 import { actionCreators, userSelectors } from 'redux-vcr.shared';
 // import { actionCreators, userSelectors } from '../../../../shared/src';
@@ -87,84 +88,86 @@ class VCR extends Component {
     });
 
     return (
-      <div className={vcrClasses}>
-        {!loggedIn ? <SignInCTA onClick={signInRequest} /> : null}
-        <div className="vcr-top" />
-        <div className="vcr-bg" />
-        <VCRButton
-          className="eject-button"
-          onClick={ejectCassette}
-          iconValue="eject"
-          iconSize={16}
-        />
-        <div
-          className={`cassette-slot-door ${doorOpen ? 'is-open' : ''}`}
-        >
-          <span className="cassette-slot-door-label">
-            {doorLabel}
-          </span>
-        </div>
-        <div className="cassette-slot" onClick={viewCassettes} />
-
-        <div className="vcr-screen" onClick={viewCassettes}>
-          {this.renderScreen()}
-        </div>
-
-        <div className="primary-action-buttons">
+      <Draggable>
+        <div className={vcrClasses}>
+          {!loggedIn ? <SignInCTA onClick={signInRequest} /> : null}
+          <div className="vcr-top" />
+          <div className="vcr-bg" />
           <VCRButton
-            className="play-pause-button"
-            onClick={playPauseAction}
-            iconValue={playStatus === 'playing' ? 'pause' : 'play'}
-            iconSize={20}
-            glowing={cassetteStatus === 'loaded' && playStatus === 'stopped'}
+            className="eject-button"
+            onClick={ejectCassette}
+            iconValue="eject"
+            iconSize={16}
           />
-          <VCRButton
-            className="stop-button"
-            onClick={stopCassette}
-            iconValue={'stop'}
-            iconSize={20}
-            glowing={playStatus === 'playing' || playStatus === 'paused'}
-          />
-        </div>
-
-        <div className="secondary-action-buttons">
-          <VCRButton
-            className="speed-half"
-            onClick={() => changePlaybackSpeed(0.5)}
-            toggleable
-            toggled={playbackSpeed === 0.5}
+          <div
+            className={`cassette-slot-door ${doorOpen ? 'is-open' : ''}`}
           >
-            .5x
-          </VCRButton>
-          <VCRButton
-            className="speed-normal"
-            onClick={() => changePlaybackSpeed(1)}
-            toggleable
-            toggled={playbackSpeed === 1}
-          >
-            1x
-          </VCRButton>
-          <VCRButton
-            className="speed-double"
-            onClick={() => changePlaybackSpeed(2)}
-            toggleable
-            toggled={playbackSpeed === 2}
-          >
-            2x
-          </VCRButton>
+            <span className="cassette-slot-door-label">
+              {doorLabel}
+            </span>
+          </div>
+          <div className="cassette-slot" onClick={viewCassettes} />
+
+          <div className="vcr-screen" onClick={viewCassettes}>
+            {this.renderScreen()}
+          </div>
+
+          <div className="primary-action-buttons">
+            <VCRButton
+              className="play-pause-button"
+              onClick={playPauseAction}
+              iconValue={playStatus === 'playing' ? 'pause' : 'play'}
+              iconSize={20}
+              glowing={cassetteStatus === 'loaded' && playStatus === 'stopped'}
+            />
+            <VCRButton
+              className="stop-button"
+              onClick={stopCassette}
+              iconValue={'stop'}
+              iconSize={20}
+              glowing={playStatus === 'playing' || playStatus === 'paused'}
+            />
+          </div>
+
+          <div className="secondary-action-buttons">
+            <VCRButton
+              className="speed-half"
+              onClick={() => changePlaybackSpeed(0.5)}
+              toggleable
+              toggled={playbackSpeed === 0.5}
+            >
+              .5x
+            </VCRButton>
+            <VCRButton
+              className="speed-normal"
+              onClick={() => changePlaybackSpeed(1)}
+              toggleable
+              toggled={playbackSpeed === 1}
+            >
+              1x
+            </VCRButton>
+            <VCRButton
+              className="speed-double"
+              onClick={() => changePlaybackSpeed(2)}
+              toggleable
+              toggled={playbackSpeed === 2}
+            >
+              2x
+            </VCRButton>
+          </div>
+
+          <div className="decorative-outputs">
+            <div className="decorative-output yellow" />
+            <div className="decorative-output white" />
+            <div className="decorative-output red" />
+          </div>
+
+          <VCRPowerLight mode={playStatus} />
+
+          <div className="vcr-foot vcr-foot-left" />
+          <div className="vcr-foot vcr-foot-right" />
         </div>
-
-        <div className="decorative-outputs">
-          <div className="decorative-output yellow" />
-          <div className="decorative-output white" />
-          <div className="decorative-output red" />
-        </div>
-
-        <VCRPowerLight mode={playStatus} />
-
-        <div className="vcr-foot vcr-foot-left" />
-        <div className="vcr-foot vcr-foot-right" />
-      </div>
+      </Draggable>
     );
   }
 }
@@ -196,6 +199,7 @@ const mapStateToProps = state => ({
   loggedIn: loggedInSelector(state),
 });
 
+export { VCR };
 
 export default connect(mapStateToProps, {
   playCassette: actionCreators.playCassette,
