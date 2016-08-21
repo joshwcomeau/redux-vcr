@@ -1,5 +1,3 @@
-var RewirePlugin = require("rewire-webpack");
-
 module.exports = {
   type: 'web-module',
   build: {
