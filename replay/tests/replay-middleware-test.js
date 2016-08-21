@@ -15,7 +15,10 @@ const {
 
 
 describe('replayMiddleware', () => {
-  const middleware = replayMiddleware({ playHandler });
+  const middleware = replayMiddleware({
+    playHandler,
+    maximumDelay: 100,
+  });
   const next = sinon.stub();
 
   afterEach(() => {
@@ -77,6 +80,10 @@ describe('replayMiddleware', () => {
 
       it('invokes the playHandler', () => {
         expect(playHandler.callCount).to.equal(1);
+        expect(playHandler.firstCall.args[0]).to.deep.equal({
+          store,
+          maximumDelay: 100,
+        });
       });
     });
 
@@ -107,7 +114,7 @@ describe('replayMiddleware', () => {
         expect(playHandler.callCount).to.equal(1);
         expect(playHandler.firstCall.args[0]).to.deep.equal({
           store,
-          maximumDelay: undefined,
+          maximumDelay: 100,
         });
       });
     });

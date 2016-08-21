@@ -14,11 +14,9 @@ const replayMiddleware = ({
       case PLAY_CASSETTE: {
         const { status } = store.getState().reduxVCR.play;
 
+        // If the cassette is already playing, no action is needed.
         if (status === 'playing') {
-          // If the cassette is already playing, no action is needed.
           return null;
-        } else if (status === 'paused') {
-          // If the cassette is paused, we just need to forward the
         }
 
         // If the cassette is currently `paused`, we can just start playing it.

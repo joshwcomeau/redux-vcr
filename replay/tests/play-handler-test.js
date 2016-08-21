@@ -35,13 +35,13 @@ function loadAndSelectCassette(store, id = 'abc123') {
   store.dispatch(selectCassette({ id: 'abc' }));
 }
 
-function loadActionsForCassette(store, id = 'abc') {
+function loadActionsForCassette(store, id = 'abc', delay = 50) {
   store.dispatch(cassetteActionsReceive({
     id,
     cassetteActions: [
-      { type: 'ACTION_1', delay: 50 },
-      { type: 'ACTION_2', delay: 50 },
-      { type: 'ACTION_3', delay: 50 },
+      { type: 'ACTION_1', delay },
+      { type: 'ACTION_2', delay },
+      { type: 'ACTION_3', delay },
     ],
   }));
 }
@@ -109,16 +109,16 @@ describe('playHandler', () => {
       window.setTimeout(() => {
         expect(store.dispatch.callCount).to.equal(7);
         const [
-          call1, call2, call3, call4, call5, call6, call7
+          call1, call2, call3, call4, call5, call6, call7,
         ] = store.dispatch.args;
 
-        expect(call1[0].type).to.equal('ACTION_1')
-        expect(call2[0].type).to.equal(INCREMENT_ACTIONS_PLAYED)
-        expect(call3[0].type).to.equal('ACTION_2')
-        expect(call4[0].type).to.equal(INCREMENT_ACTIONS_PLAYED)
-        expect(call5[0].type).to.equal('ACTION_3')
-        expect(call6[0].type).to.equal(INCREMENT_ACTIONS_PLAYED)
-        expect(call7[0].type).to.equal(STOP_CASSETTE)
+        expect(call1[0].type).to.equal('ACTION_1');
+        expect(call2[0].type).to.equal(INCREMENT_ACTIONS_PLAYED);
+        expect(call3[0].type).to.equal('ACTION_2');
+        expect(call4[0].type).to.equal(INCREMENT_ACTIONS_PLAYED);
+        expect(call5[0].type).to.equal('ACTION_3');
+        expect(call6[0].type).to.equal(INCREMENT_ACTIONS_PLAYED);
+        expect(call7[0].type).to.equal(STOP_CASSETTE);
 
         done();
       }, 250);
