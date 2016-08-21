@@ -2,6 +2,6 @@
 import { reduxVCRReducer } from 'redux-vcr.shared';
 
 import RetrieveHandler from './retrieve-handler';
-import retrieveMiddleware from './retrieve-middleware';
+import createRetrieveMiddleware from './create-retrieve-middleware';
 
-export { reduxVCRReducer, RetrieveHandler, retrieveMiddleware };
+export { reduxVCRReducer, RetrieveHandler, createRetrieveMiddleware };

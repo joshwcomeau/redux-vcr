@@ -13,7 +13,7 @@ const {
   signInFailure,
 } = actionCreators;
 
-const retrieveMiddleware = ({ dataHandler }) => store => next => action => {
+const createRetrieveMiddleware = ({ dataHandler }) => store => next => action => {
   switch (action.type) {
     case SIGN_IN_REQUEST: {
       return dataHandler
@@ -66,4 +66,4 @@ const retrieveMiddleware = ({ dataHandler }) => store => next => action => {
   }
 };
 
-export default retrieveMiddleware;
+export default createRetrieveMiddleware;

@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { RetrieveHandler, retrieveMiddleware } from '../src';
+import { RetrieveHandler, createRetrieveMiddleware } from '../src';
 import {
   CASSETTES_LIST_REQUEST,
   CASSETTES_LIST_RECEIVE,
@@ -16,9 +16,9 @@ const firebaseAuth = {
   databaseURL: 'https://test.firebaseio.com',
 };
 
-describe('retrieveMiddleware', () => {
+describe('createRetrieveMiddleware', () => {
   const dataHandler = new RetrieveHandler({ firebaseAuth });
-  const middleware = retrieveMiddleware(dataHandler);
+  const middleware = createRetrieveMiddleware({ dataHandler });
   const store = {};
   const next = sinon.stub();
 

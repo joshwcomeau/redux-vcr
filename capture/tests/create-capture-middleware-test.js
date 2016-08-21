@@ -1,18 +1,18 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { captureMiddleware } from '../src';
+import { createCaptureMiddleware } from '../src';
 
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-describe('captureMiddleware', () => {
+describe('createCaptureMiddleware', () => {
   const dataHandler = { persist: sinon.stub() };
   const middlewareParams = {
     dataHandler,
     prefix: 'REDUX_VCR',
   };
-  const middleware = captureMiddleware(middlewareParams);
+  const middleware = createCaptureMiddleware(middlewareParams);
   const store = {};
   const next = sinon.stub();
   const action = { type: 'USERS/ADD_NEW' };
@@ -33,14 +33,14 @@ describe('captureMiddleware', () => {
 
   context('with invalid arguments', () => {
     it('throws when no dataHandler is provided', () => {
-      expect(captureMiddleware).to.throw(/dataHandler/);
+      expect(createCaptureMiddleware).to.throw(/dataHandler/);
     });
 
     it('throws when the dataHandler "persist" method is not a function', () => {
       const invalidDataHandler = { persist: 'hi there' };
 
       expect(
-        () => captureMiddleware({ dataHandler: invalidDataHandler })
+        () => createCaptureMiddleware({ dataHandler: invalidDataHandler })
       ).to.throw(/dataHandler/);
     });
   });
@@ -102,7 +102,7 @@ describe('captureMiddleware', () => {
 
   context('timing', () => {
     // Since we'll be dealing with time, create a new middleware for these tests
-    const freshMiddleware = captureMiddleware(middlewareParams);
+    const freshMiddleware = createCaptureMiddleware(middlewareParams);
 
     it('records the delay between actions', async function(done) {
       freshMiddleware(store)(next)(action);

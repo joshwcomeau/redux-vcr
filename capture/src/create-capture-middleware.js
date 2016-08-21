@@ -9,7 +9,7 @@ const generateCassette = () => ({
 });
 
 // eslint-disable-next-line import/prefer-default-export
-const captureMiddleware = ({
+const createCaptureMiddleware = ({
   blacklist = [],
   dataHandler,
   prefix = 'REDUX_VCR',
@@ -62,4 +62,4 @@ const captureMiddleware = ({
   };
 };
 
-export default captureMiddleware;
+export default createCaptureMiddleware;
