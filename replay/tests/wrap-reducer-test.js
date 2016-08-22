@@ -78,7 +78,7 @@ describe('wrapReducer', () => {
       ]);
 
       expect(reduxVCRKeys).to.deep.equal([
-        'actions', 'cassettes', 'play', 'user',
+        'actions', 'cassettes', 'play', 'user', 'authentication',
       ]);
     });
   });

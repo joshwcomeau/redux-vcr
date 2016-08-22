@@ -4,7 +4,7 @@ import {
   SIGN_IN_REQUEST,
   SIGN_IN_RECEIVE,
   SIGN_IN_FAILURE,
-  SIGN_OUT,
+  SIGN_OUT_SUCCESS,
   CASSETTES_LIST_FAILURE,
 } from '../actions';
 
@@ -17,13 +17,15 @@ const defaultStates = {
 function loggedInReducer(state = defaultStates.loggedIn, action) {
   switch (action.type) {
     case SIGN_IN_RECEIVE: return true;
-    case SIGN_OUT: return false;
+    case SIGN_OUT_SUCCESS: return false;
     default: return state;
   }
 }
 
 function errorReducer(state = defaultStates.error, action) {
   switch (action.type) {
+    // NOTE: Signing out doesn't clear the error, because we sign users
+    // out immediately in response to certain errors.
     case SIGN_IN_REQUEST:
     case SIGN_IN_RECEIVE: return null;
     case CASSETTES_LIST_FAILURE:

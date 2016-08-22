@@ -6,11 +6,11 @@ import {
   SIGN_IN_REQUEST,
   SIGN_IN_RECEIVE,
   SIGN_IN_FAILURE,
-  SIGN_OUT,
+  SIGN_OUT_SUCCESS,
   signInRequest,
   signInReceive,
   signInFailure,
-  signOut,
+  signOutSuccess,
 } from '../../src/actions';
 
 
@@ -82,11 +82,11 @@ describe('authentication reducer', () => {
   });
 
 
-  describe(SIGN_OUT, () => {
+  describe(SIGN_OUT_SUCCESS, () => {
     it('sets loggedIn to false', () => {
       const state = reducer({ loggedIn: true }, {});
 
-      const action = signOut();
+      const action = signOutSuccess();
 
       const expectedState = {
         loggedIn: false,

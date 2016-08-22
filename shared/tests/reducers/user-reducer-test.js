@@ -4,9 +4,9 @@ import { expect } from 'chai';
 import reducer from '../../src/reducers/user.reducer';
 import {
   SIGN_IN_RECEIVE,
-  SIGN_OUT,
+  SIGN_OUT_SUCCESS,
   signInReceive,
-  signOut,
+  signOutSuccess,
 } from '../../src/actions';
 
 
@@ -29,11 +29,11 @@ describe('user reducer', () => {
     });
   });
 
-  describe(SIGN_OUT, () => {
+  describe(SIGN_OUT_SUCCESS, () => {
     it('removes the user data', () => {
       const state = reducer({}, {});
 
-      const action = signOut();
+      const action = signOutSuccess();
 
       const expectedState = null;
       const actualState = reducer(state, action);

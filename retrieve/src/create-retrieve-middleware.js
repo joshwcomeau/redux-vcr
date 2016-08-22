@@ -1,10 +1,11 @@
-import { actionTypes, actionCreators } from 'redux-vcr.shared';
-// import { actionTypes, actionCreators } from '../../shared/src';
+// import { actionTypes, actionCreators } from 'redux-vcr.shared';
+import { actionTypes, actionCreators } from '../../shared/src';
 
 const {
   SIGN_IN_REQUEST,
   CASSETTES_LIST_REQUEST,
   SELECT_CASSETTE,
+  SIGN_OUT_REQUEST,
 } = actionTypes;
 const {
   cassetteActionsReceive,
@@ -12,6 +13,9 @@ const {
   cassettesListFailure,
   signInReceive,
   signInFailure,
+  signOutRequest,
+  signOutSuccess,
+  signOutFailure,
 } = actionCreators;
 
 const createRetrieveMiddleware = ({ dataHandler }) => store => next => action => {
@@ -33,7 +37,22 @@ const createRetrieveMiddleware = ({ dataHandler }) => store => next => action =>
         .retrieveList()
         .then(snapshot => snapshot.val())
         .then(cassettes => next(cassettesListReceive({ cassettes })))
-        .catch(error => next(cassettesListFailure({ error })));
+        .catch(error => {
+          next(cassettesListFailure({ error }));
+
+          console.error(
+            'Oh no! We were unable to receive the list of cassettes.' +
+            "Here's what Firebase had to say about it:");
+          console.info(error);
+          console.error(
+            "We've automatically logged you out from Firebase." +
+            'To sign in and retry, click the VCR screen :)'
+          );
+
+          // Using store.dispatch instead of next because we _do_ want
+          // this action to trigger this middleware.
+          store.dispatch(signOutRequest());
+        });
 
       return next(action);
     }
@@ -60,6 +79,13 @@ const createRetrieveMiddleware = ({ dataHandler }) => store => next => action =>
         });
 
       return null;
+    }
+
+    case SIGN_OUT_REQUEST: {
+      dataHandler
+        .signOut()
+        .then(() => next(signOutSuccess()))
+        .catch(error => next(signOutFailure({ error })));
     }
 
     default: {
