@@ -1,5 +1,3 @@
-import invariant from 'invariant';
-
 // import { FirebaseHandler } from 'redux-vcr.shared';
 import { FirebaseHandler } from '../../shared/src';
 
@@ -23,6 +21,13 @@ export default class RetrieveHandler {
       .firebase
       .auth()
       .signInWithPopup(provider);
+  }
+
+  signOut() {
+    return this.firebaseHandler
+      .firebase
+      .auth()
+      .signOut();
   }
 
   retrieveList() {

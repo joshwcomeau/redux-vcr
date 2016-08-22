@@ -38,20 +38,24 @@ const createRetrieveMiddleware = ({ dataHandler }) => store => next => action =>
         .then(snapshot => snapshot.val())
         .then(cassettes => next(cassettesListReceive({ cassettes })))
         .catch(error => {
-          next(cassettesListFailure({ error }));
+          if (error.code === 'PERMISSION_DENIED') {
+            console.error(
+              "Oh no! Firebase didn't let us fetch from /cassettes.\n" +
+              "The rules you've set don't allow you to access this resource." +
+              '\n\n' +
+              'For help setting up the rules, see PLACEHOLDER.\n' +
+              "Here's the Firebase error that prompted this message:"
+            );
+          } else {
+            console.error('An error has occurred, and we were unable to fetch the cassettes.');
+          }
 
-          console.error(
-            'Oh no! We were unable to receive the list of cassettes.' +
-            "Here's what Firebase had to say about it:");
-          console.info(error);
-          console.error(
-            "We've automatically logged you out from Firebase." +
-            'To sign in and retry, click the VCR screen :)'
-          );
+          console.error(error);
 
           // Using store.dispatch instead of next because we _do_ want
           // this action to trigger this middleware.
           store.dispatch(signOutRequest());
+          next(cassettesListFailure({ error }));
         });
 
       return next(action);
@@ -86,6 +90,8 @@ const createRetrieveMiddleware = ({ dataHandler }) => store => next => action =>
         .signOut()
         .then(() => next(signOutSuccess()))
         .catch(error => next(signOutFailure({ error })));
+
+      return next(action);
     }
 
     default: {

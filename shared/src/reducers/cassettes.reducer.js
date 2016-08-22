@@ -3,6 +3,7 @@ import { createSelector } from 'reselect';
 
 import {
   CASSETTES_LIST_RECEIVE,
+  CASSETTES_LIST_FAILURE,
   EJECT_CASSETTE,
   GO_TO_NEXT_CASSETTE_PAGE,
   GO_TO_PREVIOUS_CASSETTE_PAGE,
@@ -26,6 +27,7 @@ const defaultStates = {
 function statusReducer(state = defaultStates.status, action) {
   switch (action.type) {
     case VIEW_CASSETTES: return 'selecting';
+    case CASSETTES_LIST_FAILURE:
     case EJECT_CASSETTE:
     case HIDE_CASSETTES: return 'idle';
     case SELECT_CASSETTE: return 'loaded';
