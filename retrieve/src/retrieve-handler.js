@@ -1,5 +1,7 @@
-// import { FirebaseHandler } from 'redux-vcr.shared';
-import { FirebaseHandler } from '../../shared/src';
+const useLocal = process.env.NODE_ENV === 'development';
+const { FirebaseHandler } = useLocal
+  ? require('../../shared/src')
+  : require('redux-vcr.shared');
 
 
 export default class RetrieveHandler {

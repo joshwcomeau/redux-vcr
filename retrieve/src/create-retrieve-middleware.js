@@ -1,5 +1,7 @@
-// import { actionTypes, actionCreators } from 'redux-vcr.shared';
-import { actionTypes, actionCreators } from '../../shared/src';
+const useLocal = process.env.NODE_ENV === 'development';
+const { actionTypes, actionCreators } = useLocal
+  ? require('../../shared/src')
+  : require('redux-vcr.shared');
 
 const {
   SIGN_IN_REQUEST,

@@ -82,6 +82,7 @@ describe('createReplayMiddleware', () => {
         expect(playHandler.callCount).to.equal(1);
         expect(playHandler.firstCall.args[0]).to.deep.equal({
           store,
+          next,
           maximumDelay: 100,
         });
       });
@@ -114,6 +115,7 @@ describe('createReplayMiddleware', () => {
         expect(playHandler.callCount).to.equal(1);
         expect(playHandler.firstCall.args[0]).to.deep.equal({
           store,
+          next,
           maximumDelay: 100,
         });
       });

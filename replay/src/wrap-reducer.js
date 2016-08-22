@@ -1,5 +1,7 @@
-// import { actionTypes, reduxVCRReducer } from 'redux-vcr.shared';
-import { actionTypes, reduxVCRReducer } from '../../shared/src';
+const useLocal = process.env.NODE_ENV === 'development';
+const { actionTypes, reduxVCRReducer } = useLocal
+  ? require('../../shared/src')
+  : require('redux-vcr.shared');
 
 const { REWIND_CASSETTE_AND_RESTORE_APP } = actionTypes;
 
