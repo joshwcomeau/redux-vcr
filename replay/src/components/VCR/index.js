@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/no-marquee */
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 import Draggable from 'react-draggable';
 
 import { actionCreators } from 'redux-vcr.shared';
@@ -9,14 +8,13 @@ import { actionCreators } from 'redux-vcr.shared';
 import VCRButton from '../VCRButton';
 import VCRPowerLight from '../VCRPowerLight';
 import VCRScreen from '../VCRScreen';
-import Icon from '../Icon';
 import './index.scss';
 
 
 class VCR extends Component {
   getScreenLabel() {
     const { cassetteStatus, playStatus } = this.props;
-    if (!cassetteStatus.loaded) {
+    if (cassetteStatus !== 'loaded') {
       return '';
     }
     switch (playStatus) {
@@ -46,6 +44,16 @@ class VCR extends Component {
       case 'idle': return 'Click to select a cassette';
       case 'selecting': return 'Selecting...';
       default: return selectedCassette;
+    }
+  }
+
+  getScreenEffect() {
+    const { isLoggedIn, hasAuthError, cassetteStatus } = this.props;
+
+    if (hasAuthError) {
+      return 'flashing';
+    } else if (!isLoggedIn || cassetteStatus === 'idle') {
+      return 'scrolling';
     }
   }
 
@@ -106,7 +114,7 @@ class VCR extends Component {
           <VCRScreen
             label={this.getScreenLabel()}
             textColor={hasAuthError ? 'red' : 'green'}
-            scrolling={false}
+            effect={this.getScreenEffect()}
             onClick={this.getVCRClickHandler()}
           >
             {this.getScreenContents()}

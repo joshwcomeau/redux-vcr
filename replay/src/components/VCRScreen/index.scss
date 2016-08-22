@@ -38,16 +38,51 @@
       color: $white;
     }
 
+    .vcr-screen-buffer {
+      &.vertical {
+        margin: 5px auto;
+        width: 66%;
+        overflow: hidden;
+      }
+    }
+
     .vcr-screen-contents {
       line-height: 30px;
-    }
 
-    .vcr-screen-idle, .vcr-screen-selecting {
-      text-align: center;
-      line-height: 20px;
-      width: 65%;
-      margin: 0 auto;
+      &.edged-down {
+        margin-top: 4px;
+      }
+
+      &.flashing {
+        text-align: center;
+        animation: flashing 1s both;
+      }
+
+      &.scrolling {
+        text-align: center;
+        line-height: 20px;
+        animation: scrolling 10s linear infinite;
+      }
     }
   }
+}
 
+@keyframes flashing {
+  0% { opacity: 0; }
+  9% { opacity: 0; }
+  10% { opacity: 1; }
+  29% { opacity: 1; }
+  30% { opacity: 0; }
+  39% { opacity: 0; }
+  40% { opacity: 1; }
+  59% { opacity: 1; }
+  60% { opacity: 0; }
+  69% { opacity: 0; }
+  70% { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+@keyframes scrolling {
+  0% { transform: translateX(110%); }
+  100% { transform: translateX(-110%); }
 }

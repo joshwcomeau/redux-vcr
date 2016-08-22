@@ -17,7 +17,8 @@ storiesOf('VCR', module)
       cassetteStatus="idle"
       selectedCassette={null}
       playbackSpeed={1}
-      loggedIn={false}
+      isLoggedIn={false}
+      hasAuthError={false}
       playCassette={action('Play cassette')}
       pauseCassette={action('Pause cassette')}
       stopCassette={action('Stop cassette')}
@@ -33,7 +34,8 @@ storiesOf('VCR', module)
       cassetteStatus="idle"
       selectedCassette={null}
       playbackSpeed={1}
-      loggedIn
+      isLoggedIn
+      hasAuthError={false}
       playCassette={action('Play cassette')}
       pauseCassette={action('Pause cassette')}
       stopCassette={action('Stop cassette')}
@@ -43,13 +45,32 @@ storiesOf('VCR', module)
       signInRequest={action('Sign-in request')}
     />
   ))
+  .add('Errored', () => (
+    <VCR
+      playStatus="stopped"
+      cassetteStatus="idle"
+      selectedCassette={null}
+      playbackSpeed={1}
+      isLoggedIn={false}
+      hasAuthError
+      playCassette={action('Play cassette')}
+      pauseCassette={action('Pause cassette')}
+      stopCassette={action('Stop cassette')}
+      viewCassettes={action('View cassettes')}
+      ejectCassette={action('Eject cassette')}
+      changePlaybackSpeed={action('Change playback speed')}
+      signInRequest={action('Sign-in request')}
+    />
+  ))
+
   .add('Loaded and stopped', () => (
     <VCR
       playStatus="stopped"
       cassetteStatus="loaded"
       selectedCassette="abc123"
       playbackSpeed={1}
-      loggedIn
+      isLoggedIn
+      hasAuthError={false}
       playCassette={action('Play cassette')}
       pauseCassette={action('Pause cassette')}
       stopCassette={action('Stop cassette')}
