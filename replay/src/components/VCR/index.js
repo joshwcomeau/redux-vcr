@@ -65,7 +65,7 @@ class VCR extends Component {
 
   getVCRClickHandler() {
     if (!this.props.isLoggedIn) {
-      return () => this.props.signInRequest({ authMethod: 'github' });
+      return () => this.props.signInRequest({ authMethod: 'github.com' });
     }
 
     return this.props.viewCassettes;

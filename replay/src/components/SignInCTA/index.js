@@ -6,7 +6,7 @@ import './index.scss';
 const SignInCTA = ({ onClick }) => {
   return (
     <div className="sign-in-cta">
-      <button onClick={() => onClick({ authMethod: 'github' })}>
+      <button onClick={() => onClick({ authMethod: 'github.com' })}>
         <Icon value="github" size={32} color="#FFFFFF" />
         Sign In
       </button>

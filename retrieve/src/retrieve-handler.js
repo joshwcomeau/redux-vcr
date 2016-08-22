@@ -14,13 +14,22 @@ export default class RetrieveHandler {
   // Authenticate developers with a specified provider source
   // returns a promise, that the middleware can use to dispatch whichever action
   // (success or failure) is appropriate.
-  signIn(authMethod) {
+  signInWithPopup(authMethod) {
     const provider = this.firebaseHandler.createProvider(authMethod);
 
     return this.firebaseHandler
       .firebase
       .auth()
       .signInWithPopup(provider);
+  }
+
+  signInWithCredential(rawCredential) {
+    const credential = this.firebaseHandler.buildCredential(rawCredential);
+
+    return this.firebaseHandler
+      .firebase
+      .auth()
+      .signInWithCredential(credential);
   }
 
   signOut() {

@@ -102,9 +102,10 @@ export const signInRequest = ({ authMethod }) => ({
   authMethod,
 });
 
-export const signInSuccess = ({ user }) => ({
+export const signInSuccess = ({ user, credential }) => ({
   type: SIGN_IN_SUCCESS,
   user,
+  credential,
 });
 
 export const signInFailure = ({ error }) => ({

@@ -34,7 +34,7 @@ describe('authentication reducer', () => {
         error: 'yadda',
       }, {});
 
-      const action = signInRequest({ authMethod: 'github' });
+      const action = signInRequest({ authMethod: 'github.com' });
 
       const expectedState = {
         loggedIn: false,

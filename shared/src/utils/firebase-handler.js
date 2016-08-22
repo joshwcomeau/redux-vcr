@@ -61,17 +61,38 @@ export default class FirebaseHandler {
 
   createProvider(authMethod) {
     invariant(
-      authMethod === 'github',
+      authMethod === 'github.com',
       `Invalid Firebase sign-in attempt.
 
-      At the moment, we only accept 'github' authentication.
+      At the moment, we only accept 'github.com' authentication.
       You attempted to sign in with '${authMethod}'.
 
       For more information, see PLACEHOLDER.`
     );
 
     switch (authMethod) {
-      case 'github': return new firebase.auth.GithubAuthProvider();
+      case 'github.com': return new firebase.auth.GithubAuthProvider();
+
+      // the default case should never actually be hit. It's a fallback in case
+      // the invariant above misses something.
+      default: throw new Error('Please supply a valid provider');
+    }
+  }
+
+  buildCredential({ accessToken, provider }) {
+    invariant(
+      provider === 'github.com',
+      `Invalid provider passed to 'buildCredential'.
+
+      At the moment, we only accept 'github.com' authentication.
+      You attempted to sign in with '${provider}'.
+
+      For more information, see PLACEHOLDER.`
+    );
+
+    switch (provider) {
+      case 'github.com':
+        return firebase.auth.GithubAuthProvider.credential(accessToken);
 
       // the default case should never actually be hit. It's a fallback in case
       // the invariant above misses something.
