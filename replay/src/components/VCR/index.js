@@ -146,7 +146,7 @@ class VCR extends Component {
           <div className="secondary-action-buttons">
             <VCRButton
               className="speed-half"
-              onClick={() => changePlaybackSpeed(0.5)}
+              onClick={() => changePlaybackSpeed({ playbackSpeed: 0.5 })}
               toggleable
               toggled={playbackSpeed === 0.5}
             >
@@ -154,7 +154,7 @@ class VCR extends Component {
             </VCRButton>
             <VCRButton
               className="speed-normal"
-              onClick={() => changePlaybackSpeed(1)}
+              onClick={() => changePlaybackSpeed({ playbackSpeed: 1 })}
               toggleable
               toggled={playbackSpeed === 1}
             >
@@ -162,7 +162,7 @@ class VCR extends Component {
             </VCRButton>
             <VCRButton
               className="speed-double"
-              onClick={() => changePlaybackSpeed(2)}
+              onClick={() => changePlaybackSpeed({ playbackSpeed: 2 })}
               toggleable
               toggled={playbackSpeed === 2}
             >

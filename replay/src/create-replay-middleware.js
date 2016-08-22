@@ -32,6 +32,7 @@ const createReplayMiddleware = ({
         // Finally, pass the data onto our playHandler
         return playHandler({
           store,
+          next,
           maximumDelay,
         });
       }
