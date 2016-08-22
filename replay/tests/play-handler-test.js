@@ -2,7 +2,8 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 import { createStore, combineReducers } from 'redux';
-import { actionTypes, actionCreators, reduxVCRReducer } from 'redux-vcr.shared';
+// import { actionTypes, actionCreators, reduxVCRReducer } from 'redux-vcr.shared';
+import { actionTypes, actionCreators, reduxVCRReducer } from '../../shared/src';
 
 import { playHandler } from '../src';
 
@@ -17,7 +18,7 @@ const {
   playCassette,
   pauseCassette,
   stopCassette,
-  cassettesListReceive,
+  cassettesListSuccess,
   cassetteActionsReceive,
   changePlaybackSpeed,
 } = actionCreators;
@@ -32,7 +33,7 @@ function createNewStore() {
 function loadAndSelectCassette({ store, id = 'abc' } = {}) {
   // We need to set up the state, by dispatching actions.
   // I couldn't come up with a good way to stub this :(
-  store.dispatch(cassettesListReceive({
+  store.dispatch(cassettesListSuccess({
     cassettes: {
       [id]: { label: 'selected cassette', numOfActions: 3 },
       xyz: { label: 'other cassette', numOfActions: 10 },

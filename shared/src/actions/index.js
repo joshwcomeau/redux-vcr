@@ -1,5 +1,5 @@
 export const CASSETTES_LIST_REQUEST = 'REDUX_VCR/CASSETTES_LIST_REQUEST';
-export const CASSETTES_LIST_RECEIVE = 'REDUX_VCR/CASSETTES_LIST_RECEIVE';
+export const CASSETTES_LIST_SUCCESS = 'REDUX_VCR/CASSETTES_LIST_SUCCESS';
 export const CASSETTES_LIST_FAILURE = 'REDUX_VCR/CASSETTES_LIST_FAILURE';
 export const VIEW_CASSETTES = 'REDUX_VCR/VIEW_CASSETTES';
 export const HIDE_CASSETTES = 'REDUX_VCR/HIDE_CASSETTES';
@@ -16,7 +16,7 @@ export const TOGGLE_PLAY_PAUSE = 'REDUX_VCR/TOGGLE_PLAY_PAUSE';
 export const INCREMENT_ACTIONS_PLAYED = 'REDUX_VCR/INCREMENT_ACTIONS_PLAYED';
 export const CHANGE_PLAYBACK_SPEED = 'REDUX_VCR/CHANGE_PLAYBACK_SPEED';
 export const SIGN_IN_REQUEST = 'REDUX_VCR/SIGN_IN_REQUEST';
-export const SIGN_IN_RECEIVE = 'REDUX_VCR/SIGN_IN_RECEIVE';
+export const SIGN_IN_SUCCESS = 'REDUX_VCR/SIGN_IN_SUCCESS';
 export const SIGN_IN_FAILURE = 'REDUX_VCR/SIGN_IN_FAILURE';
 export const SIGN_OUT_REQUEST = 'REDUX_VCR/SIGN_OUT_REQUEST';
 export const SIGN_OUT_SUCCESS = 'REDUX_VCR/SIGN_OUT_SUCCESS';
@@ -29,8 +29,8 @@ export const cassettesListRequest = () => ({
   type: CASSETTES_LIST_REQUEST,
 });
 
-export const cassettesListReceive = ({ cassettes }) => ({
-  type: CASSETTES_LIST_RECEIVE,
+export const cassettesListSuccess = ({ cassettes }) => ({
+  type: CASSETTES_LIST_SUCCESS,
   cassettes,
 });
 
@@ -102,8 +102,8 @@ export const signInRequest = ({ authMethod }) => ({
   authMethod,
 });
 
-export const signInReceive = ({ user }) => ({
-  type: SIGN_IN_RECEIVE,
+export const signInSuccess = ({ user }) => ({
+  type: SIGN_IN_SUCCESS,
   user,
 });
 

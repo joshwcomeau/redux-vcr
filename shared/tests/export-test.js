@@ -20,7 +20,7 @@ describe('shared export', () => {
     expect(actionTypes).to.be.an('object');
     expect(actionTypes).to.include.keys([
       'CASSETTES_LIST_REQUEST',
-      'CASSETTES_LIST_RECEIVE',
+      'CASSETTES_LIST_SUCCESS',
     ]);
 
     const numOfNonStrings = Object.keys(actionTypes).filter(key => (
@@ -34,7 +34,7 @@ describe('shared export', () => {
     expect(actionCreators).to.be.an('object');
     expect(actionCreators).to.include.keys([
       'cassettesListRequest',
-      'cassettesListReceive',
+      'cassettesListSuccess',
     ]);
 
     const numOfNonFunctions = Object.keys(actionCreators).filter(key => (

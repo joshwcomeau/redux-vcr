@@ -4,11 +4,11 @@ import { expect } from 'chai';
 import reducer from '../../src/reducers/authentication.reducer';
 import {
   SIGN_IN_REQUEST,
-  SIGN_IN_RECEIVE,
+  SIGN_IN_SUCCESS,
   SIGN_IN_FAILURE,
   SIGN_OUT_SUCCESS,
   signInRequest,
-  signInReceive,
+  signInSuccess,
   signInFailure,
   signOutSuccess,
 } from '../../src/actions';
@@ -46,14 +46,14 @@ describe('authentication reducer', () => {
     });
   });
 
-  describe(SIGN_IN_RECEIVE, () => {
+  describe(SIGN_IN_SUCCESS, () => {
     it('resets the error and sets loggedIn to true', () => {
       const state = reducer({
         loggedIn: false,
         error: 'yadda',
       }, {});
 
-      const action = signInReceive({ user: {} });
+      const action = signInSuccess({ user: {} });
 
       const expectedState = {
         loggedIn: true,

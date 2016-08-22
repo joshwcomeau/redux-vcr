@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { createSelector } from 'reselect';
 
 import {
-  CASSETTES_LIST_RECEIVE,
+  CASSETTES_LIST_SUCCESS,
   CASSETTES_LIST_FAILURE,
   EJECT_CASSETTE,
   GO_TO_NEXT_CASSETTE_PAGE,
@@ -44,7 +44,7 @@ function selectedReducer(state = defaultStates.selected, action) {
 
 function byIdReducer(state = defaultStates.byId, action) {
   switch (action.type) {
-    case CASSETTES_LIST_RECEIVE: return action.cassettes;
+    case CASSETTES_LIST_SUCCESS: return action.cassettes;
     default: return state;
   }
 }

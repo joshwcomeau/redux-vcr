@@ -9,9 +9,9 @@ const {
 } = actionTypes;
 const {
   cassetteActionsReceive,
-  cassettesListReceive,
+  cassettesListSuccess,
   cassettesListFailure,
-  signInReceive,
+  signInSuccess,
   signInFailure,
   signOutRequest,
   signOutSuccess,
@@ -24,7 +24,7 @@ const createRetrieveMiddleware = ({ dataHandler }) => store => next => action =>
       return dataHandler
         .signIn(action.authMethod)
         .then(({ credential }) => {
-          next(signInReceive({ user: credential }));
+          next(signInSuccess({ user: credential }));
         })
         .catch(error => {
           console.error('Problem authenticating with Firebase:', error);
@@ -36,7 +36,7 @@ const createRetrieveMiddleware = ({ dataHandler }) => store => next => action =>
       dataHandler
         .retrieveList()
         .then(snapshot => snapshot.val())
-        .then(cassettes => next(cassettesListReceive({ cassettes })))
+        .then(cassettes => next(cassettesListSuccess({ cassettes })))
         .catch(error => {
           if (error.code === 'PERMISSION_DENIED') {
             console.error(

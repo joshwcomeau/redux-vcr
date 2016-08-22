@@ -1,13 +1,14 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { actionTypes } from 'redux-vcr.shared';
+// import { actionTypes } from 'redux-vcr.shared';
+import { actionTypes } from '../../shared/src';
 
 import { RetrieveHandler, createRetrieveMiddleware } from '../src';
 
 
 const {
   CASSETTES_LIST_REQUEST,
-  CASSETTES_LIST_RECEIVE,
+  CASSETTES_LIST_SUCCESS,
   CASSETTE_ACTIONS_RECEIVE,
   SELECT_CASSETTE,
 } = actionTypes;
@@ -65,12 +66,12 @@ describe('createRetrieveMiddleware', () => {
       window.setTimeout(done, 10);
     });
 
-    it('asynchronously dispatches the `cassettesListReceive` action', done => {
+    it('asynchronously dispatches the `cassettesListSuccess` action', done => {
       window.setTimeout(() => {
         expect(next.callCount).to.equal(2);
         const receiveAction = next.secondCall.args[0];
 
-        expect(receiveAction.type).to.equal(CASSETTES_LIST_RECEIVE);
+        expect(receiveAction.type).to.equal(CASSETTES_LIST_SUCCESS);
         expect(receiveAction.cassettes).to.deep.equal([{ id: 'cassette1' }]);
         done();
       }, 10);

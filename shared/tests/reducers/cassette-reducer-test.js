@@ -2,14 +2,14 @@ import { expect } from 'chai';
 
 import reducer from '../../src/reducers/cassettes.reducer';
 import {
-  CASSETTES_LIST_RECEIVE,
+  CASSETTES_LIST_SUCCESS,
   EJECT_CASSETTE,
   GO_TO_NEXT_CASSETTE_PAGE,
   GO_TO_PREVIOUS_CASSETTE_PAGE,
   HIDE_CASSETTES,
   SELECT_CASSETTE,
   VIEW_CASSETTES,
-  cassettesListReceive,
+  cassettesListSuccess,
   ejectCassette,
   goToNextCassettePage,
   goToPreviousCassettePage,
@@ -20,10 +20,10 @@ import {
 
 
 describe('cassette reducer', () => {
-  describe(CASSETTES_LIST_RECEIVE, () => {
+  describe(CASSETTES_LIST_SUCCESS, () => {
     it('populates the list of cassettes', () => {
       const state = reducer({}, {});
-      const action = cassettesListReceive({ cassettes: {
+      const action = cassettesListSuccess({ cassettes: {
         abc: '123',
         xyz: '789',
       } });

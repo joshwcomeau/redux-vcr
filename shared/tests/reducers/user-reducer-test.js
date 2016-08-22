@@ -3,20 +3,20 @@ import { expect } from 'chai';
 
 import reducer from '../../src/reducers/user.reducer';
 import {
-  SIGN_IN_RECEIVE,
+  SIGN_IN_SUCCESS,
   SIGN_OUT_SUCCESS,
-  signInReceive,
+  signInSuccess,
   signOutSuccess,
 } from '../../src/actions';
 
 
 describe('user reducer', () => {
-  describe(SIGN_IN_RECEIVE, () => {
+  describe(SIGN_IN_SUCCESS, () => {
     it('updates the state with the user data', () => {
       const state = reducer({}, {});
 
       // TODO: Figure out what Firebase actually returns for these calls.
-      const action = signInReceive({ user: {
+      const action = signInSuccess({ user: {
         uid: '1234',
       } });
 
