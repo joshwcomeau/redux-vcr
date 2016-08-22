@@ -4,17 +4,20 @@ import classNames from 'classnames';
 import './index.scss';
 
 
-const VCRScreen = ({ children, label, textColor, effect, onClick }) => {
+const VCRScreen = ({ children, label, textColor, effects, onClick }) => {
   const bufferClasses = classNames('vcr-screen-buffer', {
-    vertical: effect === 'scrolling',
+    vertical: effects.includes('scrolling'),
   });
-  const contentsClasses = classNames('vcr-screen-contents', textColor, {
-    // If we've supplied a label, we need to make space for it by
-    // edging our main content down a bit.
-    'edged-down': !!label,
-    flashing: effect === 'flashing',
-    scrolling: effect === 'scrolling',
-  });
+  const contentsClasses = classNames([
+    'vcr-screen-contents',
+    textColor,
+    ...effects,
+    {
+      // If we've supplied a label, we need to make space for it by
+      // edging our main content down a bit.
+      'edged-down': !!label,
+    },
+  ]);
 
 
   return (
@@ -33,7 +36,7 @@ VCRScreen.propTypes = {
   children: PropTypes.node,
   textColor: PropTypes.oneOf(['green', 'red']),
   label: PropTypes.string,
-  effect: PropTypes.oneOf(['flashing', 'scrolling']),
+  effects: PropTypes.arrayOf(PropTypes.string),
   onClick: PropTypes.func.isRequired,
 };
 

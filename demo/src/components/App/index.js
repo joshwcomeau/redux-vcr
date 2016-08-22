@@ -40,13 +40,15 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header>
-          <h2>Who would you like to see become the next US President?</h2>
-        </header>
+        <div className="main-content">
+          <header>
+            <h2>Who would you like to see become the next US President?</h2>
+          </header>
 
-        <section className="main-content">
-          {this.renderButtons()}
-        </section>
+          <section className="main-content">
+            {this.renderButtons()}
+          </section>
+        </div>
 
         <DevTools />
         <Replay />

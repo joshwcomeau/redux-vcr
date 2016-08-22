@@ -47,14 +47,20 @@ class VCR extends Component {
     }
   }
 
-  getScreenEffect() {
+  getScreenEffects() {
     const { isLoggedIn, hasAuthError, cassetteStatus } = this.props;
 
+    const effects = [];
+
     if (hasAuthError) {
-      return 'flashing';
-    } else if (!isLoggedIn || cassetteStatus === 'idle') {
-      return 'scrolling';
+      effects.push('flashing', 'centered');
+    } else if (!isLoggedIn) {
+      effects.push('scrolling', 'centered');
+    } else if (cassetteStatus !== 'loaded') {
+      effects.push('centered');
     }
+
+    return effects;
   }
 
   getVCRClickHandler() {
@@ -114,7 +120,7 @@ class VCR extends Component {
           <VCRScreen
             label={this.getScreenLabel()}
             textColor={hasAuthError ? 'red' : 'green'}
-            effect={this.getScreenEffect()}
+            effects={this.getScreenEffects()}
             onClick={this.getVCRClickHandler()}
           >
             {this.getScreenContents()}

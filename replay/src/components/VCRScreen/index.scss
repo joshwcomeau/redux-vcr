@@ -54,14 +54,16 @@
       }
 
       &.flashing {
-        text-align: center;
         animation: flashing 1s both;
       }
 
       &.scrolling {
-        text-align: center;
         line-height: 20px;
         animation: scrolling 10s linear infinite;
+      }
+
+      &.centered {
+        text-align: center;
       }
     }
   }
