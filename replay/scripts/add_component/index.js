@@ -56,7 +56,7 @@ function run(componentName) {
 
 // Helper Methods
 function createDirectory(componentDirectory) {
-  console.log("Creating directory", componentDirectory)
+  console.info('Creating directory', componentDirectory);
   try {
     fs.mkdirSync(componentDirectory);
   } catch (err) {

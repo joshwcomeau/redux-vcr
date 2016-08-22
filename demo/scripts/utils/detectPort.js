@@ -25,7 +25,7 @@ var inject = function(port) {
   var options = global.__detect ? global.__detect.options : {};
 
   if (options.verbose) {
-    console.log('port %d was occupied', port);
+    console.info('port %d was occupied', port);
   }
 };
 

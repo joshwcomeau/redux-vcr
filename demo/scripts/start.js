@@ -65,7 +65,7 @@ function setupCompiler(port) {
 
   compiler.plugin('invalid', function() {
     clearConsole();
-    console.log('Compiling...');
+    console.info('Compiling...');
   });
 
   compiler.plugin('done', function(stats) {
@@ -73,10 +73,10 @@ function setupCompiler(port) {
     var hasErrors = stats.hasErrors();
     var hasWarnings = stats.hasWarnings();
     if (!hasErrors && !hasWarnings) {
-      console.log(chalk.green('Compiled successfully!'));
-      console.log();
-      console.log('The app is running at http://localhost:' + port + '/');
-      console.log();
+      console.info(chalk.green('Compiled successfully!'));
+      console.info();
+      console.info('The app is running at http://localhost:' + port + '/');
+      console.info();
       return;
     }
 
@@ -89,8 +89,8 @@ function setupCompiler(port) {
     );
 
     if (hasErrors) {
-      console.log(chalk.red('Failed to compile.'));
-      console.log();
+      console.info(chalk.red('Failed to compile.'));
+      console.info();
       if (formattedErrors.some(isLikelyASyntaxError)) {
         // If there are any syntax errors, show just them.
         // This prevents a confusing ESLint parsing error
@@ -98,24 +98,24 @@ function setupCompiler(port) {
         formattedErrors = formattedErrors.filter(isLikelyASyntaxError);
       }
       formattedErrors.forEach(message => {
-        console.log(message);
-        console.log();
+        console.info(message);
+        console.info();
       });
       // If errors exist, ignore warnings.
       return;
     }
 
     if (hasWarnings) {
-      console.log(chalk.yellow('Compiled with warnings.'));
-      console.log();
+      console.info(chalk.yellow('Compiled with warnings.'));
+      console.info();
       formattedWarnings.forEach(message => {
-        console.log(message);
-        console.log();
+        console.info(message);
+        console.info();
       });
 
-      console.log('You may use special comments to disable some warnings.');
-      console.log('Use ' + chalk.yellow('// eslint-disable-next-line') + ' to ignore the next line.');
-      console.log('Use ' + chalk.yellow('/* eslint-disable */') + ' to ignore all warnings in a file.');
+      console.info('You may use special comments to disable some warnings.');
+      console.info('Use ' + chalk.yellow('// eslint-disable-next-line') + ' to ignore the next line.');
+      console.info('Use ' + chalk.yellow('/* eslint-disable */') + ' to ignore all warnings in a file.');
     }
   });
 }
@@ -152,12 +152,12 @@ function runDevServer(port) {
     }
   }).listen(port, (err, result) => {
     if (err) {
-      return console.log(err);
+      return console.info(err);
     }
 
     clearConsole();
-    console.log(chalk.cyan('Starting the development server...'));
-    console.log();
+    console.info(chalk.cyan('Starting the development server...'));
+    console.info();
     openBrowser(port);
   });
 }
