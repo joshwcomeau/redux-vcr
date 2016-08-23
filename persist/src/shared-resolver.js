@@ -9,7 +9,7 @@
 // import in development, but NPM exports a working module.
 /* eslint-disable global-require, import/no-mutable-exports */
 
-const useLocal = false;
+const useLocal = true;
 
 let sharedContents;
 try {
@@ -20,4 +20,4 @@ try {
   sharedContents = require('redux-vcr.shared');
 }
 
-export default sharedContents;
+module.exports = sharedContents;

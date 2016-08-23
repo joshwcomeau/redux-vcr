@@ -1,10 +1,10 @@
 import debounce from 'lodash.debounce';
 import invariant from 'invariant';
-import shared from './shared-resolver';
 
+import { FirebaseHandler } from './shared-resolver';
 import './polyfills';
 
-const { FirebaseHandler } = shared;
+
 
 
 export default class PersistHandler {

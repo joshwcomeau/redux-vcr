@@ -1,11 +1,6 @@
-import shared from './shared-resolver';
+import { actionTypes, reduxVCRReducer } from './shared-resolver';
 
-const {
-  actionTypes: {
-    REWIND_CASSETTE_AND_RESTORE_APP,
-  },
-  reduxVCRReducer,
-} = shared;
+const { REWIND_CASSETTE_AND_RESTORE_APP } = actionTypes;
 
 
 // A higher-order reducer that tackles all ReduxVCR actions.

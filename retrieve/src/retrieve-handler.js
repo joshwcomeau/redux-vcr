@@ -1,6 +1,4 @@
-import shared from './shared-resolver';
-
-const { FirebaseHandler } = shared;
+import { FirebaseHandler } from './shared-resolver';
 
 
 export default class RetrieveHandler {

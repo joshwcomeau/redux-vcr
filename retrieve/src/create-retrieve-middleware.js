@@ -1,4 +1,4 @@
-import shared from './shared-resolver';
+import { actionTypes, actionCreators } from './shared-resolver';
 
 const {
   SIGN_IN_REQUEST,
@@ -6,7 +6,7 @@ const {
   CASSETTES_LIST_REQUEST,
   SELECT_CASSETTE,
   SIGN_OUT_REQUEST,
-} = shared.actionTypes;
+} = actionTypes;
 const {
   cassetteActionsReceive,
   cassettesListSuccess,
@@ -17,7 +17,7 @@ const {
   signOutSuccess,
   signOutFailure,
   setAuthRequirement,
-} = shared.actionCreators;
+} = actionCreators;
 
 const createRetrieveMiddleware = ({
   dataHandler,

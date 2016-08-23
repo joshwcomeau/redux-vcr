@@ -3,14 +3,12 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Draggable from 'react-draggable';
 
-import shared from '../../shared-resolver';
+import { actionCreators } from '../../shared-resolver';
 import VCRButton from '../VCRButton';
 import VCRPowerLight from '../VCRPowerLight';
 import VCRScreen from '../VCRScreen';
 import VCRDoor from '../VCRDoor';
 import './index.scss';
-
-const { actionCreators } = shared;
 
 
 class VCR extends Component {
