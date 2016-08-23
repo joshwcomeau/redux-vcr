@@ -29,7 +29,7 @@ const getPathForFile = fileName => moduleName => path.join(
 );
 
 const getPathForPackageJson = getPathForFile('package.json');
-const getPathForUseLocal = getPathForFile('src/use-local.js');
+const getPathForSharedConfig = getPathForFile('src/shared-resolver.js');
 
 const parseAndRead = compose(
   JSON.parse,
@@ -43,14 +43,14 @@ const writePackageJson = (moduleName, newPackageContents) => {
   );
 };
 
-const updateSettingForLocalShared = newValue => {
+const updateSharedResolver = newValue => {
   ['capture', 'persist', 'retrieve', 'replay'].forEach(moduleName => {
-    const filePath = getPathForUseLocal(moduleName);
+    const filePath = getPathForSharedConfig(moduleName);
     const fileContents = fs.readFileSync(filePath, 'utf8');
 
     const updatedContents = fileContents.replace(
-      /export default (true|false)/,
-      `export default ${newValue}`
+      /const useLocal = (true|false)/,
+      `const useLocal = ${newValue}`
     );
 
     fs.writeFileSync(filePath, updatedContents);
@@ -81,7 +81,7 @@ console.info(`
 `);
 
 // Step 0: Ensure we're using the non-local version of our shared dependency
-updateSettingForLocalShared(false);
+updateSharedResolver(false);
 
 
 // Step 1: Figure out what the next version should be.
@@ -140,7 +140,7 @@ exec('npm run publish:all');
 // Step 6
 // Restore our setting, so that when developing locally we use relative
 // paths for /shared
-updateSettingForLocalShared(true);
+updateSharedResolver(true);
 
 
 // TODO: publish the 'parent' module that allows for a single-import.

@@ -1,8 +1,4 @@
-import useLocal from './use-local';
-
-const { actionTypes, actionCreators } = useLocal
-  ? require('../../shared/src')
-  : require('redux-vcr.shared');
+import shared from './shared-resolver';
 
 const {
   SIGN_IN_REQUEST,
@@ -10,7 +6,7 @@ const {
   CASSETTES_LIST_REQUEST,
   SELECT_CASSETTE,
   SIGN_OUT_REQUEST,
-} = actionTypes;
+} = shared.actionTypes;
 const {
   cassetteActionsReceive,
   cassettesListSuccess,
@@ -21,7 +17,7 @@ const {
   signOutSuccess,
   signOutFailure,
   setAuthRequirement,
-} = actionCreators;
+} = shared.actionCreators;
 
 const createRetrieveMiddleware = ({
   dataHandler,

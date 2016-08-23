@@ -1,10 +1,11 @@
-import useLocal from './use-local';
+import shared from './shared-resolver';
 
-const { actionTypes, reduxVCRReducer } = useLocal
-  ? require('../../shared/src')
-  : require('redux-vcr.shared');
-
-const { REWIND_CASSETTE_AND_RESTORE_APP } = actionTypes;
+const {
+  actionTypes: {
+    REWIND_CASSETTE_AND_RESTORE_APP,
+  },
+  reduxVCRReducer,
+} = shared;
 
 
 // A higher-order reducer that tackles all ReduxVCR actions.

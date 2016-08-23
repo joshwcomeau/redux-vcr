@@ -3,17 +3,14 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Draggable from 'react-draggable';
 
+import shared from '../../shared-resolver';
 import VCRButton from '../VCRButton';
 import VCRPowerLight from '../VCRPowerLight';
 import VCRScreen from '../VCRScreen';
 import VCRDoor from '../VCRDoor';
 import './index.scss';
 
-import useLocal from '../../use-local';
-
-const { actionCreators } = useLocal
-  ? require('../../../../shared/src')
-  : require('redux-vcr.shared');
+const { actionCreators } = shared;
 
 
 class VCR extends Component {

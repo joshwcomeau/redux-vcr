@@ -1,13 +1,10 @@
 import debounce from 'lodash.debounce';
 import invariant from 'invariant';
+import shared from './shared-resolver';
 
 import './polyfills';
 
-import useLocal from './use-local';
-
-const { FirebaseHandler } = useLocal
-  ? require('../../shared/src')
-  : require('redux-vcr.shared');
+const { FirebaseHandler } = shared;
 
 
 export default class PersistHandler {

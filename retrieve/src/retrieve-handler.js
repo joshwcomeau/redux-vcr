@@ -1,8 +1,6 @@
-import useLocal from './use-local';
+import shared from './shared-resolver';
 
-const { FirebaseHandler } = useLocal
-  ? require('../../shared/src')
-  : require('redux-vcr.shared');
+const { FirebaseHandler } = shared;
 
 
 export default class RetrieveHandler {

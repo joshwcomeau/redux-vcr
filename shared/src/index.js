@@ -38,7 +38,6 @@ for (const key in actions) {
   }
 }
 
-
 export {
   actionTypes,
   actionCreators,
