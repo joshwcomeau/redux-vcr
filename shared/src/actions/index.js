@@ -21,6 +21,7 @@ export const SIGN_IN_FAILURE = 'REDUX_VCR/SIGN_IN_FAILURE';
 export const SIGN_OUT_REQUEST = 'REDUX_VCR/SIGN_OUT_REQUEST';
 export const SIGN_OUT_SUCCESS = 'REDUX_VCR/SIGN_OUT_SUCCESS';
 export const SIGN_OUT_FAILURE = 'REDUX_VCR/SIGN_OUT_FAILURE';
+export const SET_AUTH_REQUIREMENT = 'REDUX_VCR/SET_AUTH_REQUIREMENT';
 
 // ////////////////////////
 // ACTION CREATORS ///////
@@ -123,4 +124,9 @@ export const signOutSuccess = () => ({
 
 export const signOutFailure = () => ({
   type: SIGN_OUT_FAILURE,
+});
+
+export const setAuthRequirement = ({ requiresAuth }) => ({
+  type: SET_AUTH_REQUIREMENT,
+  requiresAuth,
 });

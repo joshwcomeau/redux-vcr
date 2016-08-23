@@ -6,13 +6,22 @@ import {
   SIGN_IN_FAILURE,
   SIGN_OUT_SUCCESS,
   CASSETTES_LIST_FAILURE,
+  SET_AUTH_REQUIREMENT,
 } from '../actions';
 
 
 const defaultStates = {
   loggedIn: false,
+  requiresAuth: true,
   error: null,
 };
+
+function requiresAuthReducer(state = defaultStates.requiresAuth, action) {
+  switch (action.type) {
+    case SET_AUTH_REQUIREMENT: return action.requiresAuth;
+    default: return state;
+  }
+}
 
 function loggedInReducer(state = defaultStates.loggedIn, action) {
   switch (action.type) {
@@ -37,4 +46,5 @@ function errorReducer(state = defaultStates.error, action) {
 export default combineReducers({
   loggedIn: loggedInReducer,
   error: errorReducer,
+  requiresAuth: requiresAuthReducer,
 });

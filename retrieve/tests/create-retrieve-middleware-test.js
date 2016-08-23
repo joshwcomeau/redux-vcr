@@ -68,7 +68,6 @@ describe('createRetrieveMiddleware', () => {
 
     it('asynchronously dispatches the `cassettesListSuccess` action', done => {
       window.setTimeout(() => {
-        console.log(next.firstCall.args);
         expect(next.callCount).to.equal(2);
         const receiveAction = next.secondCall.args[0];
 

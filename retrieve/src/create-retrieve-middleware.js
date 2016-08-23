@@ -19,19 +19,25 @@ const {
   signOutRequest,
   signOutSuccess,
   signOutFailure,
+  setAuthRequirement,
 } = actionCreators;
 
 const createRetrieveMiddleware = ({
   dataHandler,
   appName,
-}) => store => {
+  requiresAuth = true,
+} = {}) => store => {
   // If the user provided an `appName`, we want to use it as a localStorage
   // key, so that the user can have multiple ReduxVCR apps.
   const localStorageKey = appName ? `redux-vcr-${appName}` : 'redux-vcr-app';
 
+  // Most usecases require that the developer authenticate, but in rare cases,
+  // the user might want to allow anyone to view recorded sessions.
+  store.dispatch(setAuthRequirement({ requiresAuth }));
+
   // On page-load, first check to see if we already have a valid credential.
   const credentials = localStorage.getItem(localStorageKey);
-  if (credentials) {
+  if (credentials && requiresAuth) {
     dataHandler
       .signInWithCredential(JSON.parse(credentials))
       .then((user) => {
