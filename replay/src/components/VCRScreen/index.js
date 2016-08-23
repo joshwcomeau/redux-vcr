@@ -75,18 +75,27 @@ function getScreenContents({
   }
 }
 
-function getScreenEffects({ isLoggedIn, hasAuthError, cassetteStatus }) {
+function getScreenEffects({
+  isLoggedIn,
+  hasAuthError,
+  requiresAuth,
+  cassetteStatus,
+}) {
   const effects = [];
 
   if (hasAuthError) {
     effects.push('flashing', 'centered');
-  } else if (!isLoggedIn) {
+  } else if (!isLoggedIn && requiresAuth) {
     effects.push('scrolling', 'centered');
   } else if (cassetteStatus !== 'loaded') {
     effects.push('centered');
   }
 
   return effects;
+}
+
+function getScreenTextColor({ hasAuthError }) {
+  return hasAuthError ? 'red' : 'green';
 }
 
 const mapStateToProps = state => {
@@ -121,7 +130,13 @@ const mapStateToProps = state => {
       selectedCassette,
     }),
     label: getScreenLabel({ cassetteStatus, playStatus }),
-    effects: getScreenEffects({ isLoggedIn, hasAuthError, cassetteStatus }),
+    textColor: getScreenTextColor({ hasAuthError }),
+    effects: getScreenEffects({
+      isLoggedIn,
+      hasAuthError,
+      requiresAuth,
+      cassetteStatus,
+    }),
   };
 };
 
