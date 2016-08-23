@@ -15,57 +15,6 @@ const { actionCreators } = useLocal
 
 
 class VCR extends Component {
-  getScreenLabel() {
-    const { cassetteStatus, playStatus } = this.props;
-    if (cassetteStatus !== 'loaded') {
-      return '';
-    }
-    switch (playStatus) {
-      case 'playing': return 'Now Playing';
-      case 'paused': return 'Paused';
-      default: return 'Selected';
-    }
-  }
-
-  getScreenContents() {
-    const {
-      isLoggedIn,
-      hasAuthError,
-      cassetteStatus,
-      selectedCassette,
-    } = this.props;
-
-    if (hasAuthError) {
-      return 'ERROR. See console for details.';
-    }
-
-    if (!isLoggedIn) {
-      return 'Click to authenticate with GitHub';
-    }
-
-    switch (cassetteStatus) {
-      case 'idle': return 'Click to select a cassette';
-      case 'selecting': return 'Selecting...';
-      default: return selectedCassette;
-    }
-  }
-
-  getScreenEffects() {
-    const { isLoggedIn, hasAuthError, cassetteStatus } = this.props;
-
-    const effects = [];
-
-    if (hasAuthError) {
-      effects.push('flashing', 'centered');
-    } else if (!isLoggedIn) {
-      effects.push('scrolling', 'centered');
-    } else if (cassetteStatus !== 'loaded') {
-      effects.push('centered');
-    }
-
-    return effects;
-  }
-
   getVCRClickHandler() {
     if (!this.props.isLoggedIn) {
       return () => this.props.signInRequest({ authMethod: 'github.com' });
@@ -120,14 +69,7 @@ class VCR extends Component {
           </div>
           <div className="cassette-slot" onClick={viewCassettes} />
 
-          <VCRScreen
-            label={this.getScreenLabel()}
-            textColor={hasAuthError ? 'red' : 'green'}
-            effects={this.getScreenEffects()}
-            onClick={this.getVCRClickHandler()}
-          >
-            {this.getScreenContents()}
-          </VCRScreen>
+          <VCRScreen />
 
           <div className="primary-action-buttons">
             <VCRButton

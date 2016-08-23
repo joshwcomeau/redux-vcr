@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 import classNames from 'classnames';
 
 import './index.scss';
@@ -37,7 +38,93 @@ VCRScreen.propTypes = {
   textColor: PropTypes.oneOf(['green', 'red']),
   label: PropTypes.string,
   effects: PropTypes.arrayOf(PropTypes.string),
-  onClick: PropTypes.func.isRequired,
 };
 
-export default VCRScreen;
+
+function getScreenLabel({ cassetteStatus, playStatus }) {
+  if (cassetteStatus !== 'loaded') {
+    return '';
+  }
+  switch (playStatus) {
+    case 'playing': return 'Now Playing';
+    case 'paused': return 'Paused';
+    default: return 'Selected';
+  }
+}
+
+function getScreenContents({
+  isLoggedIn,
+  hasAuthError,
+  requiresAuth,
+  cassetteStatus,
+  selectedCassette,
+}) {
+  if (hasAuthError) {
+    return 'ERROR. See console for details.';
+  }
+
+  if (!isLoggedIn && requiresAuth) {
+    return 'Click to authenticate with GitHub';
+  }
+
+  switch (cassetteStatus) {
+    case 'idle': return 'Click to select a cassette';
+    case 'selecting': return 'Selecting...';
+    default: return selectedCassette;
+  }
+}
+
+function getScreenEffects({ isLoggedIn, hasAuthError, cassetteStatus }) {
+  const effects = [];
+
+  if (hasAuthError) {
+    effects.push('flashing', 'centered');
+  } else if (!isLoggedIn) {
+    effects.push('scrolling', 'centered');
+  } else if (cassetteStatus !== 'loaded') {
+    effects.push('centered');
+  }
+
+  return effects;
+}
+
+const mapStateToProps = state => {
+  // Our VCR screen is capable of displaying a ton of different stuff,
+  // depending on our state. Initially I was going to use selectors in
+  // the reducer files, but they span multiple concerns.
+  //
+  // If performance is a problem, consider memoizing these computations.
+  const {
+    reduxVCR: {
+      cassettes: {
+        status: cassetteStatus,
+        selected: selectedCassette,
+      },
+      play: {
+        status: playStatus,
+      },
+      authentication: {
+        loggedIn: isLoggedIn,
+        error: hasAuthError,
+        requiresAuth,
+      },
+    },
+  } = state;
+
+  return {
+    children: getScreenContents({
+      isLoggedIn,
+      hasAuthError,
+      requiresAuth,
+      cassetteStatus,
+      selectedCassette,
+    }),
+    label: getScreenLabel({ cassetteStatus, playStatus }),
+    effects: getScreenEffects({ isLoggedIn, hasAuthError, cassetteStatus }),
+  };
+};
+
+
+export { VCRScreen };
+
+export default connect(mapStateToProps)(VCRScreen);
