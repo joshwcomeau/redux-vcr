@@ -38,6 +38,7 @@ VCRScreen.propTypes = {
   textColor: PropTypes.oneOf(['green', 'red']),
   label: PropTypes.string,
   effects: PropTypes.arrayOf(PropTypes.string),
+  onClick: PropTypes.func.isRequired,
 };
 
 

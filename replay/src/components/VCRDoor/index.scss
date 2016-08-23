@@ -1,0 +1,86 @@
+@import '../variables';
+
+.redux-vcr-component .vcr-door {
+  .cassette-slot-door, .cassette-slot {
+    position: absolute;
+    top: $vcr-standard-padding - 2px;
+    left: 75px;
+    height: 48px;
+    line-height: 44px;
+    width: 305px;
+  }
+
+  .cassette-slot-door {
+    pointer-events: none;
+    z-index: 2;
+    border-top: 2px solid rgba(0,0,0,0.2);
+    border-left: 1px solid rgba(0,0,0,0.2);
+    border-right: 1px solid rgba(0,0,0,0.2);
+    border-bottom: 2px solid rgba(0,0,0,0.2);
+    border-radius: 2px;
+    background: $darkgray;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: -0.5px;
+    font-weight: bold;
+    text-align: center;
+    transition: transform 500ms;
+    transform-origin: top center;
+    transform: perspective(300px);
+
+    &:before, &:after {
+      content: '';
+      position: absolute;
+      top: 5px;
+      bottom: 5px;
+      width: 1px;
+      margin: auto;
+      background: $mediumgray;
+      opacity: 0.5;
+    }
+
+    &:before {
+      left: 10px;
+    }
+
+    &:after {
+      right: 10px;
+    }
+
+    &.is-open {
+      transform: perspective(300px) rotateX(-90deg);
+      transform-origin: top center;
+
+      .cassette-slot-door-label {
+        opacity: 0;
+      }
+    }
+
+    .cassette-slot-door-label {
+      opacity: 1;
+      transition: opacity 500ms;
+    }
+  }
+
+  .cassette-slot {
+    z-index: 1;
+    cursor: default;
+    background: darken($darkgray, 13%);
+    border-radius: 2px;
+    border-bottom: 15px solid darken($darkgray, 10%);
+    border-left: 15px solid darken($darkgray, 5%);
+    border-right: 15px solid darken($darkgray, 5%);
+    border-top: 1px solid rgba(255,255,255,0.2);
+
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
+    }
+  }
+}

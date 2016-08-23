@@ -6,6 +6,7 @@ import Draggable from 'react-draggable';
 import VCRButton from '../VCRButton';
 import VCRPowerLight from '../VCRPowerLight';
 import VCRScreen from '../VCRScreen';
+import VCRDoor from '../VCRDoor';
 import './index.scss';
 
 const useLocal = process.env.NODE_ENV === 'development';
@@ -15,12 +16,17 @@ const { actionCreators } = useLocal
 
 
 class VCR extends Component {
-  getVCRClickHandler() {
-    if (!this.props.isLoggedIn) {
-      return () => this.props.signInRequest({ authMethod: 'github.com' });
-    }
+  constructor(props) {
+    super(props);
 
-    return this.props.viewCassettes;
+    this.signIn = props.signInRequest.bind(null, { authMethod: 'github.com' });
+    this.handleVCRClick = this.handleVCRClick.bind(this);
+  }
+
+  handleVCRClick() {
+    const { isLoggedIn, requiresAuth, viewCassettes } = this.props;
+
+    return (!isLoggedIn && requiresAuth) ? this.signIn() : viewCassettes();
   }
 
   render() {
@@ -29,16 +35,12 @@ class VCR extends Component {
       playStatus,
       cassetteStatus,
       playbackSpeed,
-      hasAuthError,
       playCassette,
       pauseCassette,
       stopCassette,
-      viewCassettes,
       ejectCassette,
       changePlaybackSpeed,
     } = this.props;
-
-    const doorOpen = cassetteStatus === 'selecting';
 
     let playPauseAction;
     if (cassetteStatus !== 'loaded') {
@@ -60,16 +62,14 @@ class VCR extends Component {
             iconValue="eject"
             iconSize={16}
           />
-          <div
-            className={`cassette-slot-door ${doorOpen ? 'is-open' : ''}`}
-          >
-            <span className="cassette-slot-door-label">
-              {doorLabel}
-            </span>
-          </div>
-          <div className="cassette-slot" onClick={viewCassettes} />
 
-          <VCRScreen />
+          <VCRDoor
+            label={doorLabel}
+            isOpen={cassetteStatus === 'selecting'}
+            onClick={this.handleVCRClick}
+          />
+
+          <VCRScreen onClick={this.handleVCRClick} />
 
           <div className="primary-action-buttons">
             <VCRButton
@@ -138,6 +138,7 @@ VCR.propTypes = {
   selectedCassette: PropTypes.string,
   playbackSpeed: PropTypes.number,
   isLoggedIn: PropTypes.bool.isRequired,
+  requiresAuth: PropTypes.bool.isRequired,
   hasAuthError: PropTypes.bool.isRequired,
   playCassette: PropTypes.func.isRequired,
   pauseCassette: PropTypes.func.isRequired,
@@ -148,16 +149,13 @@ VCR.propTypes = {
   signInRequest: PropTypes.func.isRequired,
 };
 
-VCR.defaultProps = {
-  doorLabel: 'HI-FI STEREO SYSTEM',
-};
-
 const mapStateToProps = state => ({
   playStatus: state.reduxVCR.play.status,
   cassetteStatus: state.reduxVCR.cassettes.status,
   selectedCassette: state.reduxVCR.cassettes.selected,
   playbackSpeed: state.reduxVCR.play.speed,
   isLoggedIn: state.reduxVCR.authentication.loggedIn,
+  requiresAuth: state.reduxVCR.authentication.requiresAuth,
   hasAuthError: !!state.reduxVCR.authentication.error,
 });
 

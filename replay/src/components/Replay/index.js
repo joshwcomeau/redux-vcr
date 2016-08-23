@@ -12,6 +12,7 @@ import './index.scss';
 class Replay extends Component {
   render() {
     const {
+      doorLabel,
       cassettesBackdropColor,
       cassettesBackdropOpacity,
       cassetteStatus,
@@ -20,7 +21,7 @@ class Replay extends Component {
 
     return (
       <div className="redux-vcr-component">
-        <VCR />
+        <VCR doorLabel={doorLabel} />
 
         { cassetteStatus === 'selecting' ? <CassetteList /> : null }
 
@@ -36,6 +37,7 @@ class Replay extends Component {
 }
 
 Replay.propTypes = {
+  doorLabel: PropTypes.string,
   cassettesBackdropColor: PropTypes.string,
   cassettesBackdropOpacity: PropTypes.number,
   cassetteStatus: PropTypes.string.isRequired,
