@@ -21,11 +21,15 @@ if (!acceptedVersionTypes.includes(versionType)) {
 // - figure out what the current version is, and increment it
 // - publish redux-vcr.shared at the new version.
 // - update the /shared dependency for the 4 other packages, and then publish their new version.
+// - ensure that the 4 packages are using non-local shared dependency,
+//   although we need to switch it back to local when we're done.
 
-
-const getPathForPackageJson = moduleName => path.join(
-  __dirname, `../${moduleName}/package.json`
+const getPathForFile = fileName => moduleName => path.join(
+  __dirname, `../${moduleName}/${fileName}`
 );
+
+const getPathForPackageJson = getPathForFile('package.json');
+const getPathForUseLocal = getPathForFile('src/use-local.js');
 
 const parseAndRead = compose(
   JSON.parse,
@@ -37,6 +41,20 @@ const writePackageJson = (moduleName, newPackageContents) => {
     getPathForPackageJson(moduleName),
     JSON.stringify(newPackageContents, null, '  ')
   );
+};
+
+const updateSettingForLocalShared = newValue => {
+  ['capture', 'persist', 'retrieve', 'replay'].forEach(moduleName => {
+    const filePath = getPathForUseLocal(moduleName);
+    const fileContents = fs.readFileSync(filePath, 'utf8');
+
+    const updatedContents = fileContents.replace(
+      /export default (true|false)/,
+      `export default ${newValue}`
+    );
+
+    fs.writeFileSync(filePath, updatedContents);
+  });
 };
 
 const readPackageJson = compose(parseAndRead, getPathForPackageJson);
@@ -61,6 +79,10 @@ console.info(`
   =======================
 
 `);
+
+// Step 0: Ensure we're using the non-local version of our shared dependency
+updateSettingForLocalShared(false);
+
 
 // Step 1: Figure out what the next version should be.
 // Take the highest version from all current packages
@@ -110,9 +132,15 @@ _.forEach(mainPackages, (packageContents, moduleName) => {
 });
 
 
-// Step 5 (final)
+// Step 5
 // Publish all modules! :)
 exec('npm run publish:all');
+
+
+// Step 6
+// Restore our setting, so that when developing locally we use relative
+// paths for /shared
+updateSettingForLocalShared(true);
 
 
 // TODO: publish the 'parent' module that allows for a single-import.

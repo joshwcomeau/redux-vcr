@@ -9,7 +9,8 @@ import VCRScreen from '../VCRScreen';
 import VCRDoor from '../VCRDoor';
 import './index.scss';
 
-const useLocal = process.env.NODE_ENV === 'development';
+import useLocal from '../../use-local';
+
 const { actionCreators } = useLocal
   ? require('../../../../shared/src')
   : require('redux-vcr.shared');

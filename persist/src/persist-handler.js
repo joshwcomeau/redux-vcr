@@ -3,7 +3,8 @@ import invariant from 'invariant';
 
 import './polyfills';
 
-const useLocal = process.env.NODE_ENV === 'development';
+import useLocal from './use-local';
+
 const { FirebaseHandler } = useLocal
   ? require('../../shared/src')
   : require('redux-vcr.shared');

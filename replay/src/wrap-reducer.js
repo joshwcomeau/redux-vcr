@@ -1,4 +1,5 @@
-const useLocal = process.env.NODE_ENV === 'development';
+import useLocal from './use-local';
+
 const { actionTypes, reduxVCRReducer } = useLocal
   ? require('../../shared/src')
   : require('redux-vcr.shared');
