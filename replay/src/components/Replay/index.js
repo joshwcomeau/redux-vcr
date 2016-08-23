@@ -12,6 +12,8 @@ import './index.scss';
 class Replay extends Component {
   render() {
     const {
+      cassettesBackdropColor,
+      cassettesBackdropOpacity,
       cassetteStatus,
       hideCassettes,
     } = this.props;
@@ -25,8 +27,8 @@ class Replay extends Component {
         <Backdrop
           isShown={cassetteStatus === 'selecting'}
           handleClickClose={hideCassettes}
-          opacity={0.9}
-          background="#FFF"
+          background={cassettesBackdropColor}
+          opacity={cassettesBackdropOpacity}
         />
       </div>
     );
@@ -34,12 +36,15 @@ class Replay extends Component {
 }
 
 Replay.propTypes = {
+  cassettesBackdropColor: PropTypes.string,
+  cassettesBackdropOpacity: PropTypes.number,
   cassetteStatus: PropTypes.string.isRequired,
   hideCassettes: PropTypes.func,
 };
 
 Replay.defaultProps = {
-  position: 'bottom-left',
+  cassettesBackdropColor: '#FFF',
+  cassettesBackdropOpacity: 0.9,
 };
 
 const mapStateToProps = state => ({
