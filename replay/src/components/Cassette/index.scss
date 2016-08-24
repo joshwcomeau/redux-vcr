@@ -16,6 +16,7 @@ $spool-size: 60px;
   border-radius: 1px 1px 2px 2px;
   cursor: default;
   text-align: left;
+  font-family: "Lucida Grande", verdana, sans-serif;
 
   .front {
     position: absolute;
@@ -101,6 +102,9 @@ $spool-size: 60px;
     }
   }
 
+  // THEMES
+  // Different VHS cassettes have slightly different labels/footers.
+
   .label {
     position: absolute;
     z-index: 2;
@@ -115,10 +119,13 @@ $spool-size: 60px;
     .line {
       margin: 3px 6px;
       padding: 0 4px 2px;
-      border-bottom: 1px solid $lightgray;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+
+      &:first-of-type {
+        border-bottom: 1px solid $lightgray;
+      }
     }
 
     .line-name {
@@ -130,10 +137,10 @@ $spool-size: 60px;
     }
   }
 
-  .vhs-footer {
+  .label-footer {
     position: absolute;
     z-index: 2;
-    right: 0;
+    right: -30px;
     top: 0;
     bottom: 0;
     margin: auto;
@@ -141,10 +148,173 @@ $spool-size: 60px;
     line-height: 15px;
     font-size: 13px;
     transform: rotate(-90deg);
-    color: $lightgray;
-    background: $darkgray;
-    border: 1px solid $lightgray;
-    border-radius: 2px;
-    padding: 0 1px;
+  }
+
+
+  &.theme-generic {
+    .label-footer {
+      color: $lightgray;
+      background: $darkgray;
+      border: 1px solid $lightgray;
+      border-radius: 2px;
+      padding: 0 1px;
+    }
+  }
+
+  &.theme-tdk {
+    $tdk-red: #e81740;
+    $tdk-green: #47bf32;
+    $tdk-blue: #1988bc;
+
+    .label {
+      padding-left: 16px;
+    }
+
+    .line {
+      border-bottom: 1px dotted rgba(0,0,0,0.3);
+    }
+
+    .tdk-bars {
+      position: absolute;
+      left: 0;
+      top: 0;
+      border-radius: 4px 0 0 4px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      width: 16px;
+      height: $spine-height - 10px;
+
+      div {
+        flex: 1;
+
+        &:nth-of-type(1) {
+          background-color: $tdk-red;
+        }
+        &:nth-of-type(2) {
+          background-color: $tdk-green;
+        }
+        &:nth-of-type(3) {
+          background-color: $tdk-blue;
+        }
+      }
+    }
+
+    .label-footer {
+      text-align: center;
+      color: $offwhite;
+
+      .tdk-logo {
+        font-size: 14px;
+        font-weight: bold;
+        letter-spacing: 0;
+        line-height: 0.7em;
+      }
+      .tdk-source {
+        font-size: 4px;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  &.theme-kodak {
+    $kodak-yellow: #fdca3d;
+    $kodak-red: #dc492c;
+    $kodak-black: #38362f;
+    $kodak-block-width: $spine-height - 12px;
+
+    .label {
+      background: $kodak-yellow;
+      left: 10px;
+      right: 6px;
+      padding-left: $kodak-block-width + $kodak-block-width / 2;
+      padding-right: 20px;
+
+      &:before {
+        content: '';
+        position: absolute;
+        left: 1px;
+        top: 1px;
+        border-radius: 3px 0 0 3px;
+        background: $kodak-black;
+        width: $kodak-block-width;
+        height: $kodak-block-width;
+      }
+
+      &:after {
+        content: '';
+        width: 0;
+        height: 0;
+        left: $kodak-block-width;
+        top: 1px;
+      }
+    }
+    .line:first-of-type {
+      border-bottom: none;
+    }
+
+    .label-footer {
+      right: -8px;
+      font-size: 10px;
+      color: $kodak-red;
+      font-weight: bold;
+      letter-spacing: -0.5px;
+    }
+  }
+
+  &.theme-polaroid {
+    $polaroid-blue: #4898b6;
+    $polaroid-green: #8ca95c;
+    $polaroid-yellow: #fcc05f;
+    $polaroid-orange: #f19355;
+    $polaroid-red: #c45363;
+
+    .label {
+      background: $white;
+      right: 23px;
+
+      .line-name {
+        color: $darkgray;
+      }
+    }
+
+    .line {
+      margin-right: 8px;
+    }
+
+    .label-footer {
+      right: -24px;
+      font-size: 9px;
+      color: $white;
+      letter-spacing: -0.5px;
+      text-align: center;
+
+      .polaroid-boxes {
+        display: flex;
+        width: $spine-height - 9px;
+        transform: translateX(1px);
+        height: 9px;
+
+        div {
+          flex: 1;
+
+          &:nth-of-type(1) {
+            background-color: $polaroid-blue;
+          }
+          &:nth-of-type(2) {
+            background-color: $polaroid-green;
+          }
+          &:nth-of-type(3) {
+            background-color: $polaroid-yellow;
+          }
+          &:nth-of-type(4) {
+            background-color: $polaroid-orange;
+          }
+          &:nth-of-type(5) {
+            background-color: $polaroid-red;
+          }
+        }
+      }
+    }
   }
 }

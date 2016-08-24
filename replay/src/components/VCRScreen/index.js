@@ -42,6 +42,7 @@ VCRScreen.propTypes = {
 
 VCRScreen.defaultProps = {
   textColor: 'green',
+  effects: [],
 };
 
 
@@ -102,6 +103,10 @@ function getScreenTextColor({ hasAuthError }) {
 }
 
 const mapStateToProps = state => {
+  console.log('STATE', state);
+  if (process.env.NODE_ENV === 'test') {
+    return {};
+  }
   // Our VCR screen is capable of displaying a ton of different stuff,
   // depending on our state. Initially I was going to use selectors in
   // the reducer files, but they span multiple concerns.

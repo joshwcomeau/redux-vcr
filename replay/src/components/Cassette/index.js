@@ -1,12 +1,80 @@
 import React, { PropTypes } from 'react';
+import classNames from 'classnames';
 import moment from 'moment';
 
+import { themes } from '../../data/cassette-themes';
+import sampleWithProbability from '../../utils/sample-with-probability';
 import './index.scss';
 
 
-const Cassette = ({ id, label, timestamp, numOfActions, handleClick }) => {
+const Cassette = ({
+  id,
+  label,
+  timestamp,
+  numOfActions,
+  handleClick,
+  theme,
+}) => {
+  const classes = classNames(
+    'cassette',
+    `theme-${theme}`
+  );
+
+
+  let labelHeader;
+  switch (theme) {
+    case 'tdk': {
+      labelHeader = (
+        <div className="tdk-bars">
+          <div /><div /><div />
+        </div>
+      );
+      break;
+    }
+    default: {
+      // nothing
+    }
+  }
+
+  let labelFooter;
+  switch (theme) {
+    case 'polaroid': {
+      labelFooter = (
+        <div className="label-footer">
+          <div className="polaroid-boxes">
+            <div /><div /><div /><div /><div />
+          </div>
+          Polaroid
+        </div>
+      );
+      break;
+    }
+
+    case 'kodak': {
+      labelFooter = (
+        <div className="label-footer">Kodak</div>
+      );
+      break;
+    }
+
+    case 'tdk': {
+      labelFooter = (
+        <div className="label-footer">
+          <div className="tdk-logo">TDK</div>
+          <div className="tdk-source">Made in Japan</div>
+        </div>
+      );
+      break;
+    }
+
+    default: {
+      labelFooter = <div className="label-footer">VHS</div>;
+      break;
+    }
+  }
+
   return (
-    <div className="cassette" onClick={() => handleClick({ id })}>
+    <div className={classes} onClick={() => handleClick({ id })}>
       <div className="front">
         <div className="head" />
         <div className="spool left-spool">
@@ -23,18 +91,19 @@ const Cassette = ({ id, label, timestamp, numOfActions, handleClick }) => {
           <div className="square" />
         </div>
         <div className="label">
+          {labelHeader}
           <div className="line">
             <span className="line-name">Name: </span>
             {label || id}
           </div>
           <div className="line">
             <span className="line-name">Recorded: </span>
-            {moment(timestamp).format('MMMM Do YYYY, h:mm A')}
+            {moment(timestamp).format('MMM Do, h:mm A')}
             <span className="line-name indented">Actions: </span>
             {numOfActions}
           </div>
+          {labelFooter}
         </div>
-        <div className="vhs-footer">VHS</div>
       </div>
     </div>
   );
@@ -46,13 +115,13 @@ Cassette.propTypes = {
   timestamp: PropTypes.number.isRequired,
   numOfActions: PropTypes.number.isRequired,
   handleClick: PropTypes.func,
-  // theme: PropTypes.oneOf(['rainbow', ''])
+  theme: PropTypes.oneOf(Object.keys(themes)),
 };
 
 Cassette.defaultProps = {
-  // TODO: Make this randomly select from the list.
-  theme: 'rainbow',
   handleClick() {},
+  theme: sampleWithProbability(themes),
 };
 
+export { Cassette };
 export default Cassette;

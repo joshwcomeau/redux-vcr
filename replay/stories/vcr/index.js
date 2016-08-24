@@ -1,15 +1,25 @@
 /* eslint-disable semi, no-unused-vars */
 import React, { Component } from 'react';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 import { storiesOf, action } from '@kadira/storybook';
 
 import Centered from '../Centered';
 import { VCR } from '../../src/components/VCR';
 
+const dummyReducer = (state = {}, action) => {
+  return state;
+};
+
+const store = createStore(dummyReducer);
+
 storiesOf('VCR', module)
   .addDecorator(story => (
-    <div className="redux-vcr-component at-bottom">
-      {story()}
-    </div>
+    <Provider store={store}>
+      <div className="redux-vcr-component at-bottom">
+        {story()}
+      </div>
+    </Provider>
   ))
   .add('Default (stopped, idle, unauthenticated)', () => (
     <VCR
