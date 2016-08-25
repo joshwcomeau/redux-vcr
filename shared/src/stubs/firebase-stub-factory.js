@@ -24,6 +24,16 @@ const firebaseStubFactory = () => {
       }, 10);
     },
 
+    signInWithPopup(provider) {
+      return new Promise((resolve) => {
+        resolve({
+          user: {},
+          credential: {},
+        });
+      });
+    },
+
+
     onAuthStateChanged(callback) {
       stateChangeCallback = callback;
     },
@@ -45,6 +55,10 @@ const firebaseStubFactory = () => {
     },
   };
 
+  firebaseStub.auth.GithubAuthProvider = () => {
+    return {};
+  };
+
   sinon.spy(firebaseStub, 'initializeApp');
   sinon.spy(firebaseStub, 'auth');
   sinon.spy(firebaseStub, 'database');
@@ -53,6 +67,7 @@ const firebaseStubFactory = () => {
   sinon.spy(firebaseStub, 'ref');
   sinon.spy(firebaseStub, 'set');
   sinon.spy(firebaseStub, 'once');
+  sinon.spy(firebaseStub.auth, 'GithubAuthProvider');
 
   return firebaseStub;
 };
