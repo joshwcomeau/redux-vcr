@@ -34,11 +34,15 @@ const createRetrieveMiddleware = ({
 
   // On page-load, first check to see if we already have a valid credential.
   const credentials = localStorage.getItem(localStorageKey);
+
   if (credentials && requiresAuth) {
     dataHandler
       .signInWithCredential(JSON.parse(credentials))
-      .then((user) => {
+      .then(user => {
         store.dispatch(signInSuccess({ user }));
+      })
+      .catch(error => {
+        store.dispatch(signInFailure({ error }));
       });
       // Don't catch any errors; if it fails, they can sign in the normal way.
   }

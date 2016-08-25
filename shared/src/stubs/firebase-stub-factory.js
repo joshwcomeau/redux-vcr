@@ -33,6 +33,18 @@ const firebaseStubFactory = () => {
       });
     },
 
+    signInWithCredential(credential) {
+      return new Promise((resolve, reject) => {
+        if (credential.accessToken !== 'good-credential') {
+          // TODO: Figure out what Firebase error happens.
+          reject(new Error('oh no!'));
+        }
+
+        return resolve({
+          email: 'josh@person.com',
+        });
+      });
+    },
 
     onAuthStateChanged(callback) {
       stateChangeCallback = callback;
@@ -57,6 +69,10 @@ const firebaseStubFactory = () => {
 
   firebaseStub.auth.GithubAuthProvider = () => {
     return {};
+  };
+
+  firebaseStub.auth.GithubAuthProvider.credential = accessToken => {
+    return { accessToken };
   };
 
   sinon.spy(firebaseStub, 'initializeApp');

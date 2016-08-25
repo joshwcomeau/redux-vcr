@@ -10,6 +10,7 @@ import { RetrieveHandler, createRetrieveMiddleware } from '../src';
 const {
   SIGN_IN_REQUEST,
   SIGN_IN_SUCCESS,
+  SIGN_IN_FAILURE,
   CASSETTES_LIST_REQUEST,
   CASSETTES_LIST_SUCCESS,
   CASSETTE_ACTIONS_RECEIVE,
@@ -19,6 +20,7 @@ const {
 
 const {
   setAuthRequirement,
+  signInSuccess,
 } = actionCreators;
 
 const firebaseAuth = {
@@ -59,6 +61,106 @@ describe('createRetrieveMiddleware', () => {
       expect(store.dispatch.firstCall.args[0]).to.deep.equal(
         setAuthRequirement({ requiresAuth: false })
       );
+    });
+  });
+
+  describe('remembered credentials', () => {
+    const dummyReducer = sinon.stub();
+    const store = createStore(dummyReducer);
+    const dataHandler = new RetrieveHandler({ firebaseAuth });
+
+    sinon.spy(store, 'dispatch');
+
+    context('when no app name is given', () => {
+      const localStorageKey = 'redux-vcr-app';
+
+      afterEach(() => {
+        localStorage.removeItem(localStorageKey);
+        store.dispatch.reset();
+      });
+
+      it('dispatches `signInFailure` when the credential is invalid', done => {
+        localStorage.setItem(localStorageKey, JSON.stringify({
+          accessToken: 'bad-credential',
+          provider: 'github.com',
+        }));
+
+        createRetrieveMiddleware({ dataHandler })(store);
+
+        window.setTimeout(() => {
+          // The first call is to SET_AUTH_REQUIREMENT, tested earlier
+          expect(store.dispatch.callCount).to.equal(2);
+
+          const actionType = store.dispatch.secondCall.args[0].type;
+          expect(actionType).to.equal(SIGN_IN_FAILURE);
+
+          done();
+        }, 10);
+      });
+
+      it('dispatches `signInSuccess`', done => {
+        localStorage.setItem(localStorageKey, JSON.stringify({
+          accessToken: 'good-credential',
+          provider: 'github.com',
+        }));
+
+        createRetrieveMiddleware({ dataHandler })(store);
+
+        window.setTimeout(() => {
+          expect(store.dispatch.callCount).to.equal(2);
+
+          const actionType = store.dispatch.secondCall.args[0].type;
+          expect(actionType).to.equal(SIGN_IN_SUCCESS);
+
+          done();
+        }, 10);
+      });
+    });
+
+    context('when a specific app name is given', () => {
+      const appName = 'coolApp';
+      const localStorageKey = `redux-vcr-${appName}`;
+
+      afterEach(() => {
+        localStorage.removeItem(localStorageKey);
+        store.dispatch.reset();
+      });
+
+      it('dispatches `signInFailure` when the credential is invalid', done => {
+        localStorage.setItem(localStorageKey, JSON.stringify({
+          accessToken: 'bad-credential',
+          provider: 'github.com',
+        }));
+
+        createRetrieveMiddleware({ dataHandler, appName })(store);
+
+        window.setTimeout(() => {
+          expect(store.dispatch.callCount).to.equal(2);
+
+          const actionType = store.dispatch.secondCall.args[0].type;
+          expect(actionType).to.equal(SIGN_IN_FAILURE);
+
+          done();
+        }, 10);
+      });
+
+      it('dispatches `signInSuccess`', done => {
+        localStorage.setItem(localStorageKey, JSON.stringify({
+          accessToken: 'good-credential',
+          provider: 'github.com',
+        }));
+
+        createRetrieveMiddleware({ dataHandler, appName })(store);
+
+        window.setTimeout(() => {
+          expect(store.dispatch.callCount).to.equal(2);
+
+          const actionType = store.dispatch.secondCall.args[0].type;
+          expect(actionType).to.equal(SIGN_IN_SUCCESS);
+
+          done();
+        }, 10);
+      });
     });
   });
 
@@ -119,7 +221,6 @@ describe('createRetrieveMiddleware', () => {
         expect(store.dispatch.callCount).to.equal(1);
       });
     });
-
 
     context(SIGN_IN_SUCCESS, () => {
 

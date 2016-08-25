@@ -103,7 +103,6 @@ function getScreenTextColor({ hasAuthError }) {
 }
 
 const mapStateToProps = state => {
-  console.log('STATE', state);
   if (process.env.NODE_ENV === 'test') {
     return {};
   }
