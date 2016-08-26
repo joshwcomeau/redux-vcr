@@ -31,6 +31,10 @@ const firebaseAuth = {
 
 
 describe('createRetrieveMiddleware', () => {
+  afterEach(() => {
+    localStorage.clear();
+  });
+
   describe('instantiation actions', () => {
     const dummyReducer = sinon.stub();
     const store = createStore(dummyReducer);
@@ -75,7 +79,6 @@ describe('createRetrieveMiddleware', () => {
       const localStorageKey = 'redux-vcr-app';
 
       afterEach(() => {
-        localStorage.removeItem(localStorageKey);
         store.dispatch.reset();
       });
 
@@ -122,7 +125,6 @@ describe('createRetrieveMiddleware', () => {
       const localStorageKey = `redux-vcr-${appName}`;
 
       afterEach(() => {
-        localStorage.removeItem(localStorageKey);
         store.dispatch.reset();
       });
 
@@ -223,7 +225,42 @@ describe('createRetrieveMiddleware', () => {
     });
 
     context(SIGN_IN_SUCCESS, () => {
+      const dummyReducer = sinon.stub();
+      const store = createStore(dummyReducer);
+      const action = {
+        type: SIGN_IN_SUCCESS,
+        credential: {
+          accessToken: 'abc123',
+          provider: 'github.com',
+        },
+      };
 
+      sinon.spy(localStorage, 'setItem');
+
+      beforeEach(() => {
+        localStorage.setItem.reset();
+        middleware(store)(next)(action);
+      });
+
+      afterEach(() => {
+        next.reset();
+      });
+
+      after(() => {
+        localStorage.setItem.restore();
+      });
+
+      it('passes the action onto the store', () => {
+        expect(next.callCount).to.equal(1);
+        expect(next.firstCall.args[0]).to.deep.equal(action);
+      });
+
+      it('writes to localStorage', () => {
+        expect(localStorage.setItem.callCount).to.equal(1);
+
+        const [appName, stringifiedCreds] = localStorage.setItem.firstCall.args;
+        expect(stringifiedCreds).to.equal(JSON.stringify(action.credential));
+      });
     });
 
 
