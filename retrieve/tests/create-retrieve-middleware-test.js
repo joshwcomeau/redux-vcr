@@ -4,7 +4,7 @@ import { createStore } from 'redux';
 // import { actionTypes } from 'redux-vcr.shared';
 import { actionTypes, actionCreators } from '../../shared/src';
 
-import { RetrieveHandler, createRetrieveMiddleware } from '../src';
+import { createRetrieveHandler, createRetrieveMiddleware } from '../src';
 
 
 const {
@@ -38,7 +38,7 @@ describe('createRetrieveMiddleware', () => {
   describe('instantiation actions', () => {
     const dummyReducer = sinon.stub();
     const store = createStore(dummyReducer);
-    const retrieveHandler = new RetrieveHandler({ firebaseAuth });
+    const retrieveHandler = createRetrieveHandler({ firebaseAuth });
 
     sinon.stub(store, 'dispatch');
 
@@ -71,7 +71,7 @@ describe('createRetrieveMiddleware', () => {
   describe('remembered credentials', () => {
     const dummyReducer = sinon.stub();
     const store = createStore(dummyReducer);
-    const retrieveHandler = new RetrieveHandler({ firebaseAuth });
+    const retrieveHandler = createRetrieveHandler({ firebaseAuth });
 
     sinon.spy(store, 'dispatch');
 
@@ -167,7 +167,7 @@ describe('createRetrieveMiddleware', () => {
   });
 
   describe('handled actions', () => {
-    const retrieveHandler = new RetrieveHandler({ firebaseAuth });
+    const retrieveHandler = createRetrieveHandler({ firebaseAuth });
     const middleware = createRetrieveMiddleware({ retrieveHandler });
     const next = sinon.stub();
 

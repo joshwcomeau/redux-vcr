@@ -278,8 +278,7 @@ describe('createReplayHandler', () => {
         // .then(() => expect(store.dispatch.callCount).to.equal(4))
         // .then(() => delay(55))
         // .then(() => expect(store.dispatch.callCount).to.equal(7))
-        .then(() => done())
-        .catch(err => console.log(err) && done());
+        .then(() => done());
     });
   });
 });

@@ -18,7 +18,7 @@ import userReducer, * as userSelectors from './reducers/user.reducer';
 // root reducer.
 import reduxVCRReducer from './reducers';
 
-import FirebaseHandler from './utils/firebase-handler';
+import createFirebaseHandler from './utils/create-firebase-handler';
 
 
 // We want to split our action types from our action creators.
@@ -50,5 +50,5 @@ export {
   userReducer,
   userSelectors,
   reduxVCRReducer,
-  FirebaseHandler,
+  createFirebaseHandler,
 };

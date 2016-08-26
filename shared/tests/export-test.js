@@ -11,7 +11,7 @@ import {
   playSelectors,
   userReducer,
   userSelectors,
-  FirebaseHandler,
+  createFirebaseHandler,
 } from '../src';
 
 
@@ -110,7 +110,7 @@ describe('shared export', () => {
   });
 
 
-  it('exports FirebaseHandler', () => {
-    expect(FirebaseHandler).to.be.a('function');
+  it('exports createFirebaseHandler', () => {
+    expect(createFirebaseHandler).to.be.a('function');
   });
 });

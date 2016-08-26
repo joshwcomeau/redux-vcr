@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import omit from 'lodash';
 
-import FirebaseHandler from '../src/utils/firebase-handler';
+import createFirebaseHandler from '../src/utils/create-firebase-handler';
 
 const firebaseAuth = {
   apiKey: 'abc123',
@@ -16,13 +16,13 @@ const source = 'persist';
 describe('FirebaseHandler', () => {
   describe('initialization', () => {
     it('throws when no arguments are provided', () => {
-      expect(() => new FirebaseHandler()).to.throw(/firebaseAuth/);
+      expect(() => createFirebaseHandler()).to.throw(/firebaseAuth/);
     });
 
     it('throws when no source is provided', () => {
       const config = { firebaseAuth };
 
-      expect(() => new FirebaseHandler(config)).to.throw(/source/);
+      expect(() => createFirebaseHandler(config)).to.throw(/source/);
     });
 
     // Check that all 3 firebase keys are required
@@ -35,7 +35,7 @@ describe('FirebaseHandler', () => {
           source,
         };
 
-        const genHandler = () => new FirebaseHandler(auth);
+        const genHandler = () => createFirebaseHandler(auth);
         expect(genHandler).to.throw(/firebaseAuth/);
       });
     });
@@ -44,7 +44,7 @@ describe('FirebaseHandler', () => {
       let handler;
 
       beforeEach(() => {
-        handler = new FirebaseHandler({ firebaseAuth, source });
+        handler = createFirebaseHandler({ firebaseAuth, source });
       });
 
       it('invokes `initializeApp` with the supplied auth', () => {

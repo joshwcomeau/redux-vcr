@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
 
-import { RetrieveHandler } from '../src';
+import { createRetrieveHandler } from '../src';
 
 const firebaseAuth = {
   apiKey: 'abc123',
@@ -14,7 +14,7 @@ describe('RetrieveHandler', () => {
     let handler;
     let firebase;
     beforeEach(() => {
-      handler = new RetrieveHandler({ firebaseAuth });
+      handler = createRetrieveHandler({ firebaseAuth });
       firebase = handler.firebaseHandler.firebase;
 
       handler.retrieveList();
@@ -41,7 +41,7 @@ describe('RetrieveHandler', () => {
     let handler;
     let firebase;
     beforeEach(() => {
-      handler = new RetrieveHandler({ firebaseAuth });
+      handler = createRetrieveHandler({ firebaseAuth });
       firebase = handler.firebaseHandler.firebase;
 
       handler.retrieveActions({ id: '123' });

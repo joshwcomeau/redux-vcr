@@ -10,8 +10,8 @@ const firebaseAuth = {
 };
 
 
-describe('PersistHandler', () => {
-  describe('authentication', () => {
+describe('createPersistHandler', () => {
+  describe('anonymous authentication', () => {
     it('fails when invoked immediately', () => {
       // This test fails because the constructor needs some time
       // to authenticate with firebase.
@@ -24,7 +24,7 @@ describe('PersistHandler', () => {
       expect(() => handler.persist(cassette)).to.throw(/firebase/);
     });
 
-    it('succeeds when a debounce is used', done => {
+    it('succeeds when a pause is alloted for authentication', done => {
       const handler = createPersistHandler({
         firebaseAuth,
         debounceLength: 50,
@@ -37,18 +37,20 @@ describe('PersistHandler', () => {
       // This is a little tricky, since the `persist` method is debounced.
       // The function will return just fine, even if there's a problem
       // with the auth.
-      handler.persist(cassette);
-
       expect(firebase.set.callCount).to.equal(0);
 
-      // Because of that, we also need to wait and see if .set
-      // is called, which is the actual firebase-persist method.
+      // Wait for the anonymous authentication to complete
       window.setTimeout(() => {
-        // Called twice. Once for the cassette, once for its actions.
-        expect(firebase.set.callCount).to.equal(2);
+        handler.persist(cassette);
 
-        done();
-      }, 1000);
+        // Wait for the debounced persist to trigger
+        window.setTimeout(() => {
+          // Called twice. Once for the cassette, once for its actions.
+          expect(firebase.set.callCount).to.equal(2);
+
+          done();
+        }, 100);
+      }, 100);
     });
   });
 
@@ -97,8 +99,9 @@ describe('PersistHandler', () => {
 
       window.setTimeout(() => {
         handler.persist(cassette);
-        done();
-      }, 50);
+
+        window.setTimeout(done, 200);
+      }, 200);
     });
 
     it('gets a database reference', () => {
@@ -136,18 +139,25 @@ describe('PersistHandler', () => {
   });
 
   describe('debounce timing', () => {
+    let handler;
+    let firebase;
+    const cassette = {
+      data: { label: "Josh's great session" },
+      actions: [{ type: 'DO_GREAT_THINGS' }],
+    };
+
+    beforeEach(done => {
+      handler = createPersistHandler({ firebaseAuth });
+      firebase = handler.firebaseHandler.firebase;
+
+      window.setTimeout(done, 200);
+    });
+
     it('debounces the persist method when set', done => {
       // In this test, we'll invoke `persist` several times very quickly,
       // and check to see that:
       //   - it isn't invoked at all right away
       //   - it is only invoked once, at the end of the debounce.
-      const handler = createPersistHandler({
-        firebaseAuth,
-        debounceLength: 200,
-      });
-      const firebase = handler.firebaseHandler.firebase;
-      const cassette = { actions: [{ type: 'JUMP_OVER_BARN' }] };
-
       for (let i = 0; i <= 5; i++) {
         handler.persist(cassette);
       }

@@ -8,13 +8,13 @@ import { createStore, applyMiddleware, compose } from 'redux';
 // // LOCAL IMPORTS. Useful for dev
 import { createCaptureMiddleware } from '../../capture/src';
 import { createPersistHandler } from '../../persist/src';
-import { RetrieveHandler, createRetrieveMiddleware } from '../../retrieve/src';
+import { createRetrieveHandler, createRetrieveMiddleware } from '../../retrieve/src';
 import { createReplayMiddleware, wrapReducer } from '../../replay/src';
 
 // PUBLISHED IMPORTS. Useful to ensure what gets published works.
 // import { createCaptureMiddleware } from 'redux-vcr.capture';
 // import { createPersistHandler } from 'redux-vcr.persist';
-// import { RetrieveHandler, createRetrieveMiddleware } from 'redux-vcr.retrieve';
+// import { createRetrieveHandler, createRetrieveMiddleware } from 'redux-vcr.retrieve';
 // import { createReplayMiddleware, wrapReducer } from 'redux-vcr.replay';
 
 import DevTools from './components/DevTools';
@@ -55,7 +55,7 @@ if (settings.runAsUser) {
 }
 
 if (settings.runAsAdmin) {
-  // Inversely, the RetrieveHandler pulls actions from Firebase, allowing
+  // Inversely, the createRetrieveHandler pulls actions from Firebase, allowing
   // them to be replayed. It should only be included in development.
   const retrieveHandler = ;
 
@@ -63,7 +63,7 @@ if (settings.runAsAdmin) {
     // The retrieve middleware listens for specific actions dispatched
     // from the Replay components, to fetch the recordings needed.
     createRetrieveMiddleware({
-      retrieveHandler: new RetrieveHandler({ firebaseAuth }),
+      retrieveHandler: createRetrieveHandler({ firebaseAuth }),
     }),
 
     // Finally, the replay middleware is in charge of intercepting the

@@ -182,9 +182,9 @@ For this reason, you may supply a custom app name. It will be used to create the
 
 
 
-### `new RetrieveHandler({ firebaseAuth })`
+### `createRetrieveHandler({ firebaseAuth })`
 
-#### Arguments (to constructor)
+#### Arguments
 
 
 #### `firebaseAuth`
@@ -202,7 +202,7 @@ For more information, see [Getting Started with Firebase](placeholder.com).
 ### Example usage:
 
 ```js
-const retrieveHandler = new RetrieveHandler({
+const retrieveHandler = createRetrieveHandler({
   firebaseAuth: {
     apiKey: 'AAAAj8s9vj9sajf9jaf9dsf9a',
     authDomain: 'your-sub-domain.firebaseapp.com',
