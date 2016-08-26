@@ -1,13 +1,11 @@
 import { actionTypes, actionCreators } from 'redux-vcr.shared';
-import defaultPlayHandler from './play-handler';
+import createReplayHandler from './create-replay-handler';
 
 const { PLAY_CASSETTE, STOP_CASSETTE } = actionTypes;
 const { rewindCassetteAndRestoreApp } = actionCreators;
 
-
 const createReplayMiddleware = ({
-  playHandler = defaultPlayHandler,
-  maximumDelay,
+  replayHandler = createReplayHandler(),
 } = {}) => (
   store => next => action => {
     switch (action.type) {
@@ -30,10 +28,9 @@ const createReplayMiddleware = ({
         next(action);
 
         // Finally, pass the data onto our playHandler
-        return playHandler({
+        return replayHandler.play({
           store,
           next,
-          maximumDelay,
         });
       }
 

@@ -11,16 +11,15 @@ const generateCassette = () => ({
 // eslint-disable-next-line import/prefer-default-export
 const createCaptureMiddleware = ({
   blacklist = [],
-  dataHandler,
-  prefix = 'REDUX_VCR',
+  persistHandler,
 } = {}) => {
   const cassette = generateCassette();
 
   // Ensure that the data handler we've supplied is valid
   invariant(
-    !!dataHandler && typeof dataHandler.persist === 'function',
-    `Please supply a valid dataHandler to ReduxVCR/capture middleware.
-    A valid dataHandler implements a 'persist' method for syncing to a
+    !!persistHandler && typeof persistHandler.persist === 'function',
+    `Please supply a valid persistHandler to ReduxVCR/capture middleware.
+    A valid persistHandler implements a 'persist' method for syncing to a
     database.
 
     For more information, see PLACEHOLDER.`
@@ -28,7 +27,7 @@ const createCaptureMiddleware = ({
 
   // In addition to any user-specified actions, we want to ignore any actions
   // emitted from ReduxVCR/replay.
-  blacklist.push({ type: prefix, matchingCriteria: 'startsWith' });
+  blacklist.push({ type: 'REDUX_VCR', matchingCriteria: 'startsWith' });
 
   // We've polyfilled performance.now to run in all environments.
   let timeSinceLastEvent = performance.now();
@@ -56,7 +55,7 @@ const createCaptureMiddleware = ({
       delay,
     });
 
-    dataHandler.persist(cassette);
+    persistHandler.persist(cassette);
 
     return next(action);
   };

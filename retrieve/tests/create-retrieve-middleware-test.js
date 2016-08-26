@@ -38,7 +38,7 @@ describe('createRetrieveMiddleware', () => {
   describe('instantiation actions', () => {
     const dummyReducer = sinon.stub();
     const store = createStore(dummyReducer);
-    const dataHandler = new RetrieveHandler({ firebaseAuth });
+    const retrieveHandler = new RetrieveHandler({ firebaseAuth });
 
     sinon.stub(store, 'dispatch');
 
@@ -47,7 +47,7 @@ describe('createRetrieveMiddleware', () => {
     });
 
     it('dispatches `setAuthRequirement`', () => {
-      createRetrieveMiddleware({ dataHandler })(store);
+      createRetrieveMiddleware({ retrieveHandler })(store);
 
       expect(store.dispatch.callCount).to.equal(1);
       expect(store.dispatch.firstCall.args[0]).to.deep.equal(
@@ -57,7 +57,7 @@ describe('createRetrieveMiddleware', () => {
 
     it('dispatches `setAuthRequirement` with false when set to false', () => {
       createRetrieveMiddleware({
-        dataHandler,
+        retrieveHandler,
         requiresAuth: false,
       })(store);
 
@@ -71,7 +71,7 @@ describe('createRetrieveMiddleware', () => {
   describe('remembered credentials', () => {
     const dummyReducer = sinon.stub();
     const store = createStore(dummyReducer);
-    const dataHandler = new RetrieveHandler({ firebaseAuth });
+    const retrieveHandler = new RetrieveHandler({ firebaseAuth });
 
     sinon.spy(store, 'dispatch');
 
@@ -88,7 +88,7 @@ describe('createRetrieveMiddleware', () => {
           provider: 'github.com',
         }));
 
-        createRetrieveMiddleware({ dataHandler })(store);
+        createRetrieveMiddleware({ retrieveHandler })(store);
 
         window.setTimeout(() => {
           // The first call is to SET_AUTH_REQUIREMENT, tested earlier
@@ -107,7 +107,7 @@ describe('createRetrieveMiddleware', () => {
           provider: 'github.com',
         }));
 
-        createRetrieveMiddleware({ dataHandler })(store);
+        createRetrieveMiddleware({ retrieveHandler })(store);
 
         window.setTimeout(() => {
           expect(store.dispatch.callCount).to.equal(2);
@@ -134,7 +134,7 @@ describe('createRetrieveMiddleware', () => {
           provider: 'github.com',
         }));
 
-        createRetrieveMiddleware({ dataHandler, appName })(store);
+        createRetrieveMiddleware({ retrieveHandler, appName })(store);
 
         window.setTimeout(() => {
           expect(store.dispatch.callCount).to.equal(2);
@@ -152,7 +152,7 @@ describe('createRetrieveMiddleware', () => {
           provider: 'github.com',
         }));
 
-        createRetrieveMiddleware({ dataHandler, appName })(store);
+        createRetrieveMiddleware({ retrieveHandler, appName })(store);
 
         window.setTimeout(() => {
           expect(store.dispatch.callCount).to.equal(2);
@@ -167,19 +167,19 @@ describe('createRetrieveMiddleware', () => {
   });
 
   describe('handled actions', () => {
-    const dataHandler = new RetrieveHandler({ firebaseAuth });
-    const middleware = createRetrieveMiddleware({ dataHandler });
+    const retrieveHandler = new RetrieveHandler({ firebaseAuth });
+    const middleware = createRetrieveMiddleware({ retrieveHandler });
     const next = sinon.stub();
 
-    sinon.spy(dataHandler, 'retrieveList');
-    sinon.spy(dataHandler, 'retrieveActions');
-    sinon.spy(dataHandler, 'signInWithPopup');
+    sinon.spy(retrieveHandler, 'retrieveList');
+    sinon.spy(retrieveHandler, 'retrieveActions');
+    sinon.spy(retrieveHandler, 'signInWithPopup');
 
     afterEach(() => {
       next.reset();
-      dataHandler.retrieveList.reset();
-      dataHandler.retrieveActions.reset();
-      dataHandler.signInWithPopup.reset();
+      retrieveHandler.retrieveList.reset();
+      retrieveHandler.retrieveActions.reset();
+      retrieveHandler.signInWithPopup.reset();
     });
 
     it('forwards unrelated actions through the middleware', () => {
@@ -209,7 +209,7 @@ describe('createRetrieveMiddleware', () => {
           })
         )).to.throw(/github.com/);
 
-        expect(dataHandler.signInWithPopup.callCount).to.equal(1);
+        expect(retrieveHandler.signInWithPopup.callCount).to.equal(1);
         expect(next.callCount).to.equal(0);
       });
 
@@ -274,7 +274,7 @@ describe('createRetrieveMiddleware', () => {
       });
 
       it('invokes `retrieveList`', done => {
-        expect(dataHandler.retrieveList.callCount).to.equal(1);
+        expect(retrieveHandler.retrieveList.callCount).to.equal(1);
 
         // Adding a short delay, since the middleware is asynchronous.
         // Otherwise, it might complete during the next test, and throw off
@@ -321,7 +321,7 @@ describe('createRetrieveMiddleware', () => {
       it('invokes `retrieveActions`', done => {
         middleware(store)(next)(action);
 
-        expect(dataHandler.retrieveActions.callCount).to.equal(1);
+        expect(retrieveHandler.retrieveActions.callCount).to.equal(1);
 
         window.setTimeout(done, 10);
       });
@@ -368,7 +368,7 @@ describe('createRetrieveMiddleware', () => {
 
         middleware(loadedStore)(next)(action);
 
-        expect(dataHandler.retrieveActions.callCount).to.equal(0);
+        expect(retrieveHandler.retrieveActions.callCount).to.equal(0);
 
         window.setTimeout(done, 10);
       });

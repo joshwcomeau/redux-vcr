@@ -3,10 +3,12 @@ import { expect } from 'chai';
 
 import reducer from '../../src/reducers/authentication.reducer';
 import {
+  SET_AUTH_REQUIREMENT,
   SIGN_IN_REQUEST,
   SIGN_IN_SUCCESS,
   SIGN_IN_FAILURE,
   SIGN_OUT_SUCCESS,
+  setAuthRequirement,
   signInRequest,
   signInSuccess,
   signInFailure,
@@ -21,9 +23,27 @@ describe('authentication reducer', () => {
       const expectedState = {
         loggedIn: false,
         error: null,
+        requiresAuth: true,
       };
 
       expect(initialState).to.deep.equal(expectedState);
+    });
+  });
+
+  describe(SET_AUTH_REQUIREMENT, () => {
+    it('updates `requiresAuth`', () => {
+      const state = reducer({}, {});
+
+      const action = setAuthRequirement({ requiresAuth: false });
+
+      const expectedState = {
+        loggedIn: false,
+        error: null,
+        requiresAuth: false,
+      };
+      const actualState = reducer(state, action);
+
+      expect(actualState).to.deep.equal(expectedState);
     });
   });
 
@@ -39,6 +59,7 @@ describe('authentication reducer', () => {
       const expectedState = {
         loggedIn: false,
         error: null,
+        requiresAuth: true,
       };
       const actualState = reducer(state, action);
 
@@ -58,6 +79,7 @@ describe('authentication reducer', () => {
       const expectedState = {
         loggedIn: true,
         error: null,
+        requiresAuth: true,
       };
       const actualState = reducer(state, action);
 
@@ -74,6 +96,7 @@ describe('authentication reducer', () => {
       const expectedState = {
         loggedIn: false,
         error: 'blew up',
+        requiresAuth: true,
       };
       const actualState = reducer(state, action);
 
@@ -91,6 +114,7 @@ describe('authentication reducer', () => {
       const expectedState = {
         loggedIn: false,
         error: null,
+        requiresAuth: true,
       };
       const actualState = reducer(state, action);
 

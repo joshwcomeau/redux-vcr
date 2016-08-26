@@ -20,7 +20,7 @@ const {
 } = actionCreators;
 
 const createRetrieveMiddleware = ({
-  dataHandler,
+  retrieveHandler,
   appName,
   requiresAuth = true,
 } = {}) => store => {
@@ -36,7 +36,7 @@ const createRetrieveMiddleware = ({
   const credentials = localStorage.getItem(localStorageKey);
 
   if (credentials && requiresAuth) {
-    dataHandler
+    retrieveHandler
       .signInWithCredential(JSON.parse(credentials))
       .then(user => {
         store.dispatch(signInSuccess({ user }));
@@ -50,7 +50,7 @@ const createRetrieveMiddleware = ({
   return next => action => {
     switch (action.type) {
       case SIGN_IN_REQUEST: {
-        return dataHandler
+        return retrieveHandler
           .signInWithPopup(action.authMethod)
           .then(({ user, credential }) => {
             // Using store.dispatch instead of next because we _do_ want
@@ -77,7 +77,7 @@ const createRetrieveMiddleware = ({
       }
 
       case CASSETTES_LIST_REQUEST: {
-        dataHandler
+        retrieveHandler
           .retrieveList()
           .then(snapshot => snapshot.val())
           .then(cassettes => next(cassettesListSuccess({ cassettes })))
@@ -112,7 +112,7 @@ const createRetrieveMiddleware = ({
           return next(action);
         }
 
-        dataHandler
+        retrieveHandler
           .retrieveActions({ id: action.id })
           .then(snapshot => snapshot.val())
           .then(cassetteActions => {
@@ -130,7 +130,7 @@ const createRetrieveMiddleware = ({
       }
 
       case SIGN_OUT_REQUEST: {
-        dataHandler
+        retrieveHandler
           .signOut()
           .then(() => next(signOutSuccess()))
           .catch(error => next(signOutFailure({ error })));

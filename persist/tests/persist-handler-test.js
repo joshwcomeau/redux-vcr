@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
 
-import { PersistHandler } from '../src';
+import { createPersistHandler } from '../src';
 
 const firebaseAuth = {
   apiKey: 'abc123',
@@ -15,7 +15,7 @@ describe('PersistHandler', () => {
     it('fails when invoked immediately', () => {
       // This test fails because the constructor needs some time
       // to authenticate with firebase.
-      const handler = new PersistHandler({
+      const handler = createPersistHandler({
         firebaseAuth,
       });
 
@@ -25,7 +25,7 @@ describe('PersistHandler', () => {
     });
 
     it('succeeds when a debounce is used', done => {
-      const handler = new PersistHandler({
+      const handler = createPersistHandler({
         firebaseAuth,
         debounceLength: 50,
       });
@@ -55,7 +55,7 @@ describe('PersistHandler', () => {
   describe('cassette validation', () => {
     let handler;
     before(done => {
-      handler = new PersistHandler({ firebaseAuth });
+      handler = createPersistHandler({ firebaseAuth });
       window.setTimeout(done, 100);
     });
 
@@ -92,7 +92,7 @@ describe('PersistHandler', () => {
     };
 
     beforeEach(done => {
-      handler = new PersistHandler({ firebaseAuth });
+      handler = createPersistHandler({ firebaseAuth });
       firebase = handler.firebaseHandler.firebase;
 
       window.setTimeout(() => {
@@ -141,7 +141,7 @@ describe('PersistHandler', () => {
       // and check to see that:
       //   - it isn't invoked at all right away
       //   - it is only invoked once, at the end of the debounce.
-      const handler = new PersistHandler({
+      const handler = createPersistHandler({
         firebaseAuth,
         debounceLength: 200,
       });

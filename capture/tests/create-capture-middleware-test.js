@@ -7,10 +7,9 @@ import { createCaptureMiddleware } from '../src';
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 describe('createCaptureMiddleware', () => {
-  const dataHandler = { persist: sinon.stub() };
+  const persistHandler = { persist: sinon.stub() };
   const middlewareParams = {
-    dataHandler,
-    prefix: 'REDUX_VCR',
+    persistHandler,
   };
   const middleware = createCaptureMiddleware(middlewareParams);
   const store = {};
@@ -19,7 +18,7 @@ describe('createCaptureMiddleware', () => {
   const blacklistedAction = { type: 'REDUX_VCR/PLAY_CASSETTE' };
 
   afterEach(() => {
-    dataHandler.persist.reset();
+    persistHandler.persist.reset();
     next.reset();
   });
 
@@ -32,16 +31,16 @@ describe('createCaptureMiddleware', () => {
   });
 
   context('with invalid arguments', () => {
-    it('throws when no dataHandler is provided', () => {
-      expect(createCaptureMiddleware).to.throw(/dataHandler/);
+    it('throws when no persistHandler is provided', () => {
+      expect(createCaptureMiddleware).to.throw(/persistHandler/);
     });
 
-    it('throws when the dataHandler "persist" method is not a function', () => {
+    it('throws when the persistHandler "persist" method is not a function', () => {
       const invalidDataHandler = { persist: 'hi there' };
 
       expect(
-        () => createCaptureMiddleware({ dataHandler: invalidDataHandler })
-      ).to.throw(/dataHandler/);
+        () => createCaptureMiddleware({ persistHandler: invalidDataHandler })
+      ).to.throw(/persistHandler/);
     });
   });
 
@@ -49,14 +48,14 @@ describe('createCaptureMiddleware', () => {
     it('does not try to persist a REDUX_VCR action', () => {
       middleware(store)(next)(blacklistedAction);
 
-      expect(dataHandler.persist.callCount).to.equal(0);
+      expect(persistHandler.persist.callCount).to.equal(0);
       expect(next.callCount).to.equal(1);
     });
 
     it('does persist a valid action', () => {
       middleware(store)(next)(action);
 
-      expect(dataHandler.persist.callCount).to.equal(1);
+      expect(persistHandler.persist.callCount).to.equal(1);
       expect(next.callCount).to.equal(1);
     });
   });
@@ -75,7 +74,7 @@ describe('createCaptureMiddleware', () => {
 
       middleware(store)(next)(actionWithData);
 
-      const [cassette] = dataHandler.persist.firstCall.args;
+      const [cassette] = persistHandler.persist.firstCall.args;
 
       expect(cassette.data).to.deep.equal(actionWithData.meta.capture);
     });
@@ -91,7 +90,7 @@ describe('createCaptureMiddleware', () => {
       };
       middleware(store)(next)(otherActionWithData);
 
-      const [cassette] = dataHandler.persist.firstCall.args;
+      const [cassette] = persistHandler.persist.firstCall.args;
 
       expect(cassette.data).to.deep.equal({
         label: 'giorgio_tsoukalos@ancientaliens.com',
@@ -113,9 +112,9 @@ describe('createCaptureMiddleware', () => {
       await delay(500);
       freshMiddleware(store)(next)(action);
 
-      expect(dataHandler.persist.callCount).to.equal(3);
+      expect(persistHandler.persist.callCount).to.equal(3);
 
-      const [cassette] = dataHandler.persist.firstCall.args;
+      const [cassette] = persistHandler.persist.firstCall.args;
       const { actions } = cassette;
       const [firstAction, secondAction, thirdAction] = actions;
 

@@ -4,7 +4,6 @@ import sinon from 'sinon';
 import { actionTypes, actionCreators } from 'redux-vcr.shared';
 
 import { createReplayMiddleware } from '../src';
-import playHandler from './stubs/play-handler-stub.js';
 
 const { PLAY_CASSETTE, STOP_CASSETTE } = actionTypes;
 const {
@@ -15,15 +14,17 @@ const {
 
 
 describe('createReplayMiddleware', () => {
+  const replayHandler = { play: sinon.stub() };
+
   const middleware = createReplayMiddleware({
-    playHandler,
+    replayHandler,
     maximumDelay: 100,
   });
   const next = sinon.stub();
 
   afterEach(() => {
     next.reset();
-    playHandler.reset();
+    replayHandler.play.reset();
   });
 
   it('passes unrelated actions through', () => {
@@ -54,8 +55,8 @@ describe('createReplayMiddleware', () => {
         expect(next.callCount).to.equal(0);
       });
 
-      it('does not invoke the playHandler', () => {
-        expect(playHandler.callCount).to.equal(0);
+      it('does not invoke the replayHandler', () => {
+        expect(replayHandler.play.callCount).to.equal(0);
       });
     });
 
@@ -78,12 +79,11 @@ describe('createReplayMiddleware', () => {
         expect(next.firstCall.args[0]).to.equal(action);
       });
 
-      it('invokes the playHandler', () => {
-        expect(playHandler.callCount).to.equal(1);
-        expect(playHandler.firstCall.args[0]).to.deep.equal({
+      it('invokes the replayHandler', () => {
+        expect(replayHandler.play.callCount).to.equal(1);
+        expect(replayHandler.play.firstCall.args[0]).to.deep.equal({
           store,
           next,
-          maximumDelay: 100,
         });
       });
     });
@@ -111,12 +111,11 @@ describe('createReplayMiddleware', () => {
         expect(next.secondCall.args[0]).to.equal(action);
       });
 
-      it('invokes the playHandler', () => {
-        expect(playHandler.callCount).to.equal(1);
-        expect(playHandler.firstCall.args[0]).to.deep.equal({
+      it('invokes the replayHandler', () => {
+        expect(replayHandler.play.callCount).to.equal(1);
+        expect(replayHandler.play.firstCall.args[0]).to.deep.equal({
           store,
           next,
-          maximumDelay: 100,
         });
       });
     });

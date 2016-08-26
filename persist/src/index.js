@@ -1,4 +1,4 @@
-import PersistHandler from './persist-handler';
+import createPersistHandler from './create-persist-handler';
 
 // eslint-disable-next-line import/prefer-default-export
-export { PersistHandler };
+export { createPersistHandler };

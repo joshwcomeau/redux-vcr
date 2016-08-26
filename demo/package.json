@@ -2,6 +2,7 @@
   "name": "redux-vcr.demo",
   "version": "0.0.1",
   "dependencies": {
+    "babel-eslint": "^6.1.2",
     "classnames": "^2.2.5",
     "react": "15.3.0",
     "react-dom": "^15.2.1",
