@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
+import { createStore, applyMiddleware } from 'redux';
 
 import { createCaptureMiddleware } from '../src';
 
@@ -44,7 +45,7 @@ describe('createCaptureMiddleware', () => {
     });
   });
 
-  context('persisting actions', () => {
+  describe('persisting actions', () => {
     it('does not try to persist a REDUX_VCR action', () => {
       middleware(store)(next)(blacklistedAction);
 
@@ -61,7 +62,7 @@ describe('createCaptureMiddleware', () => {
   });
 
 
-  context('cassette metadata', () => {
+  describe('cassette metadata', () => {
     it('adds metadata to the cassette', () => {
       const actionWithData = {
         ...action,
@@ -99,7 +100,7 @@ describe('createCaptureMiddleware', () => {
     });
   });
 
-  context('timing', () => {
+  describe('timing', () => {
     // Since we'll be dealing with time, create a new middleware for these tests
     const freshMiddleware = createCaptureMiddleware(middlewareParams);
 
@@ -130,5 +131,121 @@ describe('createCaptureMiddleware', () => {
 
       done();
     });
+  });
+
+  describe('startTrigger', () => {
+    const startTrigger = 'START_RECORDING';
+    const freshMiddleware = createCaptureMiddleware({
+      ...middlewareParams,
+      startTrigger,
+    });
+
+    const initialState = { hasFood: true };
+    const reducer = function(state = initialState, action) {
+      switch (action.type) {
+        case 'EAT_FOOD': return { hasFood: false };
+        case 'RESTOCK_FOOD': return { hasFood: true };
+        default: return state;
+      }
+    };
+
+    const freshStore = createStore(
+      reducer,
+      applyMiddleware.apply(this, [freshMiddleware])
+    );
+
+    context('before the trigger', () => {
+      it('forwards, but does not persist, actions', () => {
+        freshStore.dispatch({
+          type: 'EAT_FOOD'
+        });
+
+        expect(freshStore.getState().hasFood).to.equal(false);
+        expect(persistHandler.persist.callCount).to.equal(0);
+      });
+    });
+
+    context('The trigger itself', () => {
+      let callCount, cassette;
+
+      before(async function(done) {
+        // wait a bit, so that we can test the timestamp
+        await delay(200);
+
+        freshStore.dispatch({
+          type: startTrigger,
+        });
+
+        callCount = persistHandler.persist.callCount;
+        cassette = persistHandler.persist.firstCall.args[0];
+
+        done();
+      });
+
+      it('only invokes the persistHandler once', () => {
+        expect(callCount).to.equal(1);
+      });
+
+      it("updates the cassette's timestamp to be now-ish", () => {
+        expect(cassette.timestamp).to.be.closeTo(Date.now(), 10);
+      });
+
+      it("passes the current state as the cassette's initialState", () => {
+        expect(cassette.initialState).to.deep.equal({
+          hasFood: false,
+        });
+      });
+
+      it('only persists a single actions', () => {
+        expect(cassette.actions.length).to.equal(1);
+      });
+
+      it('persists the trigger action, with no delay', () => {
+        const action = cassette.actions[0];
+        expect(action.type).to.equal(startTrigger);
+        expect(action.delay).to.be.closeTo(0, 10);
+      });
+    });
+
+    context('after the trigger', () => {
+      before(async function(done) {
+        await delay(200);
+        done();
+      });
+
+      it('persists actions as normal', () => {
+        freshStore.dispatch({
+          type: 'RESTOCK_FOOD',
+        });
+
+        expect(persistHandler.persist.callCount).to.equal(1);
+        const cassette = persistHandler.persist.firstCall.args[0];
+
+        expect(cassette.actions).to.have.length.of(2);
+
+        const action = cassette.actions[1];
+        expect(action.type).to.equal('RESTOCK_FOOD')
+        expect(action.delay).to.be.closeTo(200, 50);
+      });
+
+      it('does not wipe previous actions if the trigger is re-dispatched', () => {
+        freshStore.dispatch({
+          type: startTrigger,
+        });
+
+        expect(persistHandler.persist.callCount).to.equal(1);
+
+        const cassette = persistHandler.persist.firstCall.args[0];
+        expect(cassette.actions).to.have.length.of(3);
+      });
+    });
+
+
+    it('persists the current state as initialState on trigger');
+
+    // also check 'delay'!
+    it('resets the start time to match the trigger action');
+
+    it('has no effect on further triggers')
   });
 });

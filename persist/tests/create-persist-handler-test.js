@@ -10,6 +10,8 @@ const firebaseAuth = {
 };
 
 
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+
 describe('createPersistHandler', () => {
   describe('anonymous authentication', () => {
     it('fails when invoked immediately', () => {
@@ -24,7 +26,7 @@ describe('createPersistHandler', () => {
       expect(() => handler.persist(cassette)).to.throw(/firebase/);
     });
 
-    it('succeeds when a pause is alloted for authentication', done => {
+    it('succeeds when a pause is alloted for authentication', async function(done) {
       const handler = createPersistHandler({
         firebaseAuth,
         debounceLength: 50,
@@ -39,18 +41,15 @@ describe('createPersistHandler', () => {
       // with the auth.
       expect(firebase.set.callCount).to.equal(0);
 
-      // Wait for the anonymous authentication to complete
-      window.setTimeout(() => {
-        handler.persist(cassette);
+      await delay(100);
 
-        // Wait for the debounced persist to trigger
-        window.setTimeout(() => {
-          // Called twice. Once for the cassette, once for its actions.
-          expect(firebase.set.callCount).to.equal(2);
+      handler.persist(cassette);
 
-          done();
-        }, 100);
-      }, 100);
+      await delay(100);
+
+      expect(firebase.set.callCount).to.equal(2);
+
+      done();
     });
   });
 
@@ -93,15 +92,15 @@ describe('createPersistHandler', () => {
       actions: [{ type: 'DO_GREAT_THINGS' }],
     };
 
-    beforeEach(done => {
+    beforeEach(async function(done) {
       handler = createPersistHandler({ firebaseAuth });
       firebase = handler.firebaseHandler.firebase;
 
-      window.setTimeout(() => {
-        handler.persist(cassette);
+      delay(200);
 
-        window.setTimeout(done, 200);
-      }, 200);
+      handler.persist(cassette);
+
+      delay(200);
     });
 
     it('gets a database reference', () => {

@@ -3,17 +3,19 @@ import './polyfills.js';
 
 import { isActionBlacklisted } from './helpers';
 
-const generateCassette = () => ({
-  data: {},
-  actions: [],
-});
 
 // eslint-disable-next-line import/prefer-default-export
 const createCaptureMiddleware = ({
   blacklist = [],
   persistHandler,
+  startTrigger,
 } = {}) => {
-  const cassette = generateCassette();
+  const cassette = {
+    timestamp: Date.now(),
+    data: {},
+    actions: [],
+    initialState: {},
+  };
 
   // Ensure that the data handler we've supplied is valid
   invariant(
@@ -32,8 +34,22 @@ const createCaptureMiddleware = ({
   // We've polyfilled performance.now to run in all environments.
   let timeSinceLastEvent = performance.now();
 
+  let waitingForActionToStartCapturing = typeof startTrigger !== 'undefined';
+
   // eslint-disable-next-line no-unused-vars
   return store => next => action => {
+    // Is this the action we've been looking for?
+    if (waitingForActionToStartCapturing && action.type === startTrigger) {
+      cassette.timestamp = Date.now();
+      cassette.initialState = { ...store.getState() };
+      timeSinceLastEvent = performance.now();
+      waitingForActionToStartCapturing = false;
+    }
+
+    if (waitingForActionToStartCapturing) {
+      return next(action);
+    }
+
     if (isActionBlacklisted({ action, blacklist })) {
       return next(action);
     }
