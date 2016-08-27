@@ -9,32 +9,27 @@ import Backdrop from '../Backdrop';
 import './index.scss';
 
 
-class Replay extends Component {
-  render() {
-    const {
-      doorLabel,
-      cassettesBackdropColor,
-      cassettesBackdropOpacity,
-      cassetteStatus,
-      hideCassettes,
-    } = this.props;
+const Replay = ({
+  doorLabel,
+  cassettesBackdropColor,
+  cassettesBackdropOpacity,
+  cassetteStatus,
+  hideCassettes,
+}) => (
+  <div className="redux-vcr-component">
+    <VCR doorLabel={doorLabel} />
 
-    return (
-      <div className="redux-vcr-component">
-        <VCR doorLabel={doorLabel} />
+    { cassetteStatus === 'selecting' ? <CassetteList /> : null }
 
-        { cassetteStatus === 'selecting' ? <CassetteList /> : null }
+    <Backdrop
+      isShown={cassetteStatus === 'selecting'}
+      handleClickClose={hideCassettes}
+      background={cassettesBackdropColor}
+      opacity={cassettesBackdropOpacity}
+    />
+  </div>
+);
 
-        <Backdrop
-          isShown={cassetteStatus === 'selecting'}
-          handleClickClose={hideCassettes}
-          background={cassettesBackdropColor}
-          opacity={cassettesBackdropOpacity}
-        />
-      </div>
-    );
-  }
-}
 
 Replay.propTypes = {
   doorLabel: PropTypes.string,

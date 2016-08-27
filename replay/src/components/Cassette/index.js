@@ -2,8 +2,7 @@ import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
 
-import { themes } from '../../data/cassette-themes';
-import sampleWithProbability from '../../utils/sample-with-probability';
+import themes from '../../data/cassette-themes';
 import './index.scss';
 
 
@@ -14,15 +13,26 @@ const Cassette = ({
   numOfActions,
   handleClick,
   theme,
+  offset,
 }) => {
   const classes = classNames(
     'cassette',
     `theme-${theme}`
   );
 
+  const styles = {
+    transform: `translateX(${offset}px)`,
+  };
+
 
   let labelHeader;
   switch (theme) {
+    case 'kodak': {
+      labelHeader = (
+        <div className="kodak-header" />
+      );
+      break;
+    }
     case 'tdk': {
       labelHeader = (
         <div className="tdk-bars">
@@ -74,7 +84,11 @@ const Cassette = ({
   }
 
   return (
-    <div className={classes} onClick={() => handleClick({ id })}>
+    <div
+      className={classes}
+      style={styles}
+      onClick={() => handleClick({ id })}
+    >
       <div className="front">
         <div className="head" />
         <div className="spool left-spool">
@@ -116,11 +130,16 @@ Cassette.propTypes = {
   numOfActions: PropTypes.number.isRequired,
   handleClick: PropTypes.func,
   theme: PropTypes.oneOf(Object.keys(themes)),
+  offset: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
 };
 
 Cassette.defaultProps = {
   handleClick() {},
-  theme: sampleWithProbability(themes),
+  theme: 'generic',
+  offset: 0,
 };
 
 export { Cassette };

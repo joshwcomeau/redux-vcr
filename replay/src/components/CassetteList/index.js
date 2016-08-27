@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 
 import { actionCreators, cassetteSelectors } from 'redux-vcr.shared';
-
+import sampleWithProbability from '../../utils/sample-with-probability';
+import cassetteThemes from '../../data/cassette-themes';
+import cassetteOffsets from '../../data/cassette-offsets';
 import Cassette from '../Cassette';
 import Icon from '../Icon';
 import './index.scss';
@@ -60,6 +62,8 @@ class CassetteList extends Component {
       <div key={id} className={classes}>
         <Cassette
           {...cassette}
+          theme={sampleWithProbability(cassetteThemes, id)}
+          offset={sampleWithProbability(cassetteOffsets, id)}
           handleClick={this.animateCassetteSelection}
         />
       </div>
@@ -123,6 +127,8 @@ const mapStateToProps = state => {
     isLastPage: isLastPageSelector(state),
   };
 };
+
+export { CassetteList };
 
 export default connect(mapStateToProps, {
   cassettesListRequest: actionCreators.cassettesListRequest,
