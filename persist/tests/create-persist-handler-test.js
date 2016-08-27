@@ -96,11 +96,13 @@ describe('createPersistHandler', () => {
       handler = createPersistHandler({ firebaseAuth });
       firebase = handler.firebaseHandler.firebase;
 
-      delay(200);
+      await delay(200);
 
       handler.persist(cassette);
 
-      delay(200);
+      await delay(200);
+
+      done();
     });
 
     it('gets a database reference', () => {
