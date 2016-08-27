@@ -6,6 +6,15 @@
   - createCaptureMiddleware
 - Persist
   - createPersistHandler
+- Retrieve
+  - createRetrieveMiddleware
+  - createRetrieveHandler
+- Replay
+  - createReplayMiddleware
+  - Replay (component)
+
+
+-----------------
 
 
 ## Capture
@@ -68,7 +77,7 @@ The default format for an item in the blacklist is an object with:
 - All actions related to Redux VCR (eg. fetching cassettes, playing cassettes) are automatically excluded.
 
 
-#### `startCapturingAfterAction`
+#### `startTrigger`
 
 | **Accepted Types:** | **Default Value:** | **Required:**
 |---------------------|--------------------|---------------|

@@ -21,6 +21,7 @@ const {
   cassettesListSuccess,
   cassetteActionsReceive,
   changePlaybackSpeed,
+  changeMaximumDelay,
 } = actionCreators;
 
 
@@ -159,8 +160,9 @@ describe('createReplayHandler', () => {
   });
 
   describe('play logic - with maximumDelay', () => {
-    const replayHandler = createReplayHandler({ maximumDelay: 200 });
+    const replayHandler = createReplayHandler();
     const store = createNewStore();
+    store.dispatch(changeMaximumDelay({ maximumDelay: 200 }));
     sinon.spy(store, 'dispatch');
 
     afterEach(() => {

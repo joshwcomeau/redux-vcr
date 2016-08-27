@@ -1,9 +1,9 @@
-import { actionCreators } from 'redux-vcr.shared';
+import { actionCreators } from './shared-resolver';
 
 const { incrementActionsPlayed, stopCassette } = actionCreators;
 
 
-export default function createReplayHandler({ maximumDelay = Infinity } = {}) {
+export default function createReplayHandler() {
   const replayHandler = {
     play({ store, next }) {
       const state = store.getState().reduxVCR;
@@ -14,8 +14,9 @@ export default function createReplayHandler({ maximumDelay = Infinity } = {}) {
         return;
       }
 
+      const { status, maximumDelay } = state.play;
+
       // if the cassette has stopped playing, we can bail.
-      const { status } = state.play;
       if (status !== 'playing') {
         return;
       }

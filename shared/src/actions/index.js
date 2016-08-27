@@ -15,6 +15,7 @@ export const CASSETTE_ACTIONS_RECEIVE = 'REDUX_VCR/CASSETTE_ACTIONS_RECEIVE';
 export const TOGGLE_PLAY_PAUSE = 'REDUX_VCR/TOGGLE_PLAY_PAUSE';
 export const INCREMENT_ACTIONS_PLAYED = 'REDUX_VCR/INCREMENT_ACTIONS_PLAYED';
 export const CHANGE_PLAYBACK_SPEED = 'REDUX_VCR/CHANGE_PLAYBACK_SPEED';
+export const CHANGE_MAXIMUM_DELAY = 'REDUX_VCR/CHANGE_MAXIMUM_DELAY';
 export const SIGN_IN_REQUEST = 'REDUX_VCR/SIGN_IN_REQUEST';
 export const SIGN_IN_SUCCESS = 'REDUX_VCR/SIGN_IN_SUCCESS';
 export const SIGN_IN_FAILURE = 'REDUX_VCR/SIGN_IN_FAILURE';
@@ -96,6 +97,11 @@ export const incrementActionsPlayed = () => ({
 export const changePlaybackSpeed = ({ playbackSpeed }) => ({
   type: CHANGE_PLAYBACK_SPEED,
   playbackSpeed,
+});
+
+export const changeMaximumDelay = ({ maximumDelay }) => ({
+  type: CHANGE_MAXIMUM_DELAY,
+  maximumDelay,
 });
 
 export const signInRequest = ({ authMethod }) => ({

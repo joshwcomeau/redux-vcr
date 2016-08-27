@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 
 import {
   CHANGE_PLAYBACK_SPEED,
+  CHANGE_MAXIMUM_DELAY,
   EJECT_CASSETTE,
   PAUSE_CASSETTE,
   PLAY_CASSETTE,
@@ -12,6 +13,7 @@ import {
 const defaultStates = {
   status: 'stopped',
   speed: 1,
+  maximumDelay: Infinity,
 };
 
 
@@ -32,8 +34,16 @@ function speedReducer(state = defaultStates.speed, action) {
   }
 }
 
+function maximumDelayReducer(state = defaultStates.maximumDelay, action) {
+  switch (action.type) {
+    case CHANGE_MAXIMUM_DELAY: return action.maximumDelay;
+    default: return state;
+  }
+}
+
 
 export default combineReducers({
   status: statusReducer,
   speed: speedReducer,
+  maximumDelay: maximumDelayReducer,
 });

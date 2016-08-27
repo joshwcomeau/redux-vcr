@@ -1,12 +1,15 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { actionTypes, actionCreators } from 'redux-vcr.shared';
+import { actionTypes, actionCreators } from '../../shared/src';
 
 import { createReplayMiddleware } from '../src';
 
+console.log(actionCreators);
+
 const { PLAY_CASSETTE, STOP_CASSETTE } = actionTypes;
 const {
+  changeMaximumDelay,
   playCassette,
   stopCassette,
   rewindCassetteAndRestoreApp,
@@ -18,8 +21,12 @@ describe('createReplayMiddleware', () => {
 
   const middleware = createReplayMiddleware({
     replayHandler,
-    maximumDelay: 100,
   });
+  const middlewareWithMaxDelay = createReplayMiddleware({
+    replayHandler,
+    maximumDelay: 200,
+  });
+
   const next = sinon.stub();
 
   afterEach(() => {
@@ -34,6 +41,18 @@ describe('createReplayMiddleware', () => {
 
     expect(next.callCount).to.equal(1);
     expect(next.firstCall.args[0]).to.equal(action);
+  });
+
+  it('dispatches `changeMaximumDelay` when a max delay is given', () => {
+    const store = {};
+    middlewareWithMaxDelay(store)(next);
+
+    console.log(actionCreators.changeMaximumDelay);
+
+    expect(next.callCount).to.equal(1);
+    expect(next.firstCall.args[0]).to.deep.equal(
+      actionCreators.changeMaximumDelay({ maximumDelay: 200 })
+    );
   });
 
   describe(PLAY_CASSETTE, () => {

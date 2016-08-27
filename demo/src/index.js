@@ -57,8 +57,6 @@ if (settings.runAsUser) {
 if (settings.runAsAdmin) {
   // Inversely, the createRetrieveHandler pulls actions from Firebase, allowing
   // them to be replayed. It should only be included in development.
-  const retrieveHandler = ;
-
   middlewares.push(
     // The retrieve middleware listens for specific actions dispatched
     // from the Replay components, to fetch the recordings needed.
