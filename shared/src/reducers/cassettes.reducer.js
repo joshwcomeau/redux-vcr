@@ -78,6 +78,7 @@ export default combineReducers({
 // ////////////////////////
 // SELECTORS /////////////
 // //////////////////////
+console.log('\n\n\nREADING FILE\n\n\n');
 const cassettesById = state => state.reduxVCR.cassettes.byId;
 const cassettePageNumberSelector = state => state.reduxVCR.cassettes.page.number;
 const cassettePageLimitSelector = state => state.reduxVCR.cassettes.page.limit;
@@ -115,9 +116,12 @@ export const isLastPageSelector = createSelector(
   cassettePageNumberSelector,
   cassettePageLimitSelector,
   (cassetteList, pageNumber, pageLimit) => {
-    const numOfCassettes = cassetteList.length;
-    const numOfPages = Math.floor(numOfCassettes / pageLimit);
+    // Page numbers are zero-indexed, but we want them to be one-indexed.
+    const truePageNumber = pageNumber + 1;
 
-    return pageNumber >= numOfPages;
+    const numOfCassettes = cassetteList.length;
+    const numOfPages = Math.ceil(numOfCassettes / pageLimit);
+
+    return truePageNumber >= numOfPages;
   }
 );

@@ -22,7 +22,10 @@ try {
   sharedContents = useLocal
     ? require('../../shared/src')
     : require('redux-vcr.shared');
+
+  console.log('Use local?', useLocal);
 } catch (e) {
+  console.log('Caught', e);
   sharedContents = require('redux-vcr.shared');
 }
 

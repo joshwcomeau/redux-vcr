@@ -31,7 +31,5 @@ export default function sampleWithProbability(object, seedValue) {
 
   const index = getRandomValue(0, weightedCollectionOfKeys.length, seedValue);
 
-  console.log('Got index', index, 'for', weightedCollectionOfKeys);
-
   return weightedCollectionOfKeys[index];
 }
