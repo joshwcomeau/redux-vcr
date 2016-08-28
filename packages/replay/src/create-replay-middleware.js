@@ -1,4 +1,4 @@
-import { actionTypes, actionCreators } from './shared-resolver';
+import { actionTypes, actionCreators } from 'redux-vcr.shared';
 import createReplayHandler from './create-replay-handler';
 
 const { PLAY_CASSETTE, STOP_CASSETTE } = actionTypes;

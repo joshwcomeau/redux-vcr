@@ -1,4 +1,4 @@
-import { actionCreators } from './shared-resolver';
+import { actionCreators } from 'redux-vcr.shared';
 
 const { incrementActionsPlayed, stopCassette } = actionCreators;
 

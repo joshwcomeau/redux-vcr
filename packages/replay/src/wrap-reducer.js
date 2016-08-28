@@ -1,4 +1,4 @@
-import { actionTypes, reduxVCRReducer } from './shared-resolver';
+import { actionTypes, reduxVCRReducer } from 'redux-vcr.shared';
 
 const { REWIND_CASSETTE_AND_RESTORE_APP } = actionTypes;
 

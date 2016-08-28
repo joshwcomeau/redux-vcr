@@ -1,4 +1,4 @@
-import { actionTypes, actionCreators } from './shared-resolver';
+import { actionTypes, actionCreators } from 'redux-vcr.shared';
 
 const {
   SIGN_IN_REQUEST,

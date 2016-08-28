@@ -1,7 +1,7 @@
 import debounce from 'lodash.debounce';
 import invariant from 'invariant';
 
-import { createFirebaseHandler } from './shared-resolver';
+import { createFirebaseHandler } from 'redux-vcr.shared';
 import './polyfills';
 
 

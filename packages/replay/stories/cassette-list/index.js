@@ -4,7 +4,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import _ from 'lodash';
-import { reduxVCRReducer, actionCreators } from '../../src/shared-resolver';
+import { reduxVCRReducer, actionCreators } from 'redux-vcr.shared';
 
 import Centered from '../Centered';
 import CassetteList from '../../src/components/CassetteList';

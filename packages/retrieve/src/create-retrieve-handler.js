@@ -1,4 +1,4 @@
-import { createFirebaseHandler } from './shared-resolver';
+import { createFirebaseHandler } from 'redux-vcr.shared';
 
 
 export default function createRetrieveHandler({ firebaseAuth }) {

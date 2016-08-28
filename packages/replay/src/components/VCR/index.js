@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Draggable from 'react-draggable';
 
-import { actionCreators } from '../../shared-resolver';
+import { actionCreators } from 'redux-vcr.shared';
 import VCRButton from '../VCRButton';
 import VCRPowerLight from '../VCRPowerLight';
 import VCRScreen from '../VCRScreen';

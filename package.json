@@ -91,7 +91,8 @@
     "redux": "^3.5.2",
     "semver": "^5.3.0",
     "shelljs": "^0.7.3",
-    "sinon": "^2.0.0-pre.2"
+    "sinon": "^2.0.0-pre.2",
+    "lerna": "2.0.0-beta.26"
   },
   "author": "Joshua Comeau",
   "homepage": "https://github.com/joshwcomeau/redux-vcr",
