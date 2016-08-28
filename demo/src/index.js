@@ -67,7 +67,7 @@ if (settings.runAsAdmin) {
     // Finally, the replay middleware is in charge of intercepting the
     // PLAY_CASSETTE action, which allows previously-recorded sessions
     // to be replayed.
-    createReplayMiddleware(),
+    createReplayMiddleware({ maximumDelay: 50 }),
   );
 }
 
