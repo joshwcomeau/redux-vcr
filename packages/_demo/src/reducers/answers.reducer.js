@@ -8,7 +8,6 @@ const defaultAnswers = {
   hcl: 'Hillary Clinton',
   dtr: 'Donald Trump',
   gjo: 'Gary Johnson',
-  dab: 'Dan Abramov',
 };
 
 // Because we don't have ways of adding/removing answers,

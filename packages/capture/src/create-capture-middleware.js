@@ -3,7 +3,6 @@ import './polyfills.js';
 
 import { isActionBlacklisted } from './helpers';
 
-
 // eslint-disable-next-line import/prefer-default-export
 const createCaptureMiddleware = ({
   blacklist = [],

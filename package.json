@@ -1,81 +1,11 @@
 {
-  "name": "redux-vcr",
-  "version": "0.0.1",
-  "description": "A Redux tool that records user sessions and allows them to be replayed. For debugging, QA, insights, and fun.",
-  "main": "lib/index.js",
-  "jsnext:main": "es6/index.js",
-  "files": [
-    "es6",
-    "lib",
-    "umd"
-  ],
-  "watch": {
-    "build:capture": {
-      "patterns": [
-        "capture/src/**"
-      ],
-      "extensions": "js,scss"
-    },
-    "build:persist": {
-      "patterns": [
-        "persist/src/**"
-      ],
-      "extensions": "js,scss"
-    },
-    "build:retrieve": {
-      "patterns": [
-        "retrieve/src/**"
-      ],
-      "extensions": "js,scss"
-    },
-    "build:replay": {
-      "patterns": [
-        "replay/src/**"
-      ],
-      "extensions": "js,scss"
-    },
-    "build:shared": {
-      "patterns": [
-        "shared/src/**"
-      ],
-      "extensions": "js,scss"
-    }
-  },
-  "scripts": {
-    "build:capture": "cd capture && npm run build && cd ..",
-    "build:persist": "cd persist && npm run build && cd ..",
-    "build:retrieve": "cd retrieve && npm run build && cd ..",
-    "build:replay": "cd replay && npm run build && cd ..",
-    "build:shared": "cd shared && npm run build && cd ..",
-    "build:all": "npm run build:capture && npm run build:persist && npm run build:retrieve && npm run build:replay && npm run build:shared",
-
-    "test:capture": "cd capture && npm run test && cd ..",
-    "test:persist": "cd persist && npm run test && cd ..",
-    "test:retrieve": "cd retrieve && npm run test && cd ..",
-    "test:replay": "cd replay && npm run test && cd ..",
-    "test:shared": "cd shared && npm run test && cd ..",
-    "test:all": "npm run test:capture && npm run test:persist && npm run test:retrieve && npm run test:replay && npm run test:shared",
-
-    "install:capture": "cd capture && npm i && cd ..",
-    "install:persist": "cd persist && npm i && cd ..",
-    "install:retrieve": "cd retrieve && npm i && cd ..",
-    "install:replay": "cd replay && npm i && cd ..",
-    "install:shared": "cd shared && npm i && cd ..",
-    "install:all": "npm run install:capture && npm run install:persist && npm run install:retrieve && npm run install:replay && npm run install:shared",
-
-    "publish:capture": "cd capture && npm publish && cd ..",
-    "publish:persist": "cd persist && npm publish && cd ..",
-    "publish:retrieve": "cd retrieve && npm publish && cd ..",
-    "publish:replay": "cd replay && npm publish && cd ..",
-    "publish:shared": "cd shared && npm publish && cd ..",
-    "publish:all": "npm run publish:capture && npm run publish:persist && npm run publish:retrieve && npm run publish:replay",
-
-    "publish:major": "node ./scripts/publish-all.js major",
-    "publish:minor": "node ./scripts/publish-all.js minor",
-    "publish:patch": "node ./scripts/publish-all.js patch",
-
-    "watch": "npm-watch",
-    "lint": "eslint -c ./.eslintrc src/** --ext .js"
+  "private": true,
+  "author": "Joshua Comeau",
+  "homepage": "https://github.com/joshwcomeau/redux-vcr",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshwcomeau/redux-vcr.git"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -93,12 +23,5 @@
     "shelljs": "^0.7.3",
     "sinon": "^2.0.0-pre.2",
     "lerna": "2.0.0-beta.26"
-  },
-  "author": "Joshua Comeau",
-  "homepage": "https://github.com/joshwcomeau/redux-vcr",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/joshwcomeau/redux-vcr.git"
   }
 }
