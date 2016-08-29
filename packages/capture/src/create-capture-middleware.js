@@ -37,12 +37,21 @@ const createCaptureMiddleware = ({
 
   // eslint-disable-next-line no-unused-vars
   return store => next => action => {
+    // TODO: Refactor this into a function? initializeCassette or sth?
     // Is this the action we've been looking for?
     if (waitingForActionToStartCapturing && action.type === startTrigger) {
+      // If so, we want to dispatch it, so that the state is updated,
+      // and then use the newly-computed state as our baseline.
+      next(action);
+
       cassette.timestamp = Date.now();
       cassette.initialState = { ...store.getState() };
       timeSinceLastEvent = performance.now();
       waitingForActionToStartCapturing = false;
+
+      // Bail out early. We don't want to persist the cassette yet,
+      // since there are no recorded actions.
+      return null;
     }
 
     if (waitingForActionToStartCapturing) {
