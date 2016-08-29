@@ -22,7 +22,7 @@ import App from './components/App';
 import reducer from './reducers';
 
 const settings = {
-  runAsUser: false,
+  runAsUser: true,
   runAsAdmin: true,
 };
 
@@ -67,7 +67,7 @@ if (settings.runAsAdmin) {
     // Finally, the replay middleware is in charge of intercepting the
     // PLAY_CASSETTE action, which allows previously-recorded sessions
     // to be replayed.
-    createReplayMiddleware({ maximumDelay: 50 }),
+    createReplayMiddleware({ maximumDelay: 500 }),
   );
 }
 

@@ -1,12 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Replay } from 'redux-vcr.replay';
-// import { Replay } from '../../../../replay/src';
 
-
-import { selectAnswer } from '../../actions';
+import { selectAnswer, completeOnboarding } from '../../actions';
 import { getAnswers } from '../../reducers/answers.reducer';
-import Button from '../Button';
+import Onboarding from '../Onboarding';
+import PollQuestion from '../PollQuestion';
 import DevTools from '../DevTools';
 
 import './index.css';
@@ -15,41 +14,28 @@ import './index.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.clickButton = this.clickButton.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  clickButton(ev) {
+  handleClick(ev) {
     const buttonId = ev.target.value;
     this.props.selectAnswer({ id: buttonId });
   }
 
-  renderButtons() {
-    const { answers, selected } = this.props;
-
-    return answers.map(({ id, name }) => (
-      <Button
-        key={id}
-        value={id}
-        toggled={selected === id}
-        onClick={this.clickButton}
-      >
-        {name}
-      </Button>
-    ));
-  }
   render() {
     return (
       <div className="App">
-        <div className="main-content">
-          <header>
-            <h2>Who would you like to see become the next US President?</h2>
-          </header>
-
-          <section className="main-content">
-            {this.renderButtons()}
-          </section>
-        </div>
-
+        {!this.props.hasCompletedOnboarding ? (
+          <Onboarding
+            completeOnboarding={this.props.completeOnboarding}
+          />
+        ) : (
+          <PollQuestion
+            answers={this.props.answers}
+            selected={this.props.selected}
+            handleClick={this.handleClick}
+          />
+        )}
         <DevTools />
         <Replay />
       </div>
@@ -63,12 +49,15 @@ App.propTypes = {
     name: PropTypes.string,
   })),
   selected: PropTypes.string,
+  hasCompletedOnboarding: PropTypes.bool,
   selectAnswer: PropTypes.func.isRequired,
+  completeOnboarding: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   answers: getAnswers(state.answers),
   selected: state.answers.selected,
+  hasCompletedOnboarding: state.onboarding.completed,
 });
 
-export default connect(mapStateToProps, { selectAnswer })(App);
+export default connect(mapStateToProps, { selectAnswer, completeOnboarding })(App);
