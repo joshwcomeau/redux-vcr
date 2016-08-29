@@ -1,16 +1,16 @@
 // TODO: we can split this file into several files (pre-eject, post-eject, test)
 // and use those instead. This way we don't need to branch here.
 
-var path = require('path');
+const path = require('path');
 
 // True after ejecting, false when used as a dependency
-var isEjected = (
+const isEjected = (
   path.resolve(path.join(__dirname, '..')) ===
   path.resolve(process.cwd())
 );
 
 // Are we developing create-react-app locally?
-var isInCreateReactAppSource = (
+const isInCreateReactAppSource = (
   process.argv.some(arg => arg.indexOf('--debug-template') > -1)
 );
 
@@ -31,7 +31,7 @@ if (isInCreateReactAppSource) {
     appPackageJson: resolveOwn('../package.json'),
     appSrc: resolveOwn('../template/src'),
     appNodeModules: resolveOwn('../node_modules'),
-    ownNodeModules: resolveOwn('../node_modules')
+    ownNodeModules: resolveOwn('../node_modules'),
   };
 } else if (!isEjected) {
   // before eject: we're in ./node_modules/react-scripts/config/
@@ -43,7 +43,7 @@ if (isInCreateReactAppSource) {
     appSrc: resolveApp('src'),
     appNodeModules: resolveApp('node_modules'),
     // this is empty with npm3 but node resolution searches higher anyway:
-    ownNodeModules: resolveOwn('../node_modules')
+    ownNodeModules: resolveOwn('../node_modules'),
   };
 } else {
   // after eject: we're in ./config/
@@ -54,6 +54,7 @@ if (isInCreateReactAppSource) {
     appPackageJson: resolveApp('package.json'),
     appSrc: resolveApp('src'),
     appNodeModules: resolveApp('node_modules'),
-    ownNodeModules: resolveApp('node_modules')
+    ownNodeModules: resolveApp('node_modules'),
+    parentNodeModules: resolveApp('../../node_modules'),
   };
 }

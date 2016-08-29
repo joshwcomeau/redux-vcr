@@ -5,6 +5,12 @@
   "license": "MIT",
   "scripts": {
     "demo:start": "npm run start --prefix ./packages/_demo",
+    "test:capture": "npm run test --prefix ./packages/capture",
+    "test:persist": "npm run test --prefix ./packages/persist",
+    "test:retrieve": "npm run test --prefix ./packages/retrieve",
+    "test:replay": "npm run test --prefix ./packages/replay",
+    "test:shared": "npm run test --prefix ./packages/_shared",
+    "test": "npm run test:capture && npm run test:persist && npm run test:retrieve && npm run test:replay && npm run test:shared",
     "bootstrap": "node scripts/bootstrap.js"
   },
   "repository": {
@@ -20,12 +26,14 @@
     "eslint-plugin-jsx-a11y": "2.0.1",
     "eslint-plugin-react": "6.0.0",
     "invariant": "^2.2.1",
+    "lerna": "2.0.0-beta.26",
     "npm-watch": "^0.1.6",
     "nwb": "0.11.x",
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1",
     "redux": "^3.5.2",
     "semver": "^5.3.0",
     "shelljs": "^0.7.3",
-    "sinon": "^2.0.0-pre.2",
-    "lerna": "2.0.0-beta.26"
+    "sinon": "^2.0.0-pre.2"
   }
 }

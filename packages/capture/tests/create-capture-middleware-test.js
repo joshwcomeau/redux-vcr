@@ -239,13 +239,5 @@ describe('createCaptureMiddleware', () => {
         expect(cassette.actions).to.have.length.of(3);
       });
     });
-
-
-    it('persists the current state as initialState on trigger');
-
-    // also check 'delay'!
-    it('resets the start time to match the trigger action');
-
-    it('has no effect on further triggers')
   });
 });
