@@ -1,0 +1,17 @@
+{
+  "name": "redux-vcr",
+  "version": "0.0.35",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joshua Comeau",
+  "license": "MIT",
+  "dependencies": {
+    "redux-vcr.capture": "0.0.35",
+    "redux-vcr.persist": "0.0.35",
+    "redux-vcr.replay": "0.0.35",
+    "redux-vcr.retrieve": "0.0.35"
+  }
+}

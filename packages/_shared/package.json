@@ -21,7 +21,7 @@
   },
   "peerDependencies": {
     "invariant": "2.2.1",
-    "redux": "^3.5.2"
+    "redux": "3.x"
   },
   "devDependencies": {
     "chai": "^3.5.0",
