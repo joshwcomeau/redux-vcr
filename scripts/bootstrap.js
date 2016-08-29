@@ -1,4 +1,3 @@
-const path = require('path');
 const fs = require('fs');
 const { exec } = require('shelljs');
 
@@ -40,3 +39,7 @@ packageIndices.forEach(indexPath => {
 
   fs.writeFileSync(indexPath, updatedContents);
 });
+
+// TODO: Handle shared React dependency.
+// To prevent multiple copies from loading, we want to point both /demo
+// and /shared to the parent dependency.
