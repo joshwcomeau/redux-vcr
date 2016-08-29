@@ -1,13 +1,16 @@
 import React, { PropTypes } from 'react';
 
+import Button from '../Button';
 import './index.css';
 
 const Onboarding = ({ completeOnboarding }) => (
   <div className="onboarding">
-    <h2>Welcome to this poll thing!</h2>
-    <button onClick={completeOnboarding}>
-      Start voting!
-    </button>
+    <div className="main-content">
+      <h2>Welcome to this poll thing!</h2>
+      <Button primary onClick={completeOnboarding}>
+        Start voting!
+      </Button>
+    </div>
   </div>
 );
 

@@ -16,13 +16,28 @@
   box-shadow: 0px 1px 0px #AAA;
 }
 
-.button:first-of-type {
+.button.primary {
+  background: #22ceff;
+  color: #FFF;
+  box-shadow: 0px 4px 0px #399cca;
+}
+
+.button.primary:active {
+  box-shadow: 0px 1px 0px #399cca;
+}
+
+.button.grouped:first-of-type {
   border-radius: 10px 0 0 10px;
 }
 
-.button:last-of-type {
+.button.grouped:last-of-type {
   border-radius: 0 10px 10px 0;
   border-right: 0;
+}
+
+.button:not(.grouped) {
+  border-radius: 10px;
+  border: 0;
 }
 
 .button.toggled {

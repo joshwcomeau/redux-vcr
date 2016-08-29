@@ -17,6 +17,7 @@ const PollQuestion = ({ answers, selected, handleClick }) => {
             key={id}
             value={id}
             toggled={selected === id}
+            grouped
             onClick={handleClick}
           >
             {name}

@@ -60,4 +60,8 @@ const mapStateToProps = state => ({
   hasCompletedOnboarding: state.onboarding.completed,
 });
 
-export default connect(mapStateToProps, { selectAnswer, completeOnboarding })(App);
+
+export default connect(
+  mapStateToProps,
+  { selectAnswer, completeOnboarding }
+)(App);

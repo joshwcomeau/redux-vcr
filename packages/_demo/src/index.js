@@ -17,6 +17,7 @@ import { createPersistHandler } from 'redux-vcr.persist';
 import { createRetrieveHandler, createRetrieveMiddleware } from 'redux-vcr.retrieve';
 import { createReplayMiddleware, wrapReducer } from 'redux-vcr.replay';
 
+import { COMPLETE_ONBOARDING } from './actions';
 import DevTools from './components/DevTools';
 import App from './components/App';
 import reducer from './reducers';
@@ -50,6 +51,7 @@ if (settings.runAsUser) {
     // PersistHandler so it can send them to Firebase.
     createCaptureMiddleware({
       persistHandler: createPersistHandler({ firebaseAuth }),
+      startTrigger: COMPLETE_ONBOARDING,
     }),
   );
 }
