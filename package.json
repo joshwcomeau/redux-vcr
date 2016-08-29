@@ -3,6 +3,10 @@
   "author": "Joshua Comeau",
   "homepage": "https://github.com/joshwcomeau/redux-vcr",
   "license": "MIT",
+  "scripts": {
+    "demo:start": "npm run start --prefix ./packages/_demo",
+    "bootstrap": "node scripts/bootstrap.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/joshwcomeau/redux-vcr.git"
