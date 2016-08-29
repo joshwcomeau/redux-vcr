@@ -1,8 +1,7 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 import { createStore } from 'redux';
-// import { actionTypes } from 'redux-vcr.shared';
-import { actionTypes, actionCreators } from '../../shared/src';
+import { actionTypes } from 'redux-vcr.shared';
 
 import { createRetrieveHandler, createRetrieveMiddleware } from '../src';
 

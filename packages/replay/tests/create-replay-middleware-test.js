@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { actionTypes, actionCreators } from '../../shared/src';
+import { actionTypes, actionCreators } from 'redux-vcr.shared';
 
 import { createReplayMiddleware } from '../src';
 

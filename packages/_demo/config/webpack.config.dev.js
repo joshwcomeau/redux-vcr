@@ -8,7 +8,7 @@ var paths = require('./paths');
 
 
 var reduxVCRProjectNames = [
-  'capture', 'persist', 'retrieve', 'replay', 'shared',
+  'capture', 'persist', 'retrieve', 'replay', '_shared',
 ];
 
 var reduxVCRPaths = reduxVCRProjectNames.map(function(projectName) {

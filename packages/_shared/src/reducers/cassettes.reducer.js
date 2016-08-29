@@ -78,7 +78,6 @@ export default combineReducers({
 // ////////////////////////
 // SELECTORS /////////////
 // //////////////////////
-console.log('\n\n\nREADING FILE\n\n\n');
 const cassettesById = state => state.reduxVCR.cassettes.byId;
 const cassettePageNumberSelector = state => state.reduxVCR.cassettes.page.number;
 const cassettePageLimitSelector = state => state.reduxVCR.cassettes.page.limit;

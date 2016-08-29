@@ -2,8 +2,7 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 import { createStore, combineReducers } from 'redux';
-// import { actionTypes, actionCreators, reduxVCRReducer } from 'redux-vcr.shared';
-import { actionTypes, actionCreators, reduxVCRReducer } from '../../shared/src';
+import { actionTypes, actionCreators, reduxVCRReducer } from 'redux-vcr.shared';
 
 import { createReplayHandler } from '../src';
 
