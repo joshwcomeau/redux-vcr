@@ -1,6 +1,8 @@
 /* eslint-disable global-require */
 import invariant from 'invariant';
 
+import { errors } from '../index';
+
 let firebase;
 let firebaseStubFactory;
 if (process.env.NODE_ENV === 'test') {
@@ -19,12 +21,7 @@ export default function createFirebaseHandler({ firebaseAuth, source }) {
     typeof firebaseAuth.apiKey === 'string' &&
     typeof firebaseAuth.authDomain === 'string' &&
     typeof firebaseAuth.databaseURL === 'string',
-    `Please supply a valid 'firebaseAuth' object to ReduxVCR's firebaseHandler.
-
-    To persist data to firebase, we need an 'apiKey', an 'authDomain',
-    and a 'databaseUrl'.
-
-    For more information, see PLACEHOLDER.`
+    errors.invalidFirebaseAuth(firebaseAuth)
   );
 
   // Ensure we're given a 'source' (typically either 'persist' or 'retrieve')

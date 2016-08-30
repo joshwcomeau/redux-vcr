@@ -37,22 +37,22 @@ export default function createPersistHandler({
 
       invariant(
         typeof cassette === 'object',
-        errors.persistedCassetteNotAnObject
+        errors.persistedCassetteNotAnObject(cassette)
       );
 
       invariant(
         typeof cassette.timestamp === 'number',
-        errors.persistedCassetteInvalidTimestamp
+        errors.persistedCassetteInvalidTimestamp(cassette.timestamp)
       );
 
       invariant(
         Array.isArray(cassette.actions),
-        errors.persistedCassetteInvalidActions
+        errors.persistedCassetteInvalidActions(cassette.actions)
       );
 
       invariant(
         typeof sessionId !== 'undefined',
-        errors.persistedBeforeAuthentication
+        errors.persistedBeforeAuthentication()
       );
 
       debouncedPersist(cassette);
