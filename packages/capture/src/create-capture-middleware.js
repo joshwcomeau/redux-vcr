@@ -46,6 +46,8 @@ const createCaptureMiddleware = ({
 
       cassette.timestamp = Date.now();
       cassette.initialState = { ...store.getState() };
+      delete cassette.initialState.reduxVCR;
+
       timeSinceLastEvent = performance.now();
       waitingForActionToStartCapturing = false;
 

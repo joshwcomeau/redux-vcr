@@ -1,6 +1,11 @@
-import { actionTypes, reduxVCRReducer } from 'redux-vcr.shared';
+import {
+  actionTypes,
+  reduxVCRReducer,
+  cassetteSelectors,
+} from 'redux-vcr.shared';
 
 const { REWIND_CASSETTE_AND_RESTORE_APP } = actionTypes;
+const { selectedCassetteSelector } = cassetteSelectors;
 
 
 // A higher-order reducer that tackles all ReduxVCR actions.
@@ -15,12 +20,13 @@ export default function wrapReducer(reducer) {
 
     switch (action.type) {
       // When our special action is dispatched, we want to re-initialize
-      // the state, so that our cassette can be played from a blank state.
+      // the state, so that our cassette can be played from the correct state.
       case REWIND_CASSETTE_AND_RESTORE_APP: {
-        // Preserve our reduxVCR state, while resetting all other state
-        // to their default values.
+        // If our cassette has an initialState, use that.
+        const { initialState } = selectedCassetteSelector(state);
+
         return {
-          ...reducer({}, {}),
+          ...reducer(initialState, {}),
           reduxVCR: reduxVCRReducer(reduxVCR, action),
         };
       }

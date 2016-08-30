@@ -1,7 +1,7 @@
 import debounce from 'lodash.debounce';
 import invariant from 'invariant';
 
-import { createFirebaseHandler } from 'redux-vcr.shared';
+import { createFirebaseHandler, errors } from 'redux-vcr.shared';
 import './polyfills';
 
 
@@ -14,19 +14,16 @@ export default function createPersistHandler({
     source: 'persist',
   });
 
-  const sessionStart = Date.now();
-
   const debouncedPersist = debounce(cassette => {
     const { sessionId } = firebaseHandler;
-    const { data = {}, actions } = cassette;
+    const { actions, ...cassetteData } = cassette;
     const database = firebaseHandler.firebase.database();
 
     // Store our cassettes separately from our cassette actions.
     // There are performance reasons for this: by keeping our /cassettes
     // light, they can easily be sorted or filtered on the client.
     database.ref(`cassettes/${sessionId}`).set({
-      data,
-      timestamp: sessionStart,
+      ...cassetteData,
       numOfActions: actions.length,
     });
 
@@ -36,31 +33,26 @@ export default function createPersistHandler({
   return {
     firebaseHandler,
     persist(cassette) {
+      const { sessionId } = firebaseHandler;
+
       invariant(
-        typeof cassette === 'object' &&
-        Array.isArray(cassette.actions),
-        `Please supply a valid 'cassette' when invoking PersistHandler.persist.
-
-        A valid cassette is an object containing an optional 'data' argument,
-        and a required array of 'actions'.
-
-        For more information, see PLACEHOLDER.
-        `
+        typeof cassette === 'object',
+        errors.persistedCassetteNotAnObject
       );
 
-      const { sessionId } = firebaseHandler;
+      invariant(
+        typeof cassette.timestamp === 'number',
+        errors.persistedCassetteInvalidTimestamp
+      );
+
+      invariant(
+        Array.isArray(cassette.actions),
+        errors.persistedCassetteInvalidActions
+      );
+
       invariant(
         typeof sessionId !== 'undefined',
-        `It seems you're trying to persist a cassette before firebase
-        authentication is complete.
-
-        Either this means that you're persisting too quickly, or there's
-        a problem with firebase authentication.
-
-        Ensure that your credentials are valid, and that you're debouncing
-        all persist requests.
-
-        For more information, see PLACEHOLDER.`
+        errors.persistedBeforeAuthentication
       );
 
       debouncedPersist(cassette);

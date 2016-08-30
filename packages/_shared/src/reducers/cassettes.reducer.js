@@ -78,17 +78,24 @@ export default combineReducers({
 // ////////////////////////
 // SELECTORS /////////////
 // //////////////////////
-const cassettesById = state => state.reduxVCR.cassettes.byId;
+const cassettesByIdSelector = state => state.reduxVCR.cassettes.byId;
+const selectedIdSelector = state => state.reduxVCR.cassettes.selected;
 const cassettePageNumberSelector = state => state.reduxVCR.cassettes.page.number;
 const cassettePageLimitSelector = state => state.reduxVCR.cassettes.page.limit;
 
+export const selectedCassetteSelector = createSelector(
+  selectedIdSelector,
+  cassettesByIdSelector,
+  (selectedId, cassettesById) => cassettesById[selectedId]
+);
+
 export const cassetteListSelector = createSelector(
-  cassettesById,
-  (cassettes) => {
-    const cassetteIds = Object.keys(cassettes);
+  cassettesByIdSelector,
+  (cassettesById) => {
+    const cassetteIds = Object.keys(cassettesById);
 
     return cassetteIds
-      .map(id => ({ id, ...cassettes[id] }))
+      .map(id => ({ id, ...cassettesById[id] }))
       .sort((a, b) => b.timestamp - a.timestamp);
   }
 );

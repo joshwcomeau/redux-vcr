@@ -21,7 +21,7 @@ describe('createPersistHandler', () => {
         firebaseAuth,
       });
 
-      const cassette = { data: {}, actions: [] };
+      const cassette = { data: {}, actions: [], timestamp: 1472558962525 };
 
       expect(() => handler.persist(cassette)).to.throw(/firebase/);
     });
@@ -32,13 +32,9 @@ describe('createPersistHandler', () => {
         debounceLength: 50,
       });
 
-      const cassette = { data: {}, actions: [] };
-
+      const cassette = { data: {}, actions: [], timestamp: 1472558962525 };
       const firebase = handler.firebaseHandler.firebase;
 
-      // This is a little tricky, since the `persist` method is debounced.
-      // The function will return just fine, even if there's a problem
-      // with the auth.
       expect(firebase.set.callCount).to.equal(0);
 
       await delay(100);
@@ -65,20 +61,31 @@ describe('createPersistHandler', () => {
     });
 
     it('fails when no action array is provided', () => {
-      const faultyCassette = {};
+      const faultyCassette = { data: {}, timestamp: 1472558962525 };
 
       expect(() => (
         handler.persist(faultyCassette)
       )).to.throw(/cassette/);
     });
 
+    it('fails when no timestamp is provided', () => {
+      const faultyCassette = { data: {}, actions: [{ type: 'STUFF' }] };
+
+      expect(() => (
+        handler.persist(faultyCassette)
+      )).to.throw(/timestamp/);
+    });
+
     it('succeeds when the actions array is empty', () => {
-      const cassette = { actions: [] };
+      const cassette = { actions: [], timestamp: 1472558962525 };
       expect(() => handler.persist(cassette)).to.not.throw();
     });
 
     it('succeeds when no data is provided (it is optional)', () => {
-      const cassette = { actions: [{ type: 'STUFF' }] };
+      const cassette = {
+        actions: [{ type: 'STUFF' }],
+        timestamp: 1472558962525,
+      };
 
       expect(() => handler.persist(cassette)).to.not.throw();
     });
@@ -90,6 +97,12 @@ describe('createPersistHandler', () => {
     const cassette = {
       data: { label: "Josh's great session" },
       actions: [{ type: 'DO_GREAT_THINGS' }],
+      timestamp: 1472558962525,
+      initialState: {
+        auth: {
+          loggedIn: true,
+        },
+      },
     };
 
     beforeEach(async function(done) {
@@ -130,6 +143,7 @@ describe('createPersistHandler', () => {
       expect(setCassette.data).to.equal(cassette.data);
       expect(setCassette.timestamp).to.be.a('number');
       expect(setCassette.numOfActions).to.equal(cassette.actions.length);
+      expect(setCassette.initialState).to.equal(cassette.initialState);
     });
 
     it('passes along the actions as-is', () => {
@@ -145,6 +159,7 @@ describe('createPersistHandler', () => {
     const cassette = {
       data: { label: "Josh's great session" },
       actions: [{ type: 'DO_GREAT_THINGS' }],
+      timestamp: 1472558962525,
     };
 
     beforeEach(done => {

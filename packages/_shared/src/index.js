@@ -20,6 +20,8 @@ import reduxVCRReducer from './reducers';
 
 import createFirebaseHandler from './utils/create-firebase-handler';
 
+import * as errors from './utils/errors';
+
 
 // We want to split our action types from our action creators.
 const actionTypes = {};
@@ -51,4 +53,5 @@ export {
   userSelectors,
   reduxVCRReducer,
   createFirebaseHandler,
+  errors,
 };
