@@ -27,12 +27,7 @@ export default function createFirebaseHandler({ firebaseAuth, source }) {
   // Ensure we're given a 'source' (typically either 'persist' or 'retrieve')
   invariant(
     typeof source === 'string',
-    `Please supply a 'source' when instantiating FirebaseHandler.
-
-    This can be any string, and is used to namespace the Firebase connection.
-    You probably want it to be either 'persist' or 'retrieve'.
-
-    For more information, see PLACEHOLDER.`
+    errors.firebaseHandlerMissingSource()
   );
 
   // If we're running in test mode, we want to generate a fresh stub.
@@ -56,18 +51,13 @@ export default function createFirebaseHandler({ firebaseAuth, source }) {
         this.firebaseSessionId = user.uid;
       });
     },
-    createProvider(authMethod) {
+    createProvider(provider) {
       invariant(
-        authMethod === 'github.com',
-        `Invalid Firebase sign-in attempt.
-
-        At the moment, we only accept 'github.com' authentication.
-        You attempted to sign in with '${authMethod}'.
-
-        For more information, see PLACEHOLDER.`
+        provider === 'github.com',
+        errors.firebaseHandlerInvalidProvider(provider)
       );
 
-      switch (authMethod) {
+      switch (provider) {
         case 'github.com': return new firebase.auth.GithubAuthProvider();
 
         // the default case should never actually be hit. It's a fallback in case
@@ -79,12 +69,7 @@ export default function createFirebaseHandler({ firebaseAuth, source }) {
     buildCredential({ accessToken, provider }) {
       invariant(
         provider === 'github.com',
-        `Invalid provider passed to 'buildCredential'.
-
-        At the moment, we only accept 'github.com' authentication.
-        You attempted to sign in with '${provider}'.
-
-        For more information, see PLACEHOLDER.`
+        errors.firebaseHandlerInvalidProvider(provider)
       );
 
       switch (provider) {

@@ -1,7 +1,9 @@
 import invariant from 'invariant';
-import './polyfills.js';
+import { errors } from 'redux-vcr.shared';
 
+import './polyfills.js';
 import { isActionBlacklisted } from './helpers';
+
 
 // eslint-disable-next-line import/prefer-default-export
 const createCaptureMiddleware = ({
@@ -19,11 +21,7 @@ const createCaptureMiddleware = ({
   // Ensure that the data handler we've supplied is valid
   invariant(
     !!persistHandler && typeof persistHandler.persist === 'function',
-    `Please supply a valid persistHandler to ReduxVCR/capture middleware.
-    A valid persistHandler implements a 'persist' method for syncing to a
-    database.
-
-    For more information, see PLACEHOLDER.`
+    errors.captureMiddlewareGivenInvalidPersistHandler()
   );
 
   // In addition to any user-specified actions, we want to ignore any actions

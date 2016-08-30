@@ -9,8 +9,8 @@ export default function createRetrieveHandler({ firebaseAuth }) {
 
   return {
     // Authenticate developers with a specified provider source
-    // returns a promise, that the middleware can use to dispatch whichever action
-    // (success or failure) is appropriate.
+    // returns a promise, that the middleware can use to dispatch whichever
+    // action (success or failure) is appropriate.
     signInWithPopup(authMethod) {
       const provider = firebaseHandler.createProvider(authMethod);
 
@@ -20,6 +20,10 @@ export default function createRetrieveHandler({ firebaseAuth }) {
         .signInWithPopup(provider);
     },
 
+    // Sign in using a saved credential.
+    // This allows "remember me" functionality. Once a developer has
+    // authenticated with `signInWithPopup`, we store the access creds.
+    // On load, we check for their existence, and sign in using this method:
     signInWithCredential(rawCredential) {
       const credential = firebaseHandler.buildCredential(rawCredential);
 

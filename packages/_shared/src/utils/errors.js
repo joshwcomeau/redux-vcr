@@ -1,6 +1,15 @@
 /* eslint-disable max-len */
 // ////// CAPTURE ////// //
+export const captureMiddlewareGivenInvalidPersistHandler = () => `
+Redux VCR error:
+You passed an invalid persistHandler to createCaptureMiddleware.
 
+Persist handlers need a 'persist' method that can be invoked whenever the capture middleware has something to persist.
+
+You either failed to provide a persistHandler, or your persistHandler does not implement a 'persist' method.
+
+For more information, see PLACEHOLDER.
+`;
 
 // ////// PERSIST ////// //
 export const persistedCassetteNotAnObject = cassette => `
@@ -69,6 +78,29 @@ To access the data in Firebase, we need:
   - a 'databaseURL'
 
 These fields should all be strings.
+
+For more information, see PLACEHOLDER.
+`;
+
+export const firebaseHandlerMissingSource = () => `
+Redux VCR error:
+You did not supply a valid 'source' when instantiating Firebase.
+
+This can be any string, and is used to namespace the Firebase connection.
+You probably want it to be either 'persist' or 'retrieve'.
+
+If you are not creating custom Persist or Retrieve modules, you should not be seeing this error message; if you are, it means there's an issue with your configuration, or a bug in Redux VCR.
+
+For more information, see PLACEHOLDER.
+`;
+
+export const firebaseHandlerInvalidProvider = provider => `
+Redux VCR error:
+You tried to sign in using an invalid 'provider'.
+
+At this time, Redux VCR only accepts 'github.com', although we may add more providers in the future.
+
+You provided: ${provider}.
 
 For more information, see PLACEHOLDER.
 `;
