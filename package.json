@@ -4,13 +4,22 @@
   "homepage": "https://github.com/joshwcomeau/redux-vcr",
   "license": "MIT",
   "scripts": {
-    "demo:start": "npm run start --prefix ./packages/_demo",
+    "demo": "npm run start --prefix ./packages/_demo",
+
     "test:capture": "npm run test --prefix ./packages/capture",
     "test:persist": "npm run test --prefix ./packages/persist",
     "test:retrieve": "npm run test --prefix ./packages/retrieve",
     "test:replay": "npm run test --prefix ./packages/replay",
     "test:shared": "npm run test --prefix ./packages/_shared",
     "test": "npm run test:capture && npm run test:persist && npm run test:retrieve && npm run test:replay && npm run test:shared",
+
+    "install:capture": "npm install --prefix ./packages/capture",
+    "install:persist": "npm install --prefix ./packages/persist",
+    "install:retrieve": "npm install --prefix ./packages/retrieve",
+    "install:replay": "npm install --prefix ./packages/replay",
+    "install:shared": "npm install --prefix ./packages/_shared",
+    "install": "npm run install:capture && npm run install:persist && npm run install:retrieve && npm run install:replay && npm run install:shared",
+
     "bootstrap": "node scripts/bootstrap.js"
   },
   "repository": {
