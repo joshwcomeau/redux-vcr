@@ -17,11 +17,6 @@ export default function createPersistHandler({
   const debouncedPersist = debounce(cassette => {
     const { sessionId } = firebaseHandler;
 
-    invariant(
-      typeof sessionId !== 'undefined',
-      errors.persistedBeforeAuthentication()
-    );
-
     const { actions, ...cassetteData } = cassette;
     const database = firebaseHandler.firebase.database();
 
