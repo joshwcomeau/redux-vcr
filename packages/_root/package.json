@@ -1,6 +1,6 @@
 {
   "name": "redux-vcr",
-  "version": "0.0.37",
+  "version": "0.0.38",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,9 +9,9 @@
   "author": "Joshua Comeau",
   "license": "MIT",
   "dependencies": {
-    "redux-vcr.capture": "^0.0.37",
-    "redux-vcr.persist": "^0.0.37",
-    "redux-vcr.replay": "^0.0.37",
-    "redux-vcr.retrieve": "^0.0.37"
+    "redux-vcr.capture": "^0.0.38",
+    "redux-vcr.persist": "^0.0.38",
+    "redux-vcr.replay": "^0.0.38",
+    "redux-vcr.retrieve": "^0.0.38"
   }
 }
