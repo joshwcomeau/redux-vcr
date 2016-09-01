@@ -16,6 +16,12 @@ export default function createPersistHandler({
 
   const debouncedPersist = debounce(cassette => {
     const { sessionId } = firebaseHandler;
+
+    invariant(
+      typeof sessionId !== 'undefined',
+      errors.persistedBeforeAuthentication()
+    );
+
     const { actions, ...cassetteData } = cassette;
     const database = firebaseHandler.firebase.database();
 
@@ -33,8 +39,6 @@ export default function createPersistHandler({
   return {
     firebaseHandler,
     persist(cassette) {
-      const { sessionId } = firebaseHandler;
-
       invariant(
         typeof cassette === 'object',
         errors.persistedCassetteNotAnObject(cassette)
@@ -48,11 +52,6 @@ export default function createPersistHandler({
       invariant(
         Array.isArray(cassette.actions),
         errors.persistedCassetteInvalidActions(cassette.actions)
-      );
-
-      invariant(
-        typeof sessionId !== 'undefined',
-        errors.persistedBeforeAuthentication()
       );
 
       debouncedPersist(cassette);
