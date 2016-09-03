@@ -19,9 +19,9 @@
 
 ## Capture
 
-### `createCaptureMiddleware({ persistHandler, blacklist, startCapturingAfterAction })`
+### `createCaptureMiddleware({ persistHandler, blacklist, startTrigger })`
 
-A function that will create a [Redux middleware](http://redux.js.org/docs/advanced/Middleware.html) that will be used for capturing all relevant actions, and passing them to a persist handler.
+A factory function for creating [Redux middleware](http://redux.js.org/docs/advanced/Middleware.html) that will be used for capturing all relevant actions, and passing them to a persist handler.
 
 
 #### Arguments
@@ -83,7 +83,7 @@ The default format for an item in the blacklist is an object with:
 |---------------------|--------------------|---------------|
 |  `String` | `undefined` | `false` |
 
-Sometimes, you may wish to omit the start of a session (for example, user onboarding, registration, etc.).
+Sometimes, you may wish to omit the start of a session (eg. user onboarding, registration).
 
 In this case, you may begin capturing the state after a specific action has been dispatched. The current snapshot of the state at that point will be captured, so that the session can be replayed with any pre-existing state preserved.
 
@@ -130,7 +130,7 @@ If your application fires many actions quickly, you may wish to employ a debounc
 ```js
 const persistHandler = createPersistHandler({
   firebaseAuth: {
-    apiKey: 'AAAAj8s9vj9sajf9jaf9dsf9a',
+    apiKey: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
     authDomain: 'your-sub-domain.firebaseapp.com',
     databaseURL: 'https://your-sub-domain.firebaseio.com',
   },
@@ -145,7 +145,7 @@ const persistMiddleware = createPersistMiddleware({ persistHandler });
 
 ## Retrieve
 
-### `createRetrieveMiddleware`
+### `createRetrieveMiddleware({ retrieveHandler, appName, requiresAuth })`
 
 A function that will create a [Redux middleware](http://redux.js.org/docs/advanced/Middleware.html) that will be used for retrieving previously-persisted cassettes.
 
@@ -213,7 +213,7 @@ For more information, see [Getting Started with Firebase](placeholder.com).
 ```js
 const retrieveHandler = createRetrieveHandler({
   firebaseAuth: {
-    apiKey: 'AAAAj8s9vj9sajf9jaf9dsf9a',
+    apiKey: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
     authDomain: 'your-sub-domain.firebaseapp.com',
     databaseURL: 'https://your-sub-domain.firebaseio.com',
   },
