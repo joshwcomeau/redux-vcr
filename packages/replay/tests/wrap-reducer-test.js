@@ -102,8 +102,21 @@ describe('wrapReducer', () => {
   });
 
   describe(REWIND_CASSETTE_AND_RESTORE_APP, () => {
+    const buildDefaultState = ({ initialState = {} } = {}) => ({
+      reduxVCR: {
+        cassettes: {
+          byId: {
+            abc123: {
+              initialState,
+            },
+          },
+          selected: 'abc123',
+        },
+      },
+    });
+
     it('resets all but the reduxVCR slice when requested', () => {
-      const state = wrappedReducer({}, {});
+      const state = wrappedReducer(buildDefaultState(), {});
 
       // These changes should be wiped out when we rewind and restore.
       state.apples = 12;
@@ -119,6 +132,26 @@ describe('wrapReducer', () => {
       expect(newState.oranges).to.equal(5);
       expect(newState.apples).to.equal(5);
       expect(newState.reduxVCR.play.speed).to.equal(2);
+    });
+
+    it('resets to the initial state provided on the cassette', () => {
+      const state = wrappedReducer(buildDefaultState({
+        initialState: {
+          apples: 200,
+        },
+      }), {});
+
+      // By default, apples should take on their default value (5)
+      expect(state.apples).to.equal(5);
+      expect(state.oranges).to.equal(5);
+
+      const action = rewindCassetteAndRestoreApp();
+      const newState = wrappedReducer(state, action);
+
+      // When we reset to the cassette's initial state, though, the initial
+      // value is chosen
+      expect(newState.apples).to.equal(200);
+      expect(newState.oranges).to.equal(5);
     });
   });
 });

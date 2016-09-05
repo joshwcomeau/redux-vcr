@@ -337,7 +337,6 @@ describe('createReplayMiddleware', () => {
 
     context('with function', () => {
       const overwriteCassetteState = sinon.stub();
-
       const middlewareWithOverrideFn = createReplayMiddleware({
         replayHandler,
         overwriteCassetteState,
