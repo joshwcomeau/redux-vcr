@@ -1,5 +1,7 @@
 /* eslint-disable max-len */
-// ////// CAPTURE ////// //
+// /////////////////////// //
+// /////// CAPTURE ////// //
+// ///////////////////// //
 export const captureMiddlewareGivenInvalidPersistHandler = () => `
 Redux VCR error:
 You passed an invalid persistHandler to createCaptureMiddleware.
@@ -11,7 +13,11 @@ You either failed to provide a persistHandler, or your persistHandler does not i
 For more information, see PLACEHOLDER.
 `;
 
-// ////// PERSIST ////// //
+
+
+// /////////////////////// //
+// /////// PERSIST ////// //
+// ///////////////////// //
 export const persistedCassetteNotAnObject = cassette => `
 Redux VCR error:
 You tried to persist an invalid or nonexistent cassette.
@@ -65,7 +71,54 @@ For more information, see PLACEHOLDER.
 `;
 
 
-// ////// SHARED ////// //
+
+// /////////////////////// //
+// /////// RETRIEVE ///// //
+// ///////////////////// //
+
+
+
+// /////////////////////// //
+// /////// REPLAY /////// //
+// ///////////////////// //
+export const playWithNoCassetteSelected = () => `
+Redux VCR error:
+You tried to 'play' without any cassette selected.
+
+Before clicking 'play', ensure that a cassette has been loaded.
+
+If you are seeing this error, it likely means you are building a custom 'replay'
+module, and need to validate that a cassette is loaded before sending the
+PLAY_CASSETTE action.
+
+If you are not using any custom VCR modules, you've likely found a bug with
+ReduxVCR.replay.
+
+For more information, see PLACEHOLDER.
+`;
+
+export const playWithInvalidCassetteSelected = (selected, byId) => `
+Redux VCR error:
+You tried to 'play' with an invalid cassette selected.
+
+If you are seeing this error, it likely means you are building a custom 'replay'
+module, and need to validate that a cassette ID is valid before attempting to
+play it.
+
+If you are not using any custom VCR modules, you've likely found a bug with
+ReduxVCR.replay.
+
+The cassette you attempted to play had the ID ${selected}. The available IDs are:
+${Object.keys(byId).join(', ')}.
+
+For more information, see PLACEHOLDER.
+`;
+
+
+
+// /////////////////////// //
+// /////// SHARED /////// //
+// ///////////////////// //
 export const invalidFirebaseAuth = firebaseAuth => `
 Redux VCR error:
 You supplied an invalid 'firebaseAuth' object.

@@ -5,9 +5,13 @@ import { actionTypes, actionCreators } from 'redux-vcr.shared';
 
 import { createReplayMiddleware } from '../src';
 
-console.log(actionCreators);
 
-const { PLAY_CASSETTE, STOP_CASSETTE } = actionTypes;
+const {
+  PLAY_CASSETTE,
+  STOP_CASSETTE,
+  REWIND_CASSETTE_AND_RESTORE_APP,
+  UPDATE_CASSETTE_INITIAL_STATE,
+} = actionTypes;
 const {
   changeMaximumDelay,
   playCassette,
@@ -47,21 +51,29 @@ describe('createReplayMiddleware', () => {
     const store = {};
     middlewareWithMaxDelay(store)(next);
 
-    console.log(actionCreators.changeMaximumDelay);
-
     expect(next.callCount).to.equal(1);
     expect(next.firstCall.args[0]).to.deep.equal(
-      actionCreators.changeMaximumDelay({ maximumDelay: 200 })
+      changeMaximumDelay({ maximumDelay: 200 })
     );
   });
 
   describe(PLAY_CASSETTE, () => {
+    const buildDefaultState = status => ({
+      reduxVCR: {
+        play: {
+          status,
+        },
+        cassettes: {
+          byId: { abc123: {} },
+          selected: 'abc123',
+        },
+      },
+    });
+
     context('while playing', () => {
       const store = {
         getState() {
-          return {
-            reduxVCR: { play: { status: 'playing' } },
-          };
+          return buildDefaultState('playing');
         },
       };
       const action = playCassette();
@@ -82,9 +94,7 @@ describe('createReplayMiddleware', () => {
     context('while paused', () => {
       const store = {
         getState() {
-          return {
-            reduxVCR: { play: { status: 'paused' } },
-          };
+          return buildDefaultState('paused');
         },
       };
       const action = playCassette();
@@ -110,9 +120,7 @@ describe('createReplayMiddleware', () => {
     context('while stopped', () => {
       const store = {
         getState() {
-          return {
-            reduxVCR: { play: { status: 'stopped' } },
-          };
+          return buildDefaultState('stopped');
         },
       };
       const action = playCassette();
@@ -136,6 +144,53 @@ describe('createReplayMiddleware', () => {
           store,
           next,
         });
+      });
+    });
+
+    context('when no cassette is selected', () => {
+      const store = {
+        getState() {
+          return {
+            reduxVCR: {
+              play: { status: 'stopped' },
+              cassettes: {
+                byId: { abc123: {} },
+              },
+            },
+          };
+        },
+      };
+
+      const action = playCassette();
+
+      it('throws an invariant violation', () => {
+        expect(
+          () => middleware(store)(next)(action)
+        ).to.throw();
+      });
+    });
+
+    context('when an invalid cassette is selected', () => {
+      const store = {
+        getState() {
+          return {
+            reduxVCR: {
+              play: { status: 'stopped' },
+              cassettes: {
+                byId: { abc123: {} },
+                selected: 'def456',
+              },
+            },
+          };
+        },
+      };
+
+      const action = playCassette();
+
+      it('throws an invariant violation', () => {
+        expect(
+          () => middleware(store)(next)(action)
+        ).to.throw();
       });
     });
   });
@@ -208,6 +263,119 @@ describe('createReplayMiddleware', () => {
       it('passes the action through without rewinding', () => {
         expect(next.callCount).to.equal(1);
         expect(next.firstCall.args[0]).to.equal(action);
+      });
+    });
+  });
+
+  describe('overwriteCassetteState', () => {
+    const initialState = {
+      user: {
+        authenticated: true,
+        email: 'james@dean.com',
+      },
+    };
+
+    const store = {
+      getState() {
+        return {
+          reduxVCR: {
+            play: { status: 'stopped' },
+            cassettes: {
+              byId: {
+                abc123: {
+                  initialState,
+                },
+              },
+              selected: 'abc123',
+            },
+          },
+        };
+      },
+    };
+
+    const action = playCassette();
+
+    context('with object', () => {
+      const middlewareWithOverrideObj = createReplayMiddleware({
+        replayHandler,
+        overwriteCassetteState: {
+          user: {
+            authenticated: false,
+          },
+        },
+      });
+
+      beforeEach(() => {
+        middlewareWithOverrideObj(store)(next)(action);
+      });
+
+      it('dispatches 3 actions', () => {
+        expect(next.callCount).to.equal(3);
+
+        const [first, second, third] = [
+          next.firstCall.args[0],
+          next.secondCall.args[0],
+          next.thirdCall.args[0],
+        ];
+
+        expect(first.type).to.equal(REWIND_CASSETTE_AND_RESTORE_APP);
+        expect(second.type).to.equal(UPDATE_CASSETTE_INITIAL_STATE);
+        expect(third.type).to.equal(PLAY_CASSETTE);
+      });
+
+      it('creates a deeply-merged state', () => {
+        const updateCassetteAction = next.secondCall.args[0];
+
+        expect(updateCassetteAction.newState).to.deep.equal({
+          user: {
+            authenticated: false,
+            email: 'james@dean.com',
+          },
+        });
+      });
+    });
+
+    context('with function', () => {
+      const overwriteCassetteState = sinon.stub();
+
+      const middlewareWithOverrideFn = createReplayMiddleware({
+        replayHandler,
+        overwriteCassetteState,
+      });
+
+      beforeEach(() => {
+        overwriteCassetteState.returns({ hi: 5 });
+        middlewareWithOverrideFn(store)(next)(action);
+      });
+
+      afterEach(() => {
+        overwriteCassetteState.reset();
+      });
+
+      it('dispatches 3 actions', () => {
+        expect(next.callCount).to.equal(3);
+
+        const [first, second, third] = [
+          next.firstCall.args[0],
+          next.secondCall.args[0],
+          next.thirdCall.args[0],
+        ];
+
+        expect(first.type).to.equal(REWIND_CASSETTE_AND_RESTORE_APP);
+        expect(second.type).to.equal(UPDATE_CASSETTE_INITIAL_STATE);
+        expect(third.type).to.equal(PLAY_CASSETTE);
+      });
+
+      it('invokes the override function', () => {
+        expect(overwriteCassetteState.callCount).to.equal(1);
+      });
+
+      it('returns the object returned by the overwrite fn', () => {
+        const updateCassetteAction = next.secondCall.args[0];
+
+        expect(updateCassetteAction.newState).to.deep.equal({
+          hi: 5,
+        });
       });
     });
   });

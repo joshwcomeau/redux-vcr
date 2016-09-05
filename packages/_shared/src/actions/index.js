@@ -9,6 +9,7 @@ export const PLAY_CASSETTE = 'REDUX_VCR/PLAY_CASSETTE';
 export const PAUSE_CASSETTE = 'REDUX_VCR/PAUSE_CASSETTE';
 export const STOP_CASSETTE = 'REDUX_VCR/STOP_CASSETTE';
 export const REWIND_CASSETTE_AND_RESTORE_APP = 'REDUX_VCR/REWIND_CASSETTE_AND_RESTORE_APP';
+export const UPDATE_CASSETTE_INITIAL_STATE = 'REDUX_VCR/UPDATE_CASSETTE_INITIAL_STATE';
 export const GO_TO_NEXT_CASSETTE_PAGE = 'REDUX_VCR/GO_TO_NEXT_CASSETTE_PAGE';
 export const GO_TO_PREVIOUS_CASSETTE_PAGE = 'REDUX_VCR/GO_TO_PREVIOUS_CASSETTE_PAGE';
 export const CASSETTE_ACTIONS_RECEIVE = 'REDUX_VCR/CASSETTE_ACTIONS_RECEIVE';
@@ -74,6 +75,11 @@ export const stopCassette = () => ({
 // It ensures that when a tape is played, it plays in the right context.
 export const rewindCassetteAndRestoreApp = () => ({
   type: REWIND_CASSETTE_AND_RESTORE_APP,
+});
+
+export const updateCassetteInitialState = ({ newState }) => ({
+  type: UPDATE_CASSETTE_INITIAL_STATE,
+  newState,
 });
 
 export const goToNextCassettePage = () => ({
