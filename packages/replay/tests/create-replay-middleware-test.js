@@ -318,13 +318,13 @@ describe('createReplayMiddleware', () => {
           next.thirdCall.args[0],
         ];
 
-        expect(first.type).to.equal(REWIND_CASSETTE_AND_RESTORE_APP);
-        expect(second.type).to.equal(UPDATE_CASSETTE_INITIAL_STATE);
+        expect(first.type).to.equal(UPDATE_CASSETTE_INITIAL_STATE);
+        expect(second.type).to.equal(REWIND_CASSETTE_AND_RESTORE_APP);
         expect(third.type).to.equal(PLAY_CASSETTE);
       });
 
       it('creates a deeply-merged state', () => {
-        const updateCassetteAction = next.secondCall.args[0];
+        const updateCassetteAction = next.firstCall.args[0];
 
         expect(updateCassetteAction.newState).to.deep.equal({
           user: {
@@ -360,8 +360,8 @@ describe('createReplayMiddleware', () => {
           next.thirdCall.args[0],
         ];
 
-        expect(first.type).to.equal(REWIND_CASSETTE_AND_RESTORE_APP);
-        expect(second.type).to.equal(UPDATE_CASSETTE_INITIAL_STATE);
+        expect(first.type).to.equal(UPDATE_CASSETTE_INITIAL_STATE);
+        expect(second.type).to.equal(REWIND_CASSETTE_AND_RESTORE_APP);
         expect(third.type).to.equal(PLAY_CASSETTE);
       });
 
@@ -370,7 +370,7 @@ describe('createReplayMiddleware', () => {
       });
 
       it('returns the object returned by the overwrite fn', () => {
-        const updateCassetteAction = next.secondCall.args[0];
+        const updateCassetteAction = next.firstCall.args[0];
 
         expect(updateCassetteAction.newState).to.deep.equal({
           hi: 5,
