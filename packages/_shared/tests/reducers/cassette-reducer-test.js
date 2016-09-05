@@ -103,6 +103,27 @@ describe('cassette reducer', () => {
     });
   });
 
+  describe(SELECT_CASSETTE, () => {
+    it('marks the cassette as selected, and the status as loaded', () => {
+      const state = reducer({
+        byId: {
+          abc123: {},
+          def456: {},
+        },
+      }, {});
+      const action = selectCassette({ id: 'def456' });
+
+      const expectedState = {
+        ...state,
+        selected: 'def456',
+        status: 'loaded',
+      };
+      const actualState = reducer(state, action);
+
+      expect(actualState).to.deep.equal(expectedState);
+    });
+  });
+
   describe(UPDATE_CASSETTE_INITIAL_STATE, () => {
     it('sets the new initialState for the currently-selected cassette', () => {
       const state = reducer({
