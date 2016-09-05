@@ -27,7 +27,7 @@ Features quality-of-life configuration:
 
 #### Serverless Security
 
-The goal for ReduxVCR was to not need any server-side integration for devs creating front-end-only applications, while still being secure. Using Firebase, we're able to automatically authenticate all users, assuring that they can only edit their own slice of the state, and not read to or write from any other users' sessions.
+The goal for ReduxVCR was to not need any server-side integration for developers creating front-end-only applications, while still being secure. Using Firebase, we're able to automatically authenticate all users, assuring that they can only edit their own slice of the state, and not read from or write to any other users' sessions.
 
 For replaying the sessions, GitHub OAuth is used. You set which GitHub email you want to have read access within Firebase.
 
@@ -121,6 +121,8 @@ $ npm i -S redux-vcr.{capture,persist,retrieve,replay}
 
 ### Step 4: Integrate
 
+##### 4a: Redux store integration
+
 In your Firebase console, grab your credentials. Select your project, and click "Add Firebase to your web app".
 
 You don't need to copy the entire snippet, we just need the credentials themselves:
@@ -178,7 +180,31 @@ const store = createStore(
 );
 ```
 
-That's it! You should be up and running :)
+##### 4b: React integration
+
+For replaying cassettes, you'll need to add the `Replay` React component to your app.
+
+It is recommended to place it as high in your app as possible, similar to the official Redux devtools.
+
+```js
+import { Replay } from 'redux-vcr.replay';
+
+const YourApp = () => (
+  <div>
+    {/* Your app stuff here */}
+    <Replay />
+  </div>
+)
+```
+
+Replay requires no configuration via props, as all of the logic can be configured in the middlewares above. There are some aesthetic tweaks you can make, though.
+
+
+##### That's it! You should be up and running :)
+
+
+------------------
+
 
 ### Further Reading
 
