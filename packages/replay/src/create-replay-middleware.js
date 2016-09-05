@@ -67,7 +67,7 @@ const createReplayMiddleware = ({
                 ? overwriteCassetteState(initialState)
                 : merge({}, initialState, overwriteCassetteState);
 
-              next(updateCassetteInitialState({ newState }));
+              next(updateCassetteInitialState({ selected, newState }));
             }
           }
 

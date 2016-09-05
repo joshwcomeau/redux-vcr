@@ -1,3 +1,4 @@
+/* eslint-disable object-property-newline */
 import { expect } from 'chai';
 
 import reducer from '../../src/reducers/cassettes.reducer';
@@ -9,6 +10,7 @@ import {
   HIDE_CASSETTES,
   SELECT_CASSETTE,
   VIEW_CASSETTES,
+  UPDATE_CASSETTE_INITIAL_STATE,
   cassettesListSuccess,
   ejectCassette,
   goToNextCassettePage,
@@ -16,6 +18,7 @@ import {
   hideCassettes,
   selectCassette,
   viewCassettes,
+  updateCassetteInitialState,
 } from '../../src/actions';
 
 
@@ -33,7 +36,7 @@ describe('cassette reducer', () => {
         byId: {
           abc: '123',
           xyz: '789',
-        }
+        },
       };
       const actualState = reducer(state, action);
 
@@ -43,8 +46,8 @@ describe('cassette reducer', () => {
 
   describe(EJECT_CASSETTE, () => {
     it('updates the casette status and selected', () => {
-      const initialState = { selected: 'abc', status: 'loaded' }
-      const state = reducer(state, {});
+      const initialState = { selected: 'abc', status: 'loaded' };
+      const state = reducer(initialState, {});
       const action = ejectCassette();
 
       const expectedState = {
@@ -66,7 +69,7 @@ describe('cassette reducer', () => {
       const expectedState = { ...state, page: {
         number: 1,
         limit: 5,
-      }};
+      } };
       const actualState = reducer(state, action);
 
       expect(actualState).to.deep.equal(expectedState);
@@ -75,13 +78,13 @@ describe('cassette reducer', () => {
 
   describe(GO_TO_PREVIOUS_CASSETTE_PAGE, () => {
     it('decrements the selected page', () => {
-      const state = reducer({ page: { number: 5, limit: 5 }}, {});
+      const state = reducer({ page: { number: 5, limit: 5 } }, {});
       const action = goToPreviousCassettePage();
 
       const expectedState = { ...state, page: {
         number: 4,
         limit: 5,
-      }};
+      } };
       const actualState = reducer(state, action);
 
       expect(actualState).to.deep.equal(expectedState);
@@ -100,6 +103,47 @@ describe('cassette reducer', () => {
     });
   });
 
+  describe(UPDATE_CASSETTE_INITIAL_STATE, () => {
+    it('sets the new initialState for the currently-selected cassette', () => {
+      const state = reducer({
+        byId: {
+          abc123: {
+            label: 'hi',
+            initialState: 5,
+          },
+          def456: {
+            label: 'bye',
+            initialState: 10,
+          },
+        },
+        selected: 'def456',
+      }, {});
+
+      const action = updateCassetteInitialState({
+        selected: 'def456',
+        newState: 20,
+      });
+
+      const expectedState = {
+        ...state,
+        byId: {
+          abc123: {
+            label: 'hi',
+            initialState: 5,
+          },
+          def456: {
+            label: 'bye',
+            initialState: 20,
+          },
+        },
+        selected: 'def456',
+      };
+      const actualState = reducer(state, action);
+
+      expect(actualState).to.deep.equal(expectedState);
+    });
+  });
+
   describe(VIEW_CASSETTES, () => {
     it('sets status to `selecting`', () => {
       const state = reducer({}, {});
@@ -111,5 +155,4 @@ describe('cassette reducer', () => {
       expect(actualState).to.deep.equal(expectedState);
     });
   });
-
 });

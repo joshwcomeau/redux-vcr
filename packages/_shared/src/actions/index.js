@@ -77,8 +77,9 @@ export const rewindCassetteAndRestoreApp = () => ({
   type: REWIND_CASSETTE_AND_RESTORE_APP,
 });
 
-export const updateCassetteInitialState = ({ newState }) => ({
+export const updateCassetteInitialState = ({ selected, newState }) => ({
   type: UPDATE_CASSETTE_INITIAL_STATE,
+  selected,
   newState,
 });
 

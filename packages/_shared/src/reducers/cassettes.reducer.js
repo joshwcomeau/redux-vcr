@@ -7,6 +7,7 @@ import {
   EJECT_CASSETTE,
   GO_TO_NEXT_CASSETTE_PAGE,
   GO_TO_PREVIOUS_CASSETTE_PAGE,
+  UPDATE_CASSETTE_INITIAL_STATE,
   HIDE_CASSETTES,
   SELECT_CASSETTE,
   VIEW_CASSETTES,
@@ -38,6 +39,7 @@ function statusReducer(state = defaultStates.status, action) {
 function selectedReducer(state = defaultStates.selected, action) {
   switch (action.type) {
     case SELECT_CASSETTE: return action.id;
+    case EJECT_CASSETTE: return null;
     default: return state;
   }
 }
@@ -45,6 +47,17 @@ function selectedReducer(state = defaultStates.selected, action) {
 function byIdReducer(state = defaultStates.byId, action) {
   switch (action.type) {
     case CASSETTES_LIST_SUCCESS: return action.cassettes;
+    case UPDATE_CASSETTE_INITIAL_STATE: {
+      const newCassette = {
+        ...state[action.selected],
+        initialState: action.newState,
+      };
+
+      return {
+        ...state,
+        [action.selected]: newCassette,
+      };
+    }
     default: return state;
   }
 }
