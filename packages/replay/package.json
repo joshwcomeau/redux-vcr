@@ -1,6 +1,6 @@
 {
   "name": "redux-vcr.replay",
-  "version": "0.0.39",
+  "version": "0.0.40",
   "description": "ReduxVCR replay module",
   "main": "lib/index.js",
   "jsnext:main": "es6/index.js",

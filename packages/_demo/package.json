@@ -1,6 +1,6 @@
 {
   "name": "redux-vcr.demo",
-  "version": "0.0.39",
+  "version": "0.0.40",
   "dependencies": {
     "babel-eslint": "^6.1.2",
     "classnames": "^2.2.5",
@@ -11,7 +11,7 @@
     "redux": "^3.5.2",
     "redux-vcr.capture": "^0.0.39",
     "redux-vcr.persist": "^0.0.39",
-    "redux-vcr.replay": "^0.0.39",
+    "redux-vcr.replay": "^0.0.40",
     "redux-vcr.retrieve": "^0.0.39"
   },
   "devDependencies": {
