@@ -25,7 +25,6 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "lodash.merge": "^4.6.0",
-    "moment": "^2.14.1",
     "react-draggable": "^2.2.1",
     "react-flip-move": "^2.4.2",
     "redux-vcr.shared": "^0.0.39",

@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import classNames from 'classnames';
-import moment from 'moment';
 
 import themes from '../../data/cassette-themes';
 import './index.scss';
@@ -112,7 +111,7 @@ const Cassette = ({
           </div>
           <div className="line">
             <span className="line-name">Recorded: </span>
-            {moment(timestamp).format('MMM Do, h:mm A')}
+            {(new Date(timestamp)).toDateString()}
             <span className="line-name indented">Actions: </span>
             {numOfActions}
           </div>
