@@ -75,6 +75,16 @@ For more information, see PLACEHOLDER.
 // /////////////////////// //
 // /////// RETRIEVE ///// //
 // ///////////////////// //
+export const noCassettesFound = () => `
+Redux VCR error:
+You tried to view a list of cassettes, but no cassettes were found.
+
+The most likely explanation is that there simply aren't any recorded sessions.
+
+Alternatively, it could mean that the cassettes aren't where the retrieveHandler was looking for them. This could be the case if you're using a custom Persist module.
+
+For more information, see PLACEHOLDER.
+`;
 
 
 

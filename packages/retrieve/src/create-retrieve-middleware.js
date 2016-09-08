@@ -1,4 +1,8 @@
-import { actionTypes, actionCreators } from 'redux-vcr.shared';
+import {
+  actionTypes,
+  actionCreators,
+  errors,
+} from 'redux-vcr.shared';
 
 const {
   SIGN_IN_REQUEST,
@@ -18,6 +22,7 @@ const {
   signOutFailure,
   setAuthRequirement,
 } = actionCreators;
+const { noCassettesFound } = errors;
 
 const createRetrieveMiddleware = ({
   retrieveHandler,
@@ -80,7 +85,14 @@ const createRetrieveMiddleware = ({
         retrieveHandler
           .retrieveList()
           .then(snapshot => snapshot.val())
-          .then(cassettes => next(cassettesListSuccess({ cassettes })))
+          .then(cassettes => {
+            if (cassettes) {
+              next(cassettesListSuccess({ cassettes }));
+            } else {
+              console.error(noCassettesFound());
+              next(cassettesListFailure({ error: 'empty' }));
+            }
+          })
           .catch(error => {
             if (error.code === 'PERMISSION_DENIED') {
               console.error(
