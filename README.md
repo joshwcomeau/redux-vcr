@@ -71,17 +71,23 @@ Head on over to firebase.google.com and sign up for a free account. Once you mak
 
 ### Step 2: Set up Authentication
 
-##### 2a: GitHub integration
+##### 2a: Anonymous Authentication
 
-To view recorded sessions, you'll use GitHub OAuth.
+Our app users will have anonymous accounts automatically created for them on pageload. This will allow us to set custom rules, so that these users can't read from the database, and can only write to their slice of the database.
 
-Within Firebase, navigate to the 'SIGN-IN METHOD' page under 'Auth', and click on 'GitHub'. Click the 'Enable' toggle.
+Within Firebase, navigate to the 'SIGN-IN METHOD' page under 'Auth', and click on 'Anonymous'. Click the 'Enable' toggle.
+
+##### 2b: GitHub integration
+
+As an admin, you need the ability to read from the database, so that you can watch recorded sessions. Let's set it up with GitHub OAuth.
+
+On the 'SIGN-IN METHOD' page (under 'Auth'), click on 'GitHub', and flip the 'Enable' toggle.
 
 In a new tab, [head on over to GitHub and create a new application](https://github.com/settings/applications/new). You'll need to copy/paste the Client ID and Client Secret into Firebase, as well as copy and paste the callback URL from Firebase to GitHub.
 
 Now that your GitHub and Firebase accounts are connected, we can specify data access using Firebase Rules
 
-##### 2b: Firebase Rules
+##### 2c: Firebase Rules
 
 In the left-hand menu, click 'Database', and then select 'RULES' from the main header.
 
@@ -107,6 +113,9 @@ Here are the rules you'll want to implement:
 ```
 
     Be sure to fill in your GitHub email in the '.read' rule. This is how you specify which users will be able to view the cassettes!
+
+Click 'Publish' to save these rules.
+
 
 ### Step 3: Install
 
