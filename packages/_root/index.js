@@ -1,6 +1,23 @@
-import * as capture from 'redux-vcr.capture';
-import * as persist from 'redux-vcr.persist';
-import * as retrieve from 'redux-vcr.retrieve';
-import * as replay from 'redux-vcr.replay';
+import { createCaptureMiddleware } from 'redux-vcr.capture';
+import { createPersistHandler } from 'redux-vcr.persist';
+import {
+  createRetrieveHandler,
+  createRetrieveMiddleware,
+} from 'redux-vcr.retrieve';
+import {
+  createReplayHandler,
+  createReplayMiddleware,
+  wrapReducer,
+  Replay,
+} from 'redux-vcr.replay';
 
-export { capture, persist, retrieve, replay };
+export {
+  createCaptureMiddleware,
+  createPersistHandler,
+  createRetrieveHandler,
+  createRetrieveMiddleware,
+  createReplayHandler,
+  createReplayMiddleware,
+  wrapReducer,
+  Replay,
+};

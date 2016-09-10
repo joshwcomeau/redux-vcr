@@ -1,6 +1,3 @@
-// Main reducer
-import { reduxVCRReducer } from 'redux-vcr.shared';
-
 // Components
 import Backdrop from './components/Backdrop';
 import Cassette from './components/Cassette';
@@ -18,7 +15,6 @@ import wrapReducer from './wrap-reducer';
 
 
 export {
-  reduxVCRReducer,
   Backdrop,
   Cassette,
   CassetteList,

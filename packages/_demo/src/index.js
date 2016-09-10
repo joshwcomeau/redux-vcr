@@ -12,10 +12,14 @@ import { createStore, applyMiddleware, compose } from 'redux';
 // import { createReplayMiddleware, wrapReducer } from '../../replay/src';
 
 // PUBLISHED IMPORTS. Useful to ensure what gets published works.
-import { createCaptureMiddleware } from 'redux-vcr.capture';
-import { createPersistHandler } from 'redux-vcr.persist';
-import { createRetrieveHandler, createRetrieveMiddleware } from 'redux-vcr.retrieve';
-import { createReplayMiddleware, wrapReducer } from 'redux-vcr.replay';
+import {
+  createCaptureMiddleware,
+  createPersistHandler,
+  createRetrieveHandler,
+  createRetrieveMiddleware,
+  createReplayMiddleware,
+  wrapReducer,
+} from 'redux-vcr';
 
 import { COMPLETE_ONBOARDING } from './actions';
 import DevTools from './components/DevTools';
