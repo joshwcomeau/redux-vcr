@@ -29,6 +29,11 @@ const packageIndices = [
 packageIndices.forEach(indexPath => {
   const indexContents = fs.readFileSync(indexPath, 'utf8');
 
+  // If we've already updated it to point at /src, do nothing!
+  if (indexContents.match(/\/src/)) {
+    return;
+  }
+
   const updatedContents = (
     indexContents.slice(0, -4) +
     '/src' +
