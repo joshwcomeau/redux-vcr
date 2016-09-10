@@ -1,6 +1,6 @@
 {
   "name": "redux-vcr.persist",
-  "version": "0.0.42",
+  "version": "0.1.0",
   "description": "ReduxVCR persist module",
   "main": "lib/index.js",
   "jsnext:main": "es6/index.js",
@@ -20,7 +20,7 @@
   "dependencies": {
     "invariant": "2.2.1",
     "lodash.debounce": "4.0.7",
-    "redux-vcr.shared": "^0.0.42"
+    "redux-vcr.shared": "^0.1.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
