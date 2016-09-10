@@ -10,6 +10,7 @@ const createCaptureMiddleware = ({
   blacklist = [],
   persistHandler,
   startTrigger,
+  minimumActionsToPersist = 0,
 } = {}) => {
   const cassette = {
     timestamp: Date.now(),
@@ -79,7 +80,9 @@ const createCaptureMiddleware = ({
       delay,
     });
 
-    persistHandler.persist(cassette);
+    if (cassette.actions.length >= minimumActionsToPersist) {
+      persistHandler.persist(cassette);
+    }
 
     return next(action);
   };

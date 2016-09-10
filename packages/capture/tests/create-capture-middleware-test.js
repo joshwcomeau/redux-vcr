@@ -154,7 +154,7 @@ describe('createCaptureMiddleware', () => {
           default: return state;
         }
       }
-    })
+    });
 
     const freshStore = createStore(
       reducer,
@@ -254,6 +254,92 @@ describe('createCaptureMiddleware', () => {
       it('adds this action to the cassette\'s actions', () => {
         const finalAction = cassette.actions[cassette.actions.length - 1];
         expect(finalAction.type).to.equal(startTrigger);
+      });
+    });
+  });
+
+  describe('minimumActionsToPersist', () => {
+    context('with 3 min actions, and no start trigger', () => {
+      let freshMiddleware, action;
+
+      before(() => {
+        freshMiddleware = createCaptureMiddleware({
+          ...middlewareParams,
+          minimumActionsToPersist: 3,
+        });
+
+        action = { type: 'WHATEVER' };
+      });
+
+      it('does not persist the first 2 actions', () => {
+        freshMiddleware(store)(next)(action);
+        freshMiddleware(store)(next)(action);
+        expect(next.callCount).to.equal(2);
+        expect(persistHandler.persist.callCount).to.equal(0);
+      });
+
+      it('does persist the third action', () => {
+        freshMiddleware(store)(next)(action);
+        expect(next.callCount).to.equal(1);
+        expect(persistHandler.persist.callCount).to.equal(1);
+      });
+
+      it('includes actions from before the cutoff', () => {
+        freshMiddleware(store)(next)(action);
+        const { actions } = persistHandler.persist.args[0][0];
+        expect(actions).to.have.length.of(4);
+      });
+    });
+
+    context('with a start trigger', () => {
+      let freshMiddleware, store;
+      const startTrigger = 'TRIGGER';
+
+      before(() => {
+        freshMiddleware = createCaptureMiddleware({
+          ...middlewareParams,
+          minimumActionsToPersist: 2,
+          startTrigger,
+        });
+
+        store = createStore(function() {});
+      });
+
+      it('ignores actions before the trigger', () => {
+        const action = { type: 'WHATEVER' };
+
+        freshMiddleware(store)(next)(action);
+        freshMiddleware(store)(next)(action);
+        freshMiddleware(store)(next)(action);
+        freshMiddleware(store)(next)(action);
+        expect(next.callCount).to.equal(4);
+        expect(persistHandler.persist.callCount).to.equal(0);
+      });
+
+      it('does not persist the trigger', () => {
+        freshMiddleware(store)(next)({ type: startTrigger });
+        expect(next.callCount).to.equal(1);
+        expect(persistHandler.persist.callCount).to.equal(0);
+      });
+
+      it('does not persist the first action after the trigger (below limit)', () => {
+        const action = { type: 'POST_TRIGGER' };
+        freshMiddleware(store)(next)(action);
+
+        expect(persistHandler.persist.callCount).to.equal(0);
+      });
+
+      it('persists both new actions once min limit is hit', () => {
+        const action = { type: 'SECOND_POST_TRIGGER' };
+
+        freshMiddleware(store)(next)(action);
+
+        expect(persistHandler.persist.callCount).to.equal(1);
+
+        const { actions } = persistHandler.persist.args[0][0];
+        expect(actions).to.have.length.of(2);
+        expect(actions[0].type).to.equal('POST_TRIGGER');
+        expect(actions[1].type).to.equal('SECOND_POST_TRIGGER');
       });
     });
   });

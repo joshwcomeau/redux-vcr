@@ -90,6 +90,21 @@ In this case, you may begin capturing the state after a specific action has been
 The value you provide needs to be a perfect match for the action type being dispatched, and dispatching the specified action multiple times will have no effect.
 
 
+#### `minimumActionsToPersist`
+
+| **Accepted Types:** | **Default Value:** | **Required:**
+|---------------------|--------------------|---------------|
+|  `Number` | `0` | `false` |
+
+To avoid cluttering a cassette list with short, meaningless sessions, you may choose to specify a minimum number of actions before the Persist method is applied.
+
+For example, a `minimumActionsToPersist` of 5 means that, for the first 4 actions in the app, no data is persisted. Once the 5th action is dispatched, though, the entire sequence of actions is persisted.
+
+This is different from `startTrigger`: where `startTrigger` completely ignores actions before the trigger, `minimumActionsToPersist` includes the whole session.
+
+When used together, `minimumActionsToPersist` starts counting once the `startTrigger` has been dispatched. For example, if we've set our `startTrigger` to 'ONBOARDING_COMPLETED', and our `minimumActionsToPersist` to 3, our session would be persisted 3 actions after 'ONBOARDING_COMPLETED' (no matter how many actions happened before 'ONBOARDING_COMPLETED'), and it would not include any data from before 'ONBOARDING_COMPLETED'.
+
+
 #### Returns
 
 A Redux middleware.
