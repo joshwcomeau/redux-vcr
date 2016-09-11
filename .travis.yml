@@ -8,7 +8,7 @@ env:
   - PROJECT_NAME=persist
   - PROJECT_NAME=retrieve
   - PROJECT_NAME=replay
-  - PROJECT_NAME=shared
+  - PROJECT_NAME=_shared
 git:
   depth: 1
-script: cd $PROJECT_NAME && npm install && npm test
+script: cd packages/$PROJECT_NAME && npm install && npm test
