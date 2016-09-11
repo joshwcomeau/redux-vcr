@@ -13,42 +13,6 @@ const firebaseAuth = {
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 describe('createPersistHandler', () => {
-  describe('anonymous authentication', () => {
-    it('fails when invoked immediately', () => {
-      // This test fails because the constructor needs some time
-      // to authenticate with firebase.
-      const handler = createPersistHandler({
-        firebaseAuth,
-      });
-
-      const cassette = { data: {}, actions: [], timestamp: 1472558962525 };
-
-      expect(() => handler.persist(cassette)).to.throw(/firebase/);
-    });
-
-    it('succeeds when a pause is alloted for authentication', async function(done) {
-      const handler = createPersistHandler({
-        firebaseAuth,
-        debounceLength: 50,
-      });
-
-      const cassette = { data: {}, actions: [], timestamp: 1472558962525 };
-      const firebase = handler.firebaseHandler.firebase;
-
-      expect(firebase.set.callCount).to.equal(0);
-
-      await delay(100);
-
-      handler.persist(cassette);
-
-      await delay(100);
-
-      expect(firebase.set.callCount).to.equal(2);
-
-      done();
-    });
-  });
-
   describe('cassette validation', () => {
     let handler;
     before(done => {
