@@ -19,7 +19,7 @@ const firebaseStubFactory = () => {
     signInAnonymously() {
       // asynchronously invoke the authStateChanged callback
       const session = { uid: 'abc123' };
-      window.setTimeout(() => {
+      setTimeout(() => {
         stateChangeCallback(session);
       }, 10);
     },

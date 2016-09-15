@@ -47,7 +47,7 @@ export default function createReplayHandler() {
         delay = maximumDelay;
       }
 
-      window.setTimeout(
+      setTimeout(
         () => replayHandler.play({ store, next }),
         delay
       );

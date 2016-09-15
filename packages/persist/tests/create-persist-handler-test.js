@@ -17,7 +17,7 @@ describe('createPersistHandler', () => {
     let handler;
     before(done => {
       handler = createPersistHandler({ firebaseAuth });
-      window.setTimeout(done, 100);
+      setTimeout(done, 100);
     });
 
     it('fails when no cassette is provided', () => {
@@ -130,7 +130,7 @@ describe('createPersistHandler', () => {
       handler = createPersistHandler({ firebaseAuth });
       firebase = handler.firebaseHandler.firebase;
 
-      window.setTimeout(done, 200);
+      setTimeout(done, 200);
     });
 
     it('debounces the persist method when set', done => {
@@ -144,7 +144,7 @@ describe('createPersistHandler', () => {
 
       expect(firebase.database.callCount).to.equal(0);
 
-      window.setTimeout(() => {
+      setTimeout(() => {
         expect(firebase.database.callCount).to.equal(1);
         done();
       }, 250);

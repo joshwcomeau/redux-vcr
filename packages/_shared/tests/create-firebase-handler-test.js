@@ -72,7 +72,7 @@ describe('FirebaseHandler', () => {
         // to generate the ID.
         expect(handler.sessionId).to.be.undefined;
 
-        window.setTimeout(() => {
+        setTimeout(() => {
           expect(handler.sessionId).to.equal('abc123');
           done();
         }, 100);

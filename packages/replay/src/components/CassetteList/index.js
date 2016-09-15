@@ -43,7 +43,7 @@ class CassetteList extends Component {
       selectedCassette: id,
     });
 
-    window.setTimeout(() => {
+    setTimeout(() => {
       this.props.selectCassette({ id });
     }, 1000);
   }

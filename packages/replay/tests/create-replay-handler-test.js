@@ -69,7 +69,7 @@ describe('createReplayHandler', () => {
     it('does nothing when no cassette is selected', done => {
       replayHandler.play({ store, next: store.dispatch });
 
-      window.setTimeout(() => {
+      setTimeout(() => {
         expect(store.dispatch.callCount).to.equal(0);
         done();
       }, 1);
@@ -83,7 +83,7 @@ describe('createReplayHandler', () => {
 
       replayHandler.play({ store, next: store.dispatch });
 
-      window.setTimeout(() => {
+      setTimeout(() => {
         expect(store.dispatch.callCount).to.equal(0);
         done();
       }, 1);
@@ -125,7 +125,7 @@ describe('createReplayHandler', () => {
       JSON.stringify(store.getState(), null, 2);
       replayHandler.play({ store, next: store.dispatch });
 
-      window.setTimeout(() => {
+      setTimeout(() => {
         const [
           call1, call2, call3, call4, call5, call6, call7,
         ] = store.dispatch.args;

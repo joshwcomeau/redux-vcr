@@ -89,7 +89,7 @@ describe('createRetrieveMiddleware', () => {
 
         createRetrieveMiddleware({ retrieveHandler })(store);
 
-        window.setTimeout(() => {
+        setTimeout(() => {
           // The first call is to SET_AUTH_REQUIREMENT, tested earlier
           expect(store.dispatch.callCount).to.equal(2);
 
@@ -108,7 +108,7 @@ describe('createRetrieveMiddleware', () => {
 
         createRetrieveMiddleware({ retrieveHandler })(store);
 
-        window.setTimeout(() => {
+        setTimeout(() => {
           expect(store.dispatch.callCount).to.equal(2);
 
           const actionType = store.dispatch.secondCall.args[0].type;
@@ -135,7 +135,7 @@ describe('createRetrieveMiddleware', () => {
 
         createRetrieveMiddleware({ retrieveHandler, appName })(store);
 
-        window.setTimeout(() => {
+        setTimeout(() => {
           expect(store.dispatch.callCount).to.equal(2);
 
           const actionType = store.dispatch.secondCall.args[0].type;
@@ -153,7 +153,7 @@ describe('createRetrieveMiddleware', () => {
 
         createRetrieveMiddleware({ retrieveHandler, appName })(store);
 
-        window.setTimeout(() => {
+        setTimeout(() => {
           expect(store.dispatch.callCount).to.equal(2);
 
           const actionType = store.dispatch.secondCall.args[0].type;
@@ -278,18 +278,18 @@ describe('createRetrieveMiddleware', () => {
         // Adding a short delay, since the middleware is asynchronous.
         // Otherwise, it might complete during the next test, and throw off
         // our spy count.
-        window.setTimeout(done, 10);
+        setTimeout(done, 10);
       });
 
       it('immediately dispatches the action', done => {
         expect(next.callCount).to.equal(1);
         expect(next.firstCall.args[0]).to.equal(action);
 
-        window.setTimeout(done, 10);
+        setTimeout(done, 10);
       });
 
       it('asynchronously dispatches the `cassettesListSuccess` action', done => {
-        window.setTimeout(() => {
+        setTimeout(() => {
           expect(next.callCount).to.equal(2);
           const receiveAction = next.secondCall.args[0];
 
@@ -322,20 +322,20 @@ describe('createRetrieveMiddleware', () => {
 
         expect(retrieveHandler.retrieveActions.callCount).to.equal(1);
 
-        window.setTimeout(done, 10);
+        setTimeout(done, 10);
       });
 
       it('does not immediately dispatch the action', done => {
         middleware(store)(next)(action);
 
         expect(next.callCount).to.equal(0);
-        window.setTimeout(done, 10);
+        setTimeout(done, 10);
       });
 
       it('asynchronously dispatches two actions', done => {
         middleware(store)(next)(action);
 
-        window.setTimeout(() => {
+        setTimeout(() => {
           expect(next.callCount).to.equal(2);
 
           const receiveAction = next.firstCall.args[0];
@@ -369,7 +369,7 @@ describe('createRetrieveMiddleware', () => {
 
         expect(retrieveHandler.retrieveActions.callCount).to.equal(0);
 
-        window.setTimeout(done, 10);
+        setTimeout(done, 10);
       });
     });
 
