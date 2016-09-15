@@ -10,8 +10,10 @@ function performanceNow() {
     if (!Date.now) { Date.now = () => new Date().getTime(); }
 
     let nowOffset;
-    if (performance.timing && performance.timing.navigationStart) {
-      nowOffset = performance.timing.navigationStart;
+    if (
+      window.performance.timing && window.performance.timing.navigationStart
+    ) {
+      nowOffset = window.performance.timing.navigationStart;
     } else {
       nowOffset = Date.now();
     }
