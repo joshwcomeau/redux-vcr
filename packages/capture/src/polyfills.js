@@ -2,7 +2,7 @@
 function performanceNow() {
   // Stub `window` for running in non-browser environments
   // eslint-disable-next-line no-native-reassign
-  if (!window) { window = {}; }
+  if (typeof window === 'undefined') { window = {}; }
 
   if (!window.performance) { window.performance = {}; }
 
