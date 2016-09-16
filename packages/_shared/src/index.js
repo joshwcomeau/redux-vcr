@@ -1,3 +1,5 @@
+import './utils/polyfills.js';
+
 // This module is a little confusing because it contains some redux structure
 // (action types, and action creators), as well as a reducer that holds
 // recorded redux actions.

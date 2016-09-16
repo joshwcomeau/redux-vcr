@@ -1,7 +1,6 @@
 import invariant from 'invariant';
 import { errors } from 'redux-vcr.shared';
 
-import './polyfills.js';
 import { isActionBlacklisted } from './helpers';
 
 
