@@ -2,7 +2,6 @@ import debounce from 'lodash.debounce';
 import invariant from 'invariant';
 
 import { createFirebaseHandler, errors } from 'redux-vcr.shared';
-import './polyfills';
 
 
 export default function createPersistHandler({
