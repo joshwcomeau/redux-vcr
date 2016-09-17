@@ -20,6 +20,8 @@
     "install:shared": "npm install --prefix ./packages/_shared",
     "install": "npm run install:capture && npm run install:persist && npm run install:retrieve && npm run install:replay && npm run install:shared",
 
+    "publish": "lerna publish --force-publish=*",
+
     "bootstrap": "node scripts/bootstrap.js"
   },
   "repository": {
