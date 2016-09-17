@@ -1,6 +1,6 @@
 {
   "name": "redux-vcr.replay",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "ReduxVCR replay module",
   "main": "lib/index.js",
   "jsnext:main": "es6/index.js",
@@ -27,7 +27,7 @@
     "lodash.merge": "^4.6.0",
     "react-draggable": "^2.2.1",
     "react-flip-move": "^2.4.2",
-    "redux-vcr.shared": "^0.1.11",
+    "redux-vcr.shared": "^0.1.12",
     "seed-random": "^2.2.0"
   },
   "peerDependencies": {
