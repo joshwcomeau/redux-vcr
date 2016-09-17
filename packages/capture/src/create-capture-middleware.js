@@ -29,7 +29,7 @@ const createCaptureMiddleware = ({
   blacklist.push({ type: 'REDUX_VCR', matchingCriteria: 'startsWith' });
 
   // We've polyfilled performance.now to run in all environments.
-  let timeSinceLastEvent = performance.now();
+  let timeSinceLastEvent = window.performance.now();
 
   let waitingForActionToStartCapturing = typeof startTrigger !== 'undefined';
 
@@ -46,7 +46,7 @@ const createCaptureMiddleware = ({
       cassette.initialState = { ...store.getState() };
       delete cassette.initialState.reduxVCR;
 
-      timeSinceLastEvent = performance.now();
+      timeSinceLastEvent = window.performance.now();
       waitingForActionToStartCapturing = false;
 
       // Bail out early. We don't want to persist the cassette yet,
@@ -70,7 +70,7 @@ const createCaptureMiddleware = ({
       };
     }
 
-    const now = performance.now();
+    const now = window.performance.now();
     const delay = now - timeSinceLastEvent;
     timeSinceLastEvent = now;
 
