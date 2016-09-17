@@ -1,6 +1,6 @@
 @import '../variables';
 
-$cassette-width: 340px;
+$cassette-width: 380px;
 $front-height: 120px;
 $spine-height: 45px;
 $square-offset: 12px;
@@ -18,7 +18,7 @@ $spool-size: 60px;
   text-align: left;
   font-family: "Lucida Grande", verdana, sans-serif;
 
-  .front {
+  .cassette-front {
     position: absolute;
     top: 0;
     left: 0;
@@ -28,7 +28,7 @@ $spool-size: 60px;
     transform: translateY(-100%) perspective(200px) rotateX(60deg);
     transform-origin: bottom center;
 
-    .head {
+    .cassette-head {
       position: absolute;
       top: 0;
       left: 0;
@@ -38,7 +38,7 @@ $spool-size: 60px;
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
-    .spool {
+    .cassette-spool {
       position: absolute;
       width: $spool-size;
       height: $spool-size;
@@ -48,19 +48,19 @@ $spool-size: 60px;
 
       &.left-spool {
         left: 3px;
-        .tape {
+        .cassette-tape {
           right: -$spool-size * 0.45;
         }
       }
       &.right-spool {
         right: 3px;
-        .tape {
+        .cassette-tape {
           left: -$spool-size * 0.45;
         }
 
       }
 
-      .tape {
+      .cassette-tape {
         position: absolute;
         width: $spool-size * 0.9;
         height: $spool-size * 0.9;
@@ -73,7 +73,7 @@ $spool-size: 60px;
     }
   }
 
-  .mould-marks {
+  .cassette-mould-marks {
     position: absolute;
     z-index: 1;
     top: 0;
@@ -81,7 +81,7 @@ $spool-size: 60px;
     right: 0;
     bottom: 0;
 
-    .seam {
+    .cassette-seam {
       position: absolute;
       height: 1px;
       width: 100%;
@@ -91,7 +91,7 @@ $spool-size: 60px;
       background: rgba(0,0,0,0.2);
     }
 
-    .square {
+    .cassette-square {
       position: absolute;
       width: $square-size;
       height: $square-size;
@@ -105,7 +105,7 @@ $spool-size: 60px;
   // THEMES
   // Different VHS cassettes have slightly different labels/footers.
 
-  .label {
+  .cassette-label {
     position: absolute;
     z-index: 2;
     top: 5px;
@@ -116,28 +116,36 @@ $spool-size: 60px;
     border-radius: 4px;
     font-size: 10px;
 
-    .line {
+    .cassette-flex-line-group {
+      position: relative;
+      display: flex;
       margin: 3px 6px;
-      padding: 0 4px 2px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      padding: 0 4px 4px;
 
-      &:first-of-type {
+      &.with-bottom-border {
         border-bottom: 1px solid $lightgray;
       }
     }
 
-    .line-name {
-      font-weight: bold;
+    .cassette-line {
+      flex: 1;
+      line-height: 1em;
+      color: $black;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
-      &.indented {
-        margin-left: 20px;
+      &.cassette-line-right {
+        text-align: right;
       }
+    }
+
+    .cassette-line-name {
+      font-weight: bold;
     }
   }
 
-  .label-footer {
+  .cassette-label-footer {
     position: absolute;
     z-index: 2;
     right: -30px;
@@ -152,10 +160,10 @@ $spool-size: 60px;
 
 
   &.theme-generic {
-    .label {
+    .cassette-label {
       right: 24px;
     }
-    .label-footer {
+    .cassette-label-footer {
       right: -26px;
       color: $lightgray;
       background: $darkgray;
@@ -170,17 +178,17 @@ $spool-size: 60px;
     $tdk-green: #47bf32;
     $tdk-blue: #1988bc;
 
-    .label {
+    .cassette-label {
       padding-left: 16px;
     }
 
-    .line {
+    .cassette-flex-line-group.with-bottom-border {
       border-bottom: 1px dotted rgba(0,0,0,0.3);
     }
 
     .tdk-bars {
       position: absolute;
-      left: 0;
+      left: -2px;
       top: 0;
       border-radius: 4px 0 0 4px;
       overflow: hidden;
@@ -204,7 +212,7 @@ $spool-size: 60px;
       }
     }
 
-    .label-footer {
+    .cassette-label-footer {
       text-align: center;
       color: $offwhite;
 
@@ -227,7 +235,7 @@ $spool-size: 60px;
     $kodak-black: #38362f;
     $kodak-block-width: $spine-height - 12px;
 
-    .label {
+    .cassette-label {
       background: $kodak-yellow;
       left: 6px;
       right: 6px;
@@ -263,11 +271,11 @@ $spool-size: 60px;
         top: 1px;
       }
     }
-    .line:first-of-type {
+    .cassette-flex-line-group.with-bottom-border {
       border-bottom: none;
     }
 
-    .label-footer {
+    .cassette-label-footer {
       right: -8px;
       font-size: 10px;
       color: $kodak-red;
@@ -283,20 +291,20 @@ $spool-size: 60px;
     $polaroid-orange: #f19355;
     $polaroid-red: #c45363;
 
-    .label {
+    .cassette-label {
       background: $white;
       right: 23px;
 
-      .line-name {
+      .cassette-line-name {
         color: $darkgray;
       }
     }
 
-    .line {
+    .cassette-flex-line-group {
       margin-right: 8px;
     }
 
-    .label-footer {
+    .cassette-label-footer {
       right: -24px;
       font-size: 9px;
       color: $white;

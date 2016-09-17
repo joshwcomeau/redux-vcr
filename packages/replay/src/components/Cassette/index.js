@@ -49,7 +49,7 @@ const Cassette = ({
   switch (theme) {
     case 'polaroid': {
       labelFooter = (
-        <div className="label-footer">
+        <div className="cassette-label-footer">
           <div className="polaroid-boxes">
             <div /><div /><div /><div /><div />
           </div>
@@ -61,14 +61,14 @@ const Cassette = ({
 
     case 'kodak': {
       labelFooter = (
-        <div className="label-footer">Kodak</div>
+        <div className="cassette-label-footer">Kodak</div>
       );
       break;
     }
 
     case 'tdk': {
       labelFooter = (
-        <div className="label-footer">
+        <div className="cassette-label-footer">
           <div className="tdk-logo">TDK</div>
           <div className="tdk-source">Made in Japan</div>
         </div>
@@ -77,10 +77,15 @@ const Cassette = ({
     }
 
     default: {
-      labelFooter = <div className="label-footer">VHS</div>;
+      labelFooter = <div className="cassette-label-footer">VHS</div>;
       break;
     }
   }
+
+  const dateObject = new Date(timestamp);
+  const dateString = dateObject.toDateString();
+  const timeString = dateObject.toTimeString().substr(0, 5);
+  const dateDisplayString = `${dateString} ${timeString}`;
 
   return (
     <div
@@ -88,32 +93,38 @@ const Cassette = ({
       style={styles}
       onClick={() => handleClick({ id })}
     >
-      <div className="front">
-        <div className="head" />
-        <div className="spool left-spool">
-          <div className="tape" />
+      <div className="cassette-front">
+        <div className="cassette-head" />
+        <div className="cassette-spool left-spool">
+          <div className="cassette-tape" />
         </div>
-        <div className="spool right-spool">
-          <div className="tape" />
+        <div className="cassette-spool right-spool">
+          <div className="cassette-tape" />
         </div>
       </div>
 
-      <div className="spine">
-        <div className="mould-marks">
-          <div className="seam" />
-          <div className="square" />
+      <div className="cassette-spine">
+        <div className="cassette-mould-marks">
+          <div className="cassette-seam" />
+          <div className="cassette-square" />
         </div>
-        <div className="label">
+        <div className="cassette-label">
           {labelHeader}
-          <div className="line">
-            <span className="line-name">Name: </span>
-            {label || id}
+          <div className="cassette-flex-line-group with-bottom-border">
+            <div className="cassette-line">
+              <span className="cassette-line-name">Name: </span>
+              {label || id}
+            </div>
           </div>
-          <div className="line">
-            <span className="line-name">Recorded: </span>
-            {(new Date(timestamp)).toDateString()}
-            <span className="line-name indented">Actions: </span>
-            {numOfActions}
+          <div className="cassette-flex-line-group">
+            <div className="cassette-line" style={{ flex: 3 }}>
+              <span className="cassette-line-name">Recorded: </span>
+              {dateDisplayString}
+            </div>
+            <div className="cassette-line cassette-line-right">
+              <span className="cassette-line-name">Actions: </span>
+              {numOfActions}
+            </div>
           </div>
           {labelFooter}
         </div>

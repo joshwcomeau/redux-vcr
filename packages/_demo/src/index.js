@@ -27,7 +27,7 @@ import App from './components/App';
 import reducer from './reducers';
 
 const settings = {
-  runAsUser: false,
+  runAsUser: true,
   runAsAdmin: true,
 };
 

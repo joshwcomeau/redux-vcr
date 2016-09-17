@@ -6,7 +6,6 @@ import { selectAnswer, completeOnboarding } from '../../actions';
 import { getAnswers } from '../../reducers/answers.reducer';
 import Onboarding from '../Onboarding';
 import PollQuestion from '../PollQuestion';
-import DevTools from '../DevTools';
 
 import './index.css';
 
@@ -36,7 +35,6 @@ class App extends Component {
             handleClick={this.handleClick}
           />
         )}
-        <DevTools />
         <Replay />
       </div>
     );
