@@ -3,6 +3,13 @@ if (typeof window === 'undefined') {
   global.window = {};
 }
 
+// localStorage
+// if (typeof window.localStorage === 'undefined') {
+//   window.localStorage = global.localStorage = {
+//     getItem() {},
+//     setItem() {},
+//   };
+// }
 
 // performance.now
 (function polyfillPerformanceNow() {

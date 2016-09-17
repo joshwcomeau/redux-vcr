@@ -38,7 +38,7 @@ const createRetrieveMiddleware = ({
   store.dispatch(setAuthRequirement({ requiresAuth }));
 
   // On page-load, first check to see if we already have a valid credential.
-  const credentials = localStorage.getItem(localStorageKey);
+  const credentials = window.localStorage.getItem(localStorageKey);
 
   if (credentials && requiresAuth) {
     retrieveHandler
@@ -75,7 +75,7 @@ const createRetrieveMiddleware = ({
         const { credential } = action;
 
         if (credential) {
-          localStorage.setItem(localStorageKey, JSON.stringify(credential));
+          window.localStorage.setItem(localStorageKey, JSON.stringify(credential));
         }
 
         return next(action);
