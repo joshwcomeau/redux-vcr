@@ -79,9 +79,16 @@ class CassetteList extends Component {
       goToPreviousCassettePage,
     } = this.props;
 
+    const nextButtonClasses = classNames([
+      'vcr-pagination-control',
+      'next',
+      { 'fade-away': !!this.state.selectedCassette },
+    ]);
+
     const previousButtonClasses = classNames([
       'vcr-pagination-control',
       'previous',
+      { 'fade-away': !!this.state.selectedCassette },
     ]);
 
     return (
@@ -96,7 +103,7 @@ class CassetteList extends Component {
           <Icon value="arrow_up" />
         </button>
         <button
-          className="vcr-pagination-control next"
+          className={nextButtonClasses}
           onClick={goToNextCassettePage}
           disabled={isLastPage}
         >

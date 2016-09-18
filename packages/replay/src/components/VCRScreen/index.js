@@ -21,7 +21,7 @@ const VCRScreen = ({ children, label, textColor, effects, onClick }) => {
   ]);
 
   return (
-    <div className="vcr-screen">
+    <div className="vcr-screen" onClick={onClick}>
       <div className={bufferClasses}>
         <div className="vcr-screen-label">{label}</div>
         <div className={contentsClasses}>

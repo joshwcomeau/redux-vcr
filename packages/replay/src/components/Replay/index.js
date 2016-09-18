@@ -1,5 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import FlipMove from 'react-flip-move';
 
 import { actionCreators } from 'redux-vcr.shared';
 import VCR from '../VCR';
@@ -7,6 +8,29 @@ import CassetteList from '../CassetteList';
 import Backdrop from '../Backdrop';
 
 import './index.scss';
+
+const cassetteListAnimation = {
+  enter: {
+    from: {
+      transform: 'translateY(50px)',
+      opacity: 0.01,
+    },
+    to: {
+      transform: 'translateY(0)',
+      opacity: 1,
+    },
+  },
+  leave: {
+    from: {
+      transform: 'translateY(8px)',
+      opacity: 1,
+    },
+    to: {
+      transform: 'translateY(50px)',
+      opacity: 0.01,
+    },
+  },
+};
 
 
 const Replay = ({
@@ -19,7 +43,12 @@ const Replay = ({
   <div className="redux-vcr-component">
     <VCR doorLabel={doorLabel} />
 
-    { cassetteStatus === 'selecting' ? <CassetteList /> : null }
+    <FlipMove
+      enterAnimation={cassetteListAnimation.enter}
+      leaveAnimation={cassetteListAnimation.leave}
+    >
+      { cassetteStatus === 'selecting' ? <CassetteList /> : null }
+    </FlipMove>
 
     <Backdrop
       isShown={cassetteStatus === 'selecting'}

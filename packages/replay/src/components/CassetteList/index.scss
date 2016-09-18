@@ -5,7 +5,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  width: 400px;
+  width: 500px;
   height: 300px;
   margin: auto;
   display: flex;
@@ -55,6 +55,10 @@
       &:active:not(:disabled) svg {
         transform: translateY(10px);
       }
+    }
+
+    &.fade-away {
+      animation: fadeAway 500ms forwards;
     }
 
     svg {
