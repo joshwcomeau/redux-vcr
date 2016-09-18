@@ -1,6 +1,6 @@
 {
   "name": "redux-vcr.demo",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "dependencies": {
     "babel-eslint": "^6.1.2",
     "classnames": "^2.2.5",
@@ -9,7 +9,7 @@
     "react-flip-move": "^2.4.2",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
-    "redux-vcr": "^0.1.13"
+    "redux-vcr": "^0.1.14"
   },
   "devDependencies": {
     "autoprefixer": "6.3.7",
