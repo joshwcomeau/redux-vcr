@@ -1,42 +1,96 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 
 import './index.scss';
 
 
-const VCRScreen = ({ children, label, textColor, effects, onClick }) => {
-  const bufferClasses = classNames('vcr-screen-buffer', {
-    vertical: effects.includes('scrolling'),
-  });
-  const contentsClasses = classNames([
-    'vcr-screen-contents',
-    textColor,
-    ...effects,
-    {
+class VCRScreen extends Component {
+  getScreenLabel() {
+    switch (this.props.screenMode) {
+      case 'loaded': return 'Selected';
+      default: return '';
+    }
+  }
+
+  getScreenEffects() {
+    switch (this.props.screenMode) {
+      case 'error':
+        return ['flashing', 'centered'];
+      case 'unauthenticated':
+        return ['scrolling', 'centered'];
+      case 'idle':
+      case 'selecting':
+        return ['centered'];
+      default:
+        return [];
+    }
+  }
+
+  getScreenContents() {
+    switch (this.props.screenMode) {
+      case 'error':
+        return 'ERROR. See console for details.';
+      case 'unauthenticated':
+        return 'Click to authenticate with GitHub';
+      case 'idle':
+        return 'Click to select a cassette';
+      case 'selecting':
+        return 'Selecting...';
+      case 'loaded':
+        return this.props.selectedCassetteId;
+      default:
+        // When 'playing' or 'paused', we want to show our scrubber.
+        // TODO: Scrub
+        return 'Insert Scrubber here';
+    }
+  }
+
+  render() {
+    const { screenMode, onClick } = this.props;
+
+    const textColor = screenMode === 'error' ? 'red' : 'green';
+    const label = this.getScreenLabel();
+    const effects = this.getScreenEffects();
+    const contents = this.getScreenContents();
+
+    const bufferClasses = classNames('vcr-screen-buffer', {
+      vertical: effects.includes('scrolling'),
+    });
+    const contentsClasses = classNames([
+      'vcr-screen-contents',
+      textColor,
+      ...effects,
       // If we've supplied a label, we need to make space for it by
       // edging our main content down a bit.
-      'edged-down': !!label,
-    },
-  ]);
+      { 'edged-down': !!label },
+    ]);
 
-  return (
-    <div className="vcr-screen" onClick={onClick}>
-      <div className={bufferClasses}>
-        <div className="vcr-screen-label">{label}</div>
-        <div className={contentsClasses}>
-          {children}
+    return (
+      <div className="vcr-screen" onClick={onClick}>
+        <div className={bufferClasses}>
+          <div className="vcr-screen-label">{label}</div>
+          <div className={contentsClasses}>
+            {contents}
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 VCRScreen.propTypes = {
-  children: PropTypes.node,
-  textColor: PropTypes.oneOf(['green', 'red']),
-  label: PropTypes.string,
-  effects: PropTypes.arrayOf(PropTypes.string),
+  screenMode: PropTypes.oneOf([
+    'error',
+    'unauthenticated',
+    'idle',
+    'selecting',
+    'loaded',
+    'playing',
+    'paused',
+  ]).isRequired,
+  selectedCassetteId: PropTypes.string,
+  numOfActions: PropTypes.number,
   onClick: PropTypes.func.isRequired,
 };
 
@@ -44,63 +98,6 @@ VCRScreen.defaultProps = {
   textColor: 'green',
   effects: [],
 };
-
-
-function getScreenLabel({ cassetteStatus, playStatus }) {
-  if (cassetteStatus !== 'loaded') {
-    return '';
-  }
-  switch (playStatus) {
-    case 'playing': return 'Now Playing';
-    case 'paused': return 'Paused';
-    default: return 'Selected';
-  }
-}
-
-function getScreenContents({
-  isLoggedIn,
-  hasAuthError,
-  requiresAuth,
-  cassetteStatus,
-  selectedCassette,
-}) {
-  if (hasAuthError) {
-    return 'ERROR. See console for details.';
-  }
-
-  if (!isLoggedIn && requiresAuth) {
-    return 'Click to authenticate with GitHub';
-  }
-
-  switch (cassetteStatus) {
-    case 'idle': return 'Click to select a cassette';
-    case 'selecting': return 'Selecting...';
-    default: return selectedCassette;
-  }
-}
-
-function getScreenEffects({
-  isLoggedIn,
-  hasAuthError,
-  requiresAuth,
-  cassetteStatus,
-}) {
-  const effects = [];
-
-  if (hasAuthError) {
-    effects.push('flashing', 'centered');
-  } else if (!isLoggedIn && requiresAuth) {
-    effects.push('scrolling', 'centered');
-  } else if (cassetteStatus !== 'loaded') {
-    effects.push('centered');
-  }
-
-  return effects;
-}
-
-function getScreenTextColor({ hasAuthError }) {
-  return hasAuthError ? 'red' : 'green';
-}
 
 const mapStateToProps = state => {
   if (process.env.NODE_ENV === 'test') {
@@ -115,7 +112,8 @@ const mapStateToProps = state => {
     reduxVCR: {
       cassettes: {
         status: cassetteStatus,
-        selected: selectedCassette,
+        selected: selectedCassetteId,
+        byId: cassettesById,
       },
       play: {
         status: playStatus,
@@ -128,22 +126,26 @@ const mapStateToProps = state => {
     },
   } = state;
 
+  let screenMode;
+  if (hasAuthError) {
+    screenMode = 'error';
+  } else if (!isLoggedIn && requiresAuth) {
+    screenMode = 'unauthenticated';
+  } else if (playStatus === 'playing') {
+    screenMode = 'playing';
+  } else if (playStatus === 'paused') {
+    screenMode = 'paused';
+  } else {
+    screenMode = cassetteStatus; // idle, selecting, loaded
+  }
+
+  const selectedCassette = cassettesById[selectedCassetteId];
+  const numOfActions = selectedCassette ? selectedCassette.numOfActions : 0;
+
   return {
-    children: getScreenContents({
-      isLoggedIn,
-      hasAuthError,
-      requiresAuth,
-      cassetteStatus,
-      selectedCassette,
-    }),
-    label: getScreenLabel({ cassetteStatus, playStatus }),
-    textColor: getScreenTextColor({ hasAuthError }),
-    effects: getScreenEffects({
-      isLoggedIn,
-      hasAuthError,
-      requiresAuth,
-      cassetteStatus,
-    }),
+    screenMode,
+    selectedCassetteId,
+    numOfActions,
   };
 };
 

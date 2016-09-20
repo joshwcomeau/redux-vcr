@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { createSelector } from 'reselect';
 
 import {
   CASSETTE_ACTIONS_RECEIVE,
@@ -37,3 +38,16 @@ export default combineReducers({
   byId: byIdReducer,
   currentIndex: currentIndexReducer,
 });
+
+// ////////////////////////
+// SELECTORS /////////////
+// //////////////////////
+const actionsByIdSelector = state => state.reduxVCR.actions.byId;
+
+export const actionsListSelector = createSelector(
+  actionsByIdSelector,
+  (byId) => Object.keys(byId).map(actionId => ({
+    ...byId[actionId],
+    id: actionId,
+  }))
+);
