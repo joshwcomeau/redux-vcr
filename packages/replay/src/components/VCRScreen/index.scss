@@ -1,11 +1,13 @@
 @import '../variables';
 
+$vcr-screen-height: 30px;
+
 .redux-vcr-component {
   .vcr-screen {
     position: absolute;
     bottom: $vcr-standard-padding;
     left: 80px;
-    height: 30px;
+    height: $vcr-screen-height;
     width: 295px;
     background: rgba(0,0,0,0.5);
     color: $neon-green;
@@ -46,7 +48,7 @@
     }
 
     .vcr-screen-contents {
-      line-height: 30px;
+      line-height: $vcr-screen-height;
       text-align: left;
 
       &.edged-down {
@@ -66,6 +68,10 @@
         text-align: center;
       }
     }
+  }
+
+  .vcr-scrubber {
+    height: $vcr-screen-height
   }
 }
 

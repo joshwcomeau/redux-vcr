@@ -20,7 +20,16 @@ class VCR extends Component {
   }
 
   handleVCRClick() {
-    const { isLoggedIn, requiresAuth, viewCassettes } = this.props;
+    const {
+      cassetteStatus,
+      isLoggedIn,
+      requiresAuth,
+      viewCassettes,
+    } = this.props;
+
+    // If a cassette is loaded, do nothing.
+    // This is so that it doesn't interfere with scrubbing.
+    if (cassetteStatus === 'loaded') return null;
 
     return (!isLoggedIn && requiresAuth) ? this.signIn() : viewCassettes();
   }

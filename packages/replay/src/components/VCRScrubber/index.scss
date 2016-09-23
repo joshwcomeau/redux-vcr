@@ -1,0 +1,27 @@
+@import '../variables';
+
+.vcr-scrubber {
+  .bar {
+    height: 2px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+  }
+
+  .bar-0 {
+    background-color: $neon-green;
+  }
+  .bar-1 {
+    background-color: $darkgray;
+  }
+
+  .handle {
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 12px;
+    width: 12px;
+    background-color: $neon-green;
+    border-radius: 100%;
+  }
+}

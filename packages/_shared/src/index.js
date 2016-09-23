@@ -21,8 +21,8 @@ import userReducer, * as userSelectors from './reducers/user.reducer';
 import reduxVCRReducer from './reducers';
 
 import createFirebaseHandler from './utils/create-firebase-handler';
-
 import * as errors from './utils/errors';
+import getQueryParams from './utils/get-query-params';
 
 
 // We want to split our action types from our action creators.
@@ -56,4 +56,5 @@ export {
   reduxVCRReducer,
   createFirebaseHandler,
   errors,
+  getQueryParams,
 };

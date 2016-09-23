@@ -1,7 +1,9 @@
+import invariant from 'invariant';
 import {
   actionTypes,
   actionCreators,
   errors,
+  getQueryParams,
 } from 'redux-vcr.shared';
 
 const {
@@ -22,7 +24,7 @@ const {
   signOutFailure,
   setAuthRequirement,
 } = actionCreators;
-const { noCassettesFound } = errors;
+const { noCassettesFound, initialActionWithoutCassette } = errors;
 
 const createRetrieveMiddleware = ({
   retrieveHandler,
@@ -49,8 +51,16 @@ const createRetrieveMiddleware = ({
       .catch(error => {
         store.dispatch(signInFailure({ error }));
       });
-      // Don't catch any errors; if it fails, they can sign in the normal way.
   }
+
+  // We may have linked to a specific cassette & action, in the query params.
+  const initialCassetteId = getQueryParams('cassetteId');
+  const initialActionIndex = getQueryParams('actionIndex');
+
+  invariant(
+    typeof initialActionIndex !== 'undefined' && !initialCassetteId,
+    initialActionWithoutCassette()
+  );
 
   return next => action => {
     switch (action.type) {

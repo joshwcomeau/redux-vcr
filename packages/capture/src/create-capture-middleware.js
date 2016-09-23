@@ -13,6 +13,7 @@ const createCaptureMiddleware = ({
 } = {}) => {
   const cassette = {
     timestamp: Date.now(),
+    duration: 0,
     data: {},
     actions: [],
     initialState: {},
@@ -73,6 +74,8 @@ const createCaptureMiddleware = ({
     const now = window.performance.now();
     const delay = now - timeSinceLastEvent;
     timeSinceLastEvent = now;
+
+    cassette.duration = Date.now() - cassette.timestamp;
 
     cassette.actions.push({
       ...action,

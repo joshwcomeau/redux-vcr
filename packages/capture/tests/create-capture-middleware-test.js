@@ -131,6 +131,14 @@ describe('createCaptureMiddleware', () => {
 
       done();
     });
+
+    it('records the total duration of the cassette', () => {
+      freshMiddleware(store)(next)(action);
+      expect(persistHandler.persist.callCount).to.equal(1);
+
+      const [cassette] = persistHandler.persist.firstCall.args;
+      expect(cassette.duration).to.be.within(1000, 1100);
+    });
   });
 
   describe('startTrigger', () => {

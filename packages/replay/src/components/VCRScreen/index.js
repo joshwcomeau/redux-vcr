@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 
+import VCRScrubber from '../VCRScrubber';
 import './index.scss';
 
 
@@ -28,7 +29,14 @@ class VCRScreen extends Component {
   }
 
   getScreenContents() {
-    switch (this.props.screenMode) {
+    const {
+      screenMode,
+      selectedCassetteId,
+      numOfActions,
+      currentActionIndex,
+    } = this.props;
+
+    switch (screenMode) {
       case 'error':
         return 'ERROR. See console for details.';
       case 'unauthenticated':
@@ -38,11 +46,15 @@ class VCRScreen extends Component {
       case 'selecting':
         return 'Selecting...';
       case 'loaded':
-        return this.props.selectedCassetteId;
+        return selectedCassetteId;
       default:
         // When 'playing' or 'paused', we want to show our scrubber.
-        // TODO: Scrub
-        return 'Insert Scrubber here';
+        return (
+          <VCRScrubber
+            numOfActions={numOfActions}
+            currentPosition={currentActionIndex}
+          />
+        );
     }
   }
 
@@ -91,6 +103,7 @@ VCRScreen.propTypes = {
   ]).isRequired,
   selectedCassetteId: PropTypes.string,
   numOfActions: PropTypes.number,
+  currentActionIndex: PropTypes.number,
   onClick: PropTypes.func.isRequired,
 };
 
@@ -114,6 +127,9 @@ const mapStateToProps = state => {
         status: cassetteStatus,
         selected: selectedCassetteId,
         byId: cassettesById,
+      },
+      actions: {
+        currentIndex: currentActionIndex,
       },
       play: {
         status: playStatus,
@@ -146,6 +162,7 @@ const mapStateToProps = state => {
     screenMode,
     selectedCassetteId,
     numOfActions,
+    currentActionIndex,
   };
 };
 

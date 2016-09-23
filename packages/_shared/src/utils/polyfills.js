@@ -1,6 +1,8 @@
 // window
 if (typeof window === 'undefined') {
-  global.window = {};
+  global.window = {
+    location: {},
+  };
 }
 
 // localStorage
