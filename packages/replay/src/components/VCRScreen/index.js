@@ -9,6 +9,8 @@ class VCRScreen extends Component {
   getScreenLabel() {
     switch (this.props.screenMode) {
       case 'loaded': return 'Selected';
+      case 'playing': return 'Playing';
+      case 'paused': return 'Paused';
       default: return '';
     }
   }
@@ -40,9 +42,8 @@ class VCRScreen extends Component {
       case 'loaded':
         return this.props.selectedCassetteId;
       default:
-        // When 'playing' or 'paused', we want to show our scrubber.
-        // TODO: Scrub
-        return 'Insert Scrubber here';
+        // TODO: Scrubber
+        return this.props.selectedCassetteId;
     }
   }
 
