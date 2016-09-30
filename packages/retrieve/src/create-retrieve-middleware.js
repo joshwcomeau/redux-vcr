@@ -13,8 +13,10 @@ const {
 } = actionTypes;
 const {
   cassetteActionsReceive,
+  cassettesListRequest,
   cassettesListSuccess,
   cassettesListFailure,
+  selectCassette,
   signInSuccess,
   signInFailure,
   signOutRequest,
@@ -24,10 +26,12 @@ const {
 } = actionCreators;
 const { noCassettesFound } = errors;
 
+
 const createRetrieveMiddleware = ({
   retrieveHandler,
   appName,
   requiresAuth = true,
+  initialCassetteId,
 } = {}) => store => {
   // If the user provided an `appName`, we want to use it as a localStorage
   // key, so that the user can have multiple ReduxVCR apps.
@@ -36,6 +40,7 @@ const createRetrieveMiddleware = ({
   // Most usecases require that the developer authenticate, but in rare cases,
   // the user might want to allow anyone to view recorded sessions.
   store.dispatch(setAuthRequirement({ requiresAuth }));
+
 
   // On page-load, first check to see if we already have a valid credential.
   const credentials = window.localStorage.getItem(localStorageKey);
@@ -49,7 +54,6 @@ const createRetrieveMiddleware = ({
       .catch(error => {
         store.dispatch(signInFailure({ error }));
       });
-      // Don't catch any errors; if it fails, they can sign in the normal way.
   }
 
   return next => action => {
@@ -78,16 +82,32 @@ const createRetrieveMiddleware = ({
           window.localStorage.setItem(localStorageKey, JSON.stringify(credential));
         }
 
+        // Fetch our initial list of cassettes, so that they're ready and
+        // waiting for the admin
+        store.dispatch(cassettesListRequest());
+
         return next(action);
       }
 
       case CASSETTES_LIST_REQUEST: {
+        // If this is our very first list request, we may also wish to select
+        // an initial cassette.
+        const state = store.getState().reduxVCR;
+        const isFirstRequest = Object.keys(state.cassettes.byId).length === 0;
+        const shouldFetchInitialCassette = (
+          isFirstRequest && !!initialCassetteId
+        );
+
         retrieveHandler
           .retrieveList()
           .then(snapshot => snapshot.val())
           .then(cassettes => {
             if (cassettes) {
               next(cassettesListSuccess({ cassettes }));
+
+              if (shouldFetchInitialCassette) {
+                store.dispatch(selectCassette({ id: initialCassetteId }));
+              }
             } else {
               console.error(noCassettesFound());
               next(cassettesListFailure({ error: 'empty' }));
