@@ -18,7 +18,7 @@ import App from './components/App';
 import reducer from './reducers';
 
 const settings = {
-  runAsUser: true,
+  runAsUser: false,
   runAsAdmin: true,
 };
 
@@ -59,6 +59,7 @@ if (settings.runAsAdmin) {
     // from the Replay components, to fetch the recordings needed.
     createRetrieveMiddleware({
       retrieveHandler: createRetrieveHandler({ firebaseAuth }),
+      initialCassetteId: 'u7dwXmya3EgZwtgeMroUgRGXAKu2',
     }),
 
     // Finally, the replay middleware is in charge of intercepting the
