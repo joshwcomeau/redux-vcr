@@ -8,8 +8,15 @@ import { createStore, applyMiddleware, compose } from 'redux';
 // // LOCAL IMPORTS. Useful for dev
 import { createCaptureMiddleware } from 'redux-vcr.capture';
 import { createPersistHandler } from 'redux-vcr.persist';
-import { createRetrieveHandler, createRetrieveMiddleware } from 'redux-vcr.retrieve';
-import { createReplayMiddleware, wrapReducer } from 'redux-vcr.replay';
+import {
+  getQueryParam,
+  createRetrieveHandler,
+  createRetrieveMiddleware,
+} from 'redux-vcr.retrieve';
+import {
+  createReplayMiddleware,
+  wrapReducer,
+} from 'redux-vcr.replay';
 
 
 import { COMPLETE_ONBOARDING } from './actions';
@@ -59,7 +66,7 @@ if (settings.runAsAdmin) {
     // from the Replay components, to fetch the recordings needed.
     createRetrieveMiddleware({
       retrieveHandler: createRetrieveHandler({ firebaseAuth }),
-      initialCassetteId: 'u7dwXmya3EgZwtgeMroUgRGXAKu2',
+      initialCassetteId: getQueryParam('cassetteId'),
     }),
 
     // Finally, the replay middleware is in charge of intercepting the
