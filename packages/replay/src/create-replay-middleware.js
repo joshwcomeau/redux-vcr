@@ -4,7 +4,12 @@ import { actionTypes, actionCreators, errors } from 'redux-vcr.shared';
 
 import createReplayHandler from './create-replay-handler';
 
-const { PLAY_CASSETTE, PAUSE_CASSETTE, STOP_CASSETTE } = actionTypes;
+const {
+  PLAY_CASSETTE,
+  PAUSE_CASSETTE,
+  STOP_CASSETTE,
+  EJECT_CASSETTE,
+} = actionTypes;
 const {
   rewindCassetteAndRestoreApp,
   changeMaximumDelay,
@@ -22,6 +27,7 @@ const createReplayMiddleware = ({
   onPlay,
   onPause,
   onStop,
+  onEject,
 } = {}) => store => next => {
   if (typeof maximumDelay !== 'undefined') {
     next(changeMaximumDelay({ maximumDelay }));
@@ -38,7 +44,7 @@ const createReplayMiddleware = ({
 
         // If the cassette is already playing, no action is needed.
         if (status === 'playing') {
-          return null;
+          break;
         }
 
         // Ensure that a valid cassette is selected.
@@ -51,7 +57,6 @@ const createReplayMiddleware = ({
           !!byId[selected],
           playWithInvalidCassetteSelected(selected, byId)
         );
-        if (onPlay) { onPlay(store.dispatch, store.getState); }
 
         // If the cassette is currently `paused`, we can just start playing it.
         // However, if the cassette is `stopped`, we need to reset the state,
@@ -74,14 +79,16 @@ const createReplayMiddleware = ({
           next(rewindCassetteAndRestoreApp());
         }
 
-        // Deploy the action, so that the store's status is updated
         next(action);
 
-        // Finally, pass the data onto our playHandler
-        return replayHandler.play({
+        replayHandler.play({
           store,
           next,
         });
+
+        if (onPlay) { onPlay(store.dispatch, store.getState); }
+
+        break;
       }
 
       case PAUSE_CASSETTE: {
@@ -91,22 +98,38 @@ const createReplayMiddleware = ({
           onPause(store.dispatch, store.getState);
         }
 
-        return next(action);
+        next(action);
+        break;
       }
 
       case STOP_CASSETTE: {
         const { status } = store.getState().reduxVCR.play;
 
+        next(action);
+
         if (status !== 'stopped') {
-          if (onStop) { onStop(store.dispatch, store.getState); }
           next(rewindCassetteAndRestoreApp());
+
+          if (onStop) { onStop(store.dispatch, store.getState); }
         }
 
-        return next(action);
+        break;
+      }
+
+      case EJECT_CASSETTE: {
+        const { status } = store.getState().reduxVCR.cassettes;
+
+        next(action);
+
+        if (status === 'loaded' && onEject) {
+          onEject(store.dispatch, store.getState);
+        }
+
+        break;
       }
 
       default: {
-        return next(action);
+        next(action);
       }
     }
   };

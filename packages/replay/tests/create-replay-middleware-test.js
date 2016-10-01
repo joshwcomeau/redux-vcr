@@ -11,6 +11,7 @@ const {
   PLAY_CASSETTE,
   PAUSE_CASSETTE,
   STOP_CASSETTE,
+  EJECT_CASSETTE,
   REWIND_CASSETTE_AND_RESTORE_APP,
   UPDATE_CASSETTE_INITIAL_STATE,
 } = actionTypes;
@@ -19,6 +20,7 @@ const {
   playCassette,
   pauseCassette,
   stopCassette,
+  ejectCassette,
   rewindCassetteAndRestoreApp,
 } = actionCreators;
 
@@ -29,12 +31,14 @@ describe('createReplayMiddleware', () => {
   const onPlay = sinon.stub();
   const onPause = sinon.stub();
   const onStop = sinon.stub();
+  const onEject = sinon.stub();
 
   const middleware = createReplayMiddleware({
     replayHandler,
     onPlay,
     onPause,
     onStop,
+    onEject,
   });
 
   const middlewareWithMaxDelay = createReplayMiddleware({
@@ -43,6 +47,7 @@ describe('createReplayMiddleware', () => {
     onPlay,
     onPause,
     onStop,
+    onEject,
   });
 
   const next = sinon.stub();
@@ -56,6 +61,7 @@ describe('createReplayMiddleware', () => {
       },
       cassettes: {
         byId: { abc123: {} },
+        status: 'loaded',
         selected,
       },
     },
@@ -283,10 +289,11 @@ describe('createReplayMiddleware', () => {
       it('rewinds and passes the action through', () => {
         expect(next.callCount).to.equal(2);
 
-        expect(next.firstCall.args[0]).to.deep.equal(
+        expect(next.firstCall.args[0]).to.equal(action);
+
+        expect(next.secondCall.args[0]).to.deep.equal(
           rewindCassetteAndRestoreApp()
         );
-        expect(next.secondCall.args[0]).to.equal(action);
       });
 
       it('invokes the onStop hook', () => {
@@ -310,10 +317,11 @@ describe('createReplayMiddleware', () => {
       it('rewinds and passes the action through', () => {
         expect(next.callCount).to.equal(2);
 
-        expect(next.firstCall.args[0]).to.deep.equal(
+        expect(next.firstCall.args[0]).to.equal(action);
+
+        expect(next.secondCall.args[0]).to.deep.equal(
           rewindCassetteAndRestoreApp()
         );
-        expect(next.secondCall.args[0]).to.equal(action);
       });
 
       it('invokes the onStop hook', () => {
@@ -343,6 +351,24 @@ describe('createReplayMiddleware', () => {
       it('does not invoke the onStop hook', () => {
         expect(onStop.callCount).to.equal(0);
       });
+    });
+  });
+
+  describe(EJECT_CASSETTE, () => {
+    const action = ejectCassette();
+    const store = createStore(
+      pointlessReducer,
+      buildDefaultState('playing')
+    );
+
+    beforeEach(() => {
+      middleware(store)(next)(action);
+    });
+
+    it('invokes the onEject hook', () => {
+      expect(onEject.callCount).to.equal(1);
+      expect(onEject.firstCall.args[0]).to.equal(store.dispatch);
+      expect(onEject.firstCall.args[1]).to.equal(store.getState);
     });
   });
 

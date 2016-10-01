@@ -12,6 +12,7 @@
   - getQueryParam
 - Replay
   - createReplayMiddleware
+  - wrapReducer
   - Replay (component)
 
 
@@ -238,7 +239,7 @@ To retrieve persisted data from Firebase, your retrieveHandler requires basic Fi
 For more information, see [Getting Started with Firebase](placeholder.com).
 
 
-### Example usage:
+#### Example usage:
 
 ```js
 const retrieveHandler = createRetrieveHandler({
@@ -273,7 +274,7 @@ For example, given the URL `http://www.website.com/home?name=Josh`, `getQueryPar
 
 ## Replay
 
-### `createReplayMiddleware`
+### `createReplayMiddleware({ replayHandler, maximumDelay, overwriteCassetteState, onPlay, onPause, onStop, onEject })`
 
 #### Arguments
 
@@ -288,39 +289,100 @@ The `replayHandler` is responsible for sequencing and replaying the retrieved ac
 
 It is an optional argument; a default `playHandler` will be used if none is provided.
 
-
-### `new ReplayHandler`
-
-#### Arguments (to constructor)
-
-
 #### `maximumDelay`
 
 | **Accepted Types:** | **Default Value:** | **Required:**
 |---------------------|--------------------|---------------|
 |  `Number` | `undefined` | `false` |
 
+The maximum amount of time, in milliseconds, to wait between actions.
 
-TODO: Make this state live in the reducer, along with playbackSpeed.
-You can set an initial value, but you can also change it after the fact.
+This is useful for trimming large gaps in the cassette, when users go idle. By setting it to 5000, you'll never have to wait more than 5 seconds between actions.
 
-Sometimes, our users may idle when using our application. We can specify a maximum delay between actions, in milliseconds, to clamp this idle time to a maximum value.
+If no value is provided, no trimming will occur.
 
-For example, a value of `1000` means that no more than 1 second will elapse between actions, even if the user waited 5 minutes before continuing. Actions that occur within 1 second are not affected.
+#### `overwriteCassetteState`
 
+| **Accepted Types:** | **Default Value:** | **Required:**
+|---------------------|--------------------|---------------|
+|  `Object`/`Function` | `undefined` | `false` |
+
+Sometimes, you may wish to overwrite the initial state of a cassette. This is useful for when you want to ignore certain inconsistencies, or force all cassettes to start with the same initial state.
+
+This can either be an object or a function.
+* If an object is provided, it is deep-merged into the cassette's initial state.
+* If a function is provided, it is invoked with the cassette's initial state. The function's return value will be used as the new initial state.
 
 #### Example usage:
 
 ```js
-const replayHandler = new RetrieveHandler({
+// Object example
+createReplayMiddleware({
   maximumDelay: 1000,
+  overwriteCassetteState: {
+    adminMode: true,
+  },
 });
 
-const replayMiddleware = createReplayMiddleware({ replayHandler });
+// Function example
+createReplayMiddleware({
+  maximumDelay: 1000,
+  overwriteCassetteState(initialState) {
+    return {
+      ...initialState,
+      adminMode: true,
+    };
+  },
+});
+
 ```
 
 
-#### `wrapReducer`
+#### `onPlay`
+
+| **Accepted Types:** | **Default Value:** | **Required:**
+|---------------------|--------------------|---------------|
+|  `Function` | `undefined` | `false` |
+
+A custom function you may provide that will be invoked right after a cassette starts playing.
+
+It's invoked with the store's dispatch, and the store's getState. Similar to redux-thunk.
+
+
+#### `onPause`
+
+| **Accepted Types:** | **Default Value:** | **Required:**
+|---------------------|--------------------|---------------|
+|  `Function` | `undefined` | `false` |
+
+A custom function you may provide that will be invoked right after a cassette is paused.
+
+It's invoked with the store's dispatch, and the store's getState. Similar to redux-thunk.
+
+
+#### `onStop`
+
+| **Accepted Types:** | **Default Value:** | **Required:**
+|---------------------|--------------------|---------------|
+|  `Function` | `undefined` | `false` |
+
+A custom function you may provide that will be invoked right after a cassette is stopped.
+
+It's invoked with the store's dispatch, and the store's getState. Similar to redux-thunk.
+
+
+#### `onEject`
+
+| **Accepted Types:** | **Default Value:** | **Required:**
+|---------------------|--------------------|---------------|
+|  `Function` | `undefined` | `false` |
+
+A custom function you may provide that will be invoked right after a cassette is ejected.
+
+It's invoked with the store's dispatch, and the store's getState. Similar to redux-thunk.
+
+
+### `wrapReducer`
 
 This higher-order reducer allows for Replay to work its magic. It merges in Redux VCR state, without affecting the hierarchy of your existing state. It also allows for state resets, in the event of ejecting the current cassette and starting a new one.
 
