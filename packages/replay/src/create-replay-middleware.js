@@ -4,7 +4,7 @@ import { actionTypes, actionCreators, errors } from 'redux-vcr.shared';
 
 import createReplayHandler from './create-replay-handler';
 
-const { PLAY_CASSETTE, STOP_CASSETTE } = actionTypes;
+const { PLAY_CASSETTE, PAUSE_CASSETTE, STOP_CASSETTE } = actionTypes;
 const {
   rewindCassetteAndRestoreApp,
   changeMaximumDelay,
@@ -19,6 +19,9 @@ const createReplayMiddleware = ({
   replayHandler = createReplayHandler(),
   maximumDelay,
   overwriteCassetteState,
+  onPlay,
+  onPause,
+  onStop,
 } = {}) => store => next => {
   if (typeof maximumDelay !== 'undefined') {
     next(changeMaximumDelay({ maximumDelay }));
@@ -48,6 +51,7 @@ const createReplayMiddleware = ({
           !!byId[selected],
           playWithInvalidCassetteSelected(selected, byId)
         );
+        if (onPlay) { onPlay(store.dispatch, store.getState); }
 
         // If the cassette is currently `paused`, we can just start playing it.
         // However, if the cassette is `stopped`, we need to reset the state,
@@ -80,10 +84,21 @@ const createReplayMiddleware = ({
         });
       }
 
+      case PAUSE_CASSETTE: {
+        const { status } = store.getState().reduxVCR.play;
+
+        if (status !== 'paused' && onPause) {
+          onPause(store.dispatch, store.getState);
+        }
+
+        return next(action);
+      }
+
       case STOP_CASSETTE: {
         const { status } = store.getState().reduxVCR.play;
 
         if (status !== 'stopped') {
+          if (onStop) { onStop(store.dispatch, store.getState); }
           next(rewindCassetteAndRestoreApp());
         }
 
