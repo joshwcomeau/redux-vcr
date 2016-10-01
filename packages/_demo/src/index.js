@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 
 
-// // LOCAL IMPORTS. Useful for dev
 import { createCaptureMiddleware } from 'redux-vcr.capture';
 import { createPersistHandler } from 'redux-vcr.persist';
 import {
