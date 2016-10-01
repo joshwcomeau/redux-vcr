@@ -1,7 +1,5 @@
 language: node_js
 node_js:
-  - 0.12
-  - 4
   - 6
 env:
   - PROJECT_NAME=capture
