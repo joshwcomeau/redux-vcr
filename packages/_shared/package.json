@@ -1,6 +1,6 @@
 {
   "name": "redux-vcr.shared",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Shared Redux logic for various Redux VCR modules",
   "main": "lib/index.js",
   "files": [
