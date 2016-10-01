@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
 import sinon from 'sinon';
+import { createStore } from 'redux';
 import { actionTypes, actionCreators } from 'redux-vcr.shared';
 
 import { createReplayMiddleware } from '../src';
@@ -8,6 +9,7 @@ import { createReplayMiddleware } from '../src';
 
 const {
   PLAY_CASSETTE,
+  PAUSE_CASSETTE,
   STOP_CASSETTE,
   REWIND_CASSETTE_AND_RESTORE_APP,
   UPDATE_CASSETTE_INITIAL_STATE,
@@ -15,6 +17,7 @@ const {
 const {
   changeMaximumDelay,
   playCassette,
+  pauseCassette,
   stopCassette,
   rewindCassetteAndRestoreApp,
 } = actionCreators;
@@ -23,18 +26,46 @@ const {
 describe('createReplayMiddleware', () => {
   const replayHandler = { play: sinon.stub() };
 
+  const onPlay = sinon.stub();
+  const onPause = sinon.stub();
+  const onStop = sinon.stub();
+
   const middleware = createReplayMiddleware({
     replayHandler,
+    onPlay,
+    onPause,
+    onStop,
   });
+
   const middlewareWithMaxDelay = createReplayMiddleware({
     replayHandler,
     maximumDelay: 200,
+    onPlay,
+    onPause,
+    onStop,
   });
 
   const next = sinon.stub();
 
+  const pointlessReducer = state => state;
+
+  const buildDefaultState = (status, selected = 'abc123') => ({
+    reduxVCR: {
+      play: {
+        status,
+      },
+      cassettes: {
+        byId: { abc123: {} },
+        selected,
+      },
+    },
+  });
+
   afterEach(() => {
     next.reset();
+    onPlay.reset();
+    onPause.reset();
+    onStop.reset();
     replayHandler.play.reset();
   });
 
@@ -58,24 +89,11 @@ describe('createReplayMiddleware', () => {
   });
 
   describe(PLAY_CASSETTE, () => {
-    const buildDefaultState = status => ({
-      reduxVCR: {
-        play: {
-          status,
-        },
-        cassettes: {
-          byId: { abc123: {} },
-          selected: 'abc123',
-        },
-      },
-    });
-
     context('while playing', () => {
-      const store = {
-        getState() {
-          return buildDefaultState('playing');
-        },
-      };
+      const store = createStore(
+        pointlessReducer,
+        buildDefaultState('playing')
+      );
       const action = playCassette();
 
       beforeEach(() => {
@@ -89,14 +107,17 @@ describe('createReplayMiddleware', () => {
       it('does not invoke the replayHandler', () => {
         expect(replayHandler.play.callCount).to.equal(0);
       });
+
+      it('does not invoke the onPlay hook', () => {
+        expect(onPlay.callCount).to.equal(0);
+      });
     });
 
     context('while paused', () => {
-      const store = {
-        getState() {
-          return buildDefaultState('paused');
-        },
-      };
+      const store = createStore(
+        pointlessReducer,
+        buildDefaultState('paused')
+      );
       const action = playCassette();
 
       beforeEach(() => {
@@ -115,14 +136,19 @@ describe('createReplayMiddleware', () => {
           next,
         });
       });
+
+      it('invokes the onPlay hook', () => {
+        expect(onPlay.callCount).to.equal(1);
+        expect(onPlay.firstCall.args[0]).to.equal(store.dispatch);
+        expect(onPlay.firstCall.args[1]).to.equal(store.getState);
+      });
     });
 
     context('while stopped', () => {
-      const store = {
-        getState() {
-          return buildDefaultState('stopped');
-        },
-      };
+      const store = createStore(
+        pointlessReducer,
+        buildDefaultState('stopped')
+      );
       const action = playCassette();
 
       beforeEach(() => {
@@ -145,21 +171,19 @@ describe('createReplayMiddleware', () => {
           next,
         });
       });
+
+      it('invokes the onPlay hook', () => {
+        expect(onPlay.callCount).to.equal(1);
+        expect(onPlay.firstCall.args[0]).to.equal(store.dispatch);
+        expect(onPlay.firstCall.args[1]).to.equal(store.getState);
+      });
     });
 
     context('when no cassette is selected', () => {
-      const store = {
-        getState() {
-          return {
-            reduxVCR: {
-              play: { status: 'stopped' },
-              cassettes: {
-                byId: { abc123: {} },
-              },
-            },
-          };
-        },
-      };
+      const store = createStore(
+        pointlessReducer,
+        buildDefaultState('stopped', null)
+      );
 
       const action = playCassette();
 
@@ -168,22 +192,17 @@ describe('createReplayMiddleware', () => {
           () => middleware(store)(next)(action)
         ).to.throw();
       });
+
+      it('does not invoke the onPlay hook', () => {
+        expect(onPlay.callCount).to.equal(0);
+      });
     });
 
     context('when an invalid cassette is selected', () => {
-      const store = {
-        getState() {
-          return {
-            reduxVCR: {
-              play: { status: 'stopped' },
-              cassettes: {
-                byId: { abc123: {} },
-                selected: 'def456',
-              },
-            },
-          };
-        },
-      };
+      const store = createStore(
+        pointlessReducer,
+        buildDefaultState('stopped', 'def456')
+      );
 
       const action = playCassette();
 
@@ -196,39 +215,65 @@ describe('createReplayMiddleware', () => {
   });
 
 
-  describe(STOP_CASSETTE, () => {
+  describe(PAUSE_CASSETTE, () => {
+    const action = pauseCassette();
+
     context('while playing', () => {
-      const store = {
-        getState() {
-          return {
-            reduxVCR: { play: { status: 'playing' } },
-          };
-        },
-      };
-      const action = stopCassette();
+      const store = createStore(
+        pointlessReducer,
+        buildDefaultState('playing')
+      );
 
       beforeEach(() => {
         middleware(store)(next)(action);
       });
 
-      it('rewinds and passes the action through', () => {
-        expect(next.callCount).to.equal(2);
-
-        expect(next.firstCall.args[0]).to.deep.equal(
-          rewindCassetteAndRestoreApp()
-        );
-        expect(next.secondCall.args[0]).to.equal(action);
+      it('invokes the onPause hook', () => {
+        expect(onPause.callCount).to.equal(1);
+        expect(onPause.firstCall.args[0]).to.equal(store.dispatch);
+        expect(onPause.firstCall.args[1]).to.equal(store.getState);
       });
     });
 
     context('while paused', () => {
-      const store = {
-        getState() {
-          return {
-            reduxVCR: { play: { status: 'paused' } },
-          };
-        },
-      };
+      const store = createStore(
+        pointlessReducer,
+        buildDefaultState('paused')
+      );
+
+      beforeEach(() => {
+        middleware(store)(next)(action);
+      });
+
+      it('does not invoke the onPause hook', () => {
+        expect(onPause.callCount).to.equal(0);
+      });
+    });
+
+    context('while stopped', () => {
+      const store = createStore(
+        pointlessReducer,
+        buildDefaultState('stopped')
+      );
+
+      beforeEach(() => {
+        middleware(store)(next)(action);
+      });
+
+      it('invokes the onPause hook', () => {
+        expect(onPause.callCount).to.equal(1);
+        expect(onPause.firstCall.args[0]).to.equal(store.dispatch);
+        expect(onPause.firstCall.args[1]).to.equal(store.getState);
+      });
+    });
+  });
+
+  describe(STOP_CASSETTE, () => {
+    context('while playing', () => {
+      const store = createStore(
+        pointlessReducer,
+        buildDefaultState('playing')
+      );
       const action = stopCassette();
 
       beforeEach(() => {
@@ -242,18 +287,48 @@ describe('createReplayMiddleware', () => {
           rewindCassetteAndRestoreApp()
         );
         expect(next.secondCall.args[0]).to.equal(action);
+      });
+
+      it('invokes the onStop hook', () => {
+        expect(onStop.callCount).to.equal(1);
+        expect(onStop.firstCall.args[0]).to.equal(store.dispatch);
+        expect(onStop.firstCall.args[1]).to.equal(store.getState);
+      });
+    });
+
+    context('while paused', () => {
+      const store = createStore(
+        pointlessReducer,
+        buildDefaultState('paused')
+      );
+      const action = stopCassette();
+
+      beforeEach(() => {
+        middleware(store)(next)(action);
+      });
+
+      it('rewinds and passes the action through', () => {
+        expect(next.callCount).to.equal(2);
+
+        expect(next.firstCall.args[0]).to.deep.equal(
+          rewindCassetteAndRestoreApp()
+        );
+        expect(next.secondCall.args[0]).to.equal(action);
+      });
+
+      it('invokes the onStop hook', () => {
+        expect(onStop.callCount).to.equal(1);
+        expect(onStop.firstCall.args[0]).to.equal(store.dispatch);
+        expect(onStop.firstCall.args[1]).to.equal(store.getState);
       });
     });
 
 
     context('while stopped', () => {
-      const store = {
-        getState() {
-          return {
-            reduxVCR: { play: { status: 'stopped' } },
-          };
-        },
-      };
+      const store = createStore(
+        pointlessReducer,
+        buildDefaultState('stopped')
+      );
       const action = stopCassette();
 
       beforeEach(() => {
@@ -263,6 +338,10 @@ describe('createReplayMiddleware', () => {
       it('passes the action through without rewinding', () => {
         expect(next.callCount).to.equal(1);
         expect(next.firstCall.args[0]).to.equal(action);
+      });
+
+      it('does not invoke the onStop hook', () => {
+        expect(onStop.callCount).to.equal(0);
       });
     });
   });
@@ -276,6 +355,7 @@ describe('createReplayMiddleware', () => {
     };
 
     const store = {
+      dispatch() {},
       getState() {
         return {
           reduxVCR: {
