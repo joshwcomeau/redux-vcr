@@ -65,7 +65,7 @@ if (settings.runAsAdmin) {
     // from the Replay components, to fetch the recordings needed.
     createRetrieveMiddleware({
       retrieveHandler: createRetrieveHandler({ firebaseAuth }),
-      initialCassetteId: getQueryParam('cassetteId'),
+      initialCassetteId: getQueryParam({ param: 'cassetteId' }),
     }),
 
     // Finally, the replay middleware is in charge of intercepting the

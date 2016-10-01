@@ -1,7 +1,9 @@
-export default function getQueryParam(name, url = window.location.href) {
+export default function getQueryParam({ param }) {
+  const url = window.location.href;
+
   // eslint-disable-next-line no-param-reassign
-  name = name.replace(/[\[\]]/g, '\\$&');
-  const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+  param = param.replace(/[\[\]]/g, '\\$&');
+  const regex = new RegExp('[?&]' + param + '(=([^&#]*)|&|#|$)');
   const results = regex.exec(url);
   if (!results) return null;
   if (!results[2]) return '';

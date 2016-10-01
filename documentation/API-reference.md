@@ -9,6 +9,7 @@
 - Retrieve
   - createRetrieveMiddleware
   - createRetrieveHandler
+  - getQueryParam
 - Replay
   - createReplayMiddleware
   - Replay (component)
@@ -250,6 +251,24 @@ const retrieveHandler = createRetrieveHandler({
 
 const retrieveMiddleware = createRetrieveMiddleware({ retrieveHandler });
 ```
+
+### `getQueryParam({ param })`
+
+A simple helper to get the value of a query parameter.
+
+#### Arguments
+
+#### param
+
+| **Accepted Types:** | **Default Value:** | **Required:**
+|---------------------|--------------------|---------------|
+|  `String` | `undefined` | `true` |
+
+The name of the query parameter you want to fetch.
+
+For example, given the URL `http://www.website.com/home?name=Josh`, `getQueryParam({ param: 'name' })` would return `Josh`.
+
+
 
 
 ## Replay
