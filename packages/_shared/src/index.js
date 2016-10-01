@@ -22,6 +22,7 @@ import reduxVCRReducer from './reducers';
 
 import createFirebaseHandler from './utils/create-firebase-handler';
 
+import getQueryParam from './utils/get-query-param';
 import * as errors from './utils/errors';
 
 
@@ -55,5 +56,6 @@ export {
   userSelectors,
   reduxVCRReducer,
   createFirebaseHandler,
+  getQueryParam,
   errors,
 };

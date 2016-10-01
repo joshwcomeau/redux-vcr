@@ -9,6 +9,7 @@
 - Retrieve
   - createRetrieveMiddleware
   - createRetrieveHandler
+  - getQueryParam
 - Replay
   - createReplayMiddleware
   - Replay (component)
@@ -205,6 +206,20 @@ However, if you plan on using Redux VCR in multiple applications, you don't want
 For this reason, you may supply a custom app name. It will be used to create the localStorage key, in the format of `redux-vcr-${appName}`.
 
 
+#### `initialCassetteId`
+
+| **Accepted Types:** | **Default Value:** | **Required:**
+|---------------------|--------------------|---------------|
+|  `String` | `undefined` | `false` |
+
+Sometimes, you may want to initialize Redux VCR with a specific cassette. For example, you may wish to add query param support so you can link to a specific cassette, or you may wish to load the last-playing cassette from localStorage.
+
+For apps with authentication required to view cassettes, the initial cassette will be loaded as soon as authentication completes. For all-access apps, the cassette will be fetched after the components are mounted.
+
+If you do not require authentication to view cassettes (not recommended for anything beyond a toy app), it will happen on pageload. Otherwise, it'll fetch the cassette once you've authenticated.
+
+
+
 
 ### `createRetrieveHandler({ firebaseAuth })`
 
@@ -236,6 +251,24 @@ const retrieveHandler = createRetrieveHandler({
 
 const retrieveMiddleware = createRetrieveMiddleware({ retrieveHandler });
 ```
+
+### `getQueryParam({ param })`
+
+A simple helper to get the value of a query parameter.
+
+#### Arguments
+
+#### param
+
+| **Accepted Types:** | **Default Value:** | **Required:**
+|---------------------|--------------------|---------------|
+|  `String` | `undefined` | `true` |
+
+The name of the query parameter you want to fetch.
+
+For example, given the URL `http://www.website.com/home?name=Josh`, `getQueryParam({ param: 'name' })` would return `Josh`.
+
+
 
 
 ## Replay

@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import FlipMove from 'react-flip-move';
 
@@ -32,32 +32,47 @@ const cassetteListAnimation = {
   },
 };
 
+class Replay extends Component {
+  componentDidMount() {
+    const { requiresAuth, cassettesListRequest } = this.props;
 
-const Replay = ({
-  doorLabel,
-  cassettesBackdropColor,
-  cassettesBackdropOpacity,
-  cassetteStatus,
-  hideCassettes,
-}) => (
-  <div className="redux-vcr-component">
-    <VCR doorLabel={doorLabel} />
+    // If we don't need to authenticate, we want to request our
+    // initial cassette list ASAP!
+    if (!requiresAuth) {
+      cassettesListRequest();
+    }
+  }
 
-    <FlipMove
-      enterAnimation={cassetteListAnimation.enter}
-      leaveAnimation={cassetteListAnimation.leave}
-    >
-      { cassetteStatus === 'selecting' ? <CassetteList /> : null }
-    </FlipMove>
+  render() {
+    const {
+      doorLabel,
+      cassettesBackdropColor,
+      cassettesBackdropOpacity,
+      cassetteStatus,
+      hideCassettes,
+    } = this.props;
 
-    <Backdrop
-      isShown={cassetteStatus === 'selecting'}
-      handleClickClose={hideCassettes}
-      background={cassettesBackdropColor}
-      opacity={cassettesBackdropOpacity}
-    />
-  </div>
-);
+    return (
+      <div className="redux-vcr-component">
+        <VCR doorLabel={doorLabel} />
+
+        <FlipMove
+          enterAnimation={cassetteListAnimation.enter}
+          leaveAnimation={cassetteListAnimation.leave}
+        >
+          { cassetteStatus === 'selecting' ? <CassetteList /> : null }
+        </FlipMove>
+
+        <Backdrop
+          isShown={cassetteStatus === 'selecting'}
+          handleClickClose={hideCassettes}
+          background={cassettesBackdropColor}
+          opacity={cassettesBackdropOpacity}
+        />
+      </div>
+    );
+  }
+}
 
 
 Replay.propTypes = {
@@ -65,7 +80,9 @@ Replay.propTypes = {
   cassettesBackdropColor: PropTypes.string,
   cassettesBackdropOpacity: PropTypes.number,
   cassetteStatus: PropTypes.string.isRequired,
+  requiresAuth: PropTypes.bool,
   hideCassettes: PropTypes.func,
+  cassettesListRequest: PropTypes.func,
 };
 
 Replay.defaultProps = {
@@ -75,6 +92,7 @@ Replay.defaultProps = {
 
 const mapStateToProps = state => ({
   cassetteStatus: state.reduxVCR.cassettes.status,
+  requiresAuth: state.reduxVCR.authentication.requiresAuth,
 });
 
 
@@ -82,5 +100,6 @@ export default connect(
   mapStateToProps,
   {
     hideCassettes: actionCreators.hideCassettes,
+    cassettesListRequest: actionCreators.cassettesListRequest,
   }
 )(Replay);
