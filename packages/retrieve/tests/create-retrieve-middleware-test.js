@@ -19,7 +19,7 @@ const {
 
 const {
   setAuthRequirement,
-  signInSuccess,
+  selectCassette,
 } = actionCreators;
 
 const firebaseAuth = {
@@ -166,8 +166,13 @@ describe('createRetrieveMiddleware', () => {
   });
 
   describe('handled actions', () => {
+    const initialCassetteId = 'abc1234';
     const retrieveHandler = createRetrieveHandler({ firebaseAuth });
     const middleware = createRetrieveMiddleware({ retrieveHandler });
+    const middlewareWithInitialCassette = createRetrieveMiddleware({
+      retrieveHandler,
+      initialCassetteId,
+    });
     const next = sinon.stub();
 
     sinon.spy(retrieveHandler, 'retrieveList');
@@ -265,38 +270,111 @@ describe('createRetrieveMiddleware', () => {
 
     context(CASSETTES_LIST_REQUEST, () => {
       const action = { type: CASSETTES_LIST_REQUEST };
-      const dummyReducer = sinon.stub();
-      const store = createStore(dummyReducer);
+      const initialState = {
+        reduxVCR: {
+          cassettes: {
+            byId: {},
+          },
+        },
+      };
+      const reducer = (state = initialState) => state;
+      const store = createStore(reducer);
+      const dispatchSpy = sinon.spy(store, 'dispatch');
 
-      beforeEach(() => {
-        middleware(store)(next)(action);
+      afterEach(() => {
+        dispatchSpy.reset();
       });
 
-      it('invokes `retrieveList`', done => {
-        expect(retrieveHandler.retrieveList.callCount).to.equal(1);
+      context('with no initial cassette', () => {
+        beforeEach(() => {
+          middleware(store)(next)(action);
+        });
 
-        // Adding a short delay, since the middleware is asynchronous.
-        // Otherwise, it might complete during the next test, and throw off
-        // our spy count.
-        setTimeout(done, 10);
+        it('invokes `retrieveList`', done => {
+          expect(retrieveHandler.retrieveList.callCount).to.equal(1);
+
+          // Adding a short delay, since the middleware is asynchronous.
+          // Otherwise, it might complete during the next test, and throw off
+          // our spy count.
+          setTimeout(done, 10);
+        });
+
+        it('immediately dispatches the action', done => {
+          expect(next.callCount).to.equal(1);
+          expect(next.firstCall.args[0]).to.equal(action);
+
+          setTimeout(done, 10);
+        });
+
+        it('asynchronously dispatches the `cassettesListSuccess` action', done => {
+          setTimeout(() => {
+            expect(next.callCount).to.equal(2);
+            const receiveAction = next.secondCall.args[0];
+
+            expect(receiveAction.type).to.equal(CASSETTES_LIST_SUCCESS);
+            expect(receiveAction.cassettes).to.deep.equal([{ id: 'cassette1' }]);
+            done();
+          }, 10);
+        });
+
+        it('does not dispatch the `selectCassette` action', done => {
+          setTimeout(() => {
+            expect(dispatchSpy.callCount).to.equal(1);
+            expect(
+              dispatchSpy.firstCall.args[0]
+            ).to.deep.equal(
+              setAuthRequirement({ requiresAuth: true })
+            );
+            done();
+          }, 10);
+        });
       });
 
-      it('immediately dispatches the action', done => {
-        expect(next.callCount).to.equal(1);
-        expect(next.firstCall.args[0]).to.equal(action);
+      context('with an initial cassette', () => {
+        it('dispatches `selectCassette` with the initial cassette ID', done => {
+          middlewareWithInitialCassette(store)(next)(action);
 
-        setTimeout(done, 10);
-      });
+          setTimeout(() => {
+            expect(dispatchSpy.callCount).to.equal(2);
+            expect(
+              dispatchSpy.firstCall.args[0]
+            ).to.deep.equal(
+              setAuthRequirement({ requiresAuth: true })
+            );
+            expect(
+              dispatchSpy.secondCall.args[0]
+            ).to.deep.equal(
+              selectCassette({ id: initialCassetteId })
+            );
+            done();
+          }, 10);
+        });
 
-      it('asynchronously dispatches the `cassettesListSuccess` action', done => {
-        setTimeout(() => {
-          expect(next.callCount).to.equal(2);
-          const receiveAction = next.secondCall.args[0];
+        it('does not dispatch `selectCassette` when cassettes are already loaded', done => {
+          const loadedInitialState = {
+            reduxVCR: {
+              cassettes: {
+                byId: {
+                  abc: '123',
+                },
+              },
+            },
+          };
+          const loadedReducer = (state = loadedInitialState) => state;
+          const loadedStore = createStore(loadedReducer);
+          const loadedDispatchSpy = sinon.spy(loadedStore, 'dispatch');
 
-          expect(receiveAction.type).to.equal(CASSETTES_LIST_SUCCESS);
-          expect(receiveAction.cassettes).to.deep.equal([{ id: 'cassette1' }]);
-          done();
-        }, 10);
+          middlewareWithInitialCassette(loadedStore)(next)(action);
+          setTimeout(() => {
+            expect(loadedDispatchSpy.callCount).to.equal(1);
+            expect(
+              loadedDispatchSpy.firstCall.args[0]
+            ).to.deep.equal(
+              setAuthRequirement({ requiresAuth: true })
+            );
+            done();
+          }, 10);
+        });
       });
     });
 
@@ -310,9 +388,7 @@ describe('createRetrieveMiddleware', () => {
           },
         },
       };
-      const reducer = function reducer(state = initialState) {
-        return state;
-      };
+      const reducer = (state = initialState) => state;
       const store = createStore(reducer);
       const action = { type: SELECT_CASSETTE, id: cassetteId };
 

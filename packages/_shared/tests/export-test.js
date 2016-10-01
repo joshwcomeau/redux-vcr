@@ -71,12 +71,15 @@ describe('shared export', () => {
     });
   });
 
-  it('exports empty action selectors', () => {
+  it('exports action selectors', () => {
     const selectors = Object.keys(actionSelectors).filter(selector => (
       selector !== 'default'
     ));
 
-    expect(selectors).to.have.length.of(0);
+    expect(selectors).to.have.length.above(0);
+    expect(selectors).to.include(
+      'actionsListSelector'
+    );
   });
 
   it('exports cassette selectors', () => {
