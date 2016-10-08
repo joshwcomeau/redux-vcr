@@ -117,7 +117,7 @@ const Cassette = ({
             </div>
           </div>
           <div className="cassette-flex-line-group">
-            <div className="cassette-line" style={{ flex: 3 }}>
+            <div className="cassette-line cassette-line-long">
               <span className="cassette-line-name">Recorded: </span>
               {dateDisplayString}
             </div>

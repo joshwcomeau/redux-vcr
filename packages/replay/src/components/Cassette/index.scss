@@ -138,6 +138,10 @@ $spool-size: 60px;
       &.cassette-line-right {
         text-align: right;
       }
+
+      &.cassette-line-long {
+        flex: 2;
+      }
     }
 
     .cassette-line-name {
