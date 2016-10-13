@@ -1,11 +1,23 @@
 # ReduxVCR
 ### A Redux devtool that lets you replay user sessions in real-time.
--- Cute VCR image --
+[![build status](https://travis-ci.org/joshwcomeau/redux-vcr.svg?branch=master)](https://travis-ci.org/joshwcomeau/redux-vcr)
+[![npm version](https://img.shields.io/npm/v/redux-vcr.svg)](https://www.npmjs.com/package/redux-vcr)
+[![npm monthly downloads](https://img.shields.io/npm/dm/redux-vcr.svg)](https://www.npmjs.com/package/redux-vcr)
+
+<img src="documentation/images/vcr-demo.gif" />
 
 
-_NOTE: This project is in **early alpha**. I've been using it in production in Key&Pad, but it has not been tested in larger/more complex applications. I do plan on building out this proof-of-concept into a stable, production-ready module :)_
+_NOTE: This project is in **early alpha**. I've been using it in production in [Key&Pad](https://github.com/joshwcomeau/key-and-pad), but it has not been tested in larger/more complex applications._
 
 -----------
+
+## Demo
+
+You can see a live demo of real, in-production data at **[Key&Pad](http://keyandpad.com?adminMode=true)**. Click on the VCR screen, select a cassette, and hear some dynamically-recreated music!
+
+## Blog Post
+
+Check out the [Medium post](todo) that details how and why this is being built.
 
 
 ## Features
@@ -13,8 +25,6 @@ _NOTE: This project is in **early alpha**. I've been using it in production in K
 #### Insights
 
 By re-watching a recorded session in real-time, you learn tons about how users use your application. Great for gauging UX, spotting bugs, etc.
-
--- GIF of VCR in action --
 
 
 #### Developer Experience
@@ -48,7 +58,7 @@ Rather than create one monolithic package, ReduxVCR consists of 4 individual pac
 - **Replay**
   Finally, the replay layer is your interface to navigating and watching the recorded cassettes.
 
-An effort has been made to assure that packages can be swapped out. For example, you may wish to use custom database storage, in which case you'd build your own Persist and Retrieve modules. You may wish to have a different UX, in which case you'd build your own Replay module.
+An effort has been made to ensure that packages can be swapped out. For example, you may wish to use custom database storage, in which case you'd build your own Persist and Retrieve modules. You may wish to have a different UX, in which case you'd build your own Replay module.
 
 
 #### Straightforward Integration
@@ -61,168 +71,19 @@ A fair amount of work has been put into making the integration as simple as poss
 
 ## Getting Started
 
-#### Quickstart
+There are two parts to integrating Redux VCR into your application.
 
-#### Step 1: Sign up for Firebase and create a project
+* First, we need to set up Firebase to store our data, and ensure that your users' sessions are secured. **[Read the instructions for Firebase configuration.](documentation/firebase-config.md)**
 
-ReduxVCR's Persist and Retrieve modules use Firebase v3.2 for data storage.
-
-Head on over to firebase.google.com and sign up for a free account. Once you make it to [the console](https://console.firebase.google.com/), click 'CREATE NEW PROJECT'.
-
-### Step 2: Set up Authentication
-
-##### 2a: Anonymous Authentication
-
-Our app users will have anonymous accounts automatically created for them on pageload. This will allow us to set custom rules, so that these users can't read from the database, and can only write to their slice of the database.
-
-Within Firebase, navigate to the 'SIGN-IN METHOD' page under 'Auth', and click on 'Anonymous'. Click the 'Enable' toggle.
-
-##### 2b: GitHub integration
-
-As an admin, you need the ability to read from the database, so that you can watch recorded sessions. Let's set it up with GitHub OAuth.
-
-On the 'SIGN-IN METHOD' page (under 'Auth'), click on 'GitHub', and flip the 'Enable' toggle.
-
-In a new tab, [head on over to GitHub and create a new application](https://github.com/settings/applications/new). You'll need to copy/paste the Client ID and Client Secret into Firebase, as well as copy and paste the callback URL from Firebase to GitHub.
-
-Now that your GitHub and Firebase accounts are connected, we can specify data access using Firebase Rules
-
-##### 2c: Firebase Rules
-
-In the left-hand menu, click 'Database', and then select 'RULES' from the main header.
-
-Here are the rules you'll want to implement:
-
-```js
-{
-  "rules": {
-    ".read": "auth.token.email === 'your@email.com'",
-    "cassettes": {
-      ".indexOn": ["timestamp"],
-      "$uid": {
-        ".write": "$uid === auth.uid"
-      }
-    },
-    "actions": {
-      "$uid": {
-        ".write": "$uid === auth.uid"
-      }
-    }
-  }
-}
-```
-
-    Be sure to fill in your GitHub email in the '.read' rule. This is how you specify which users will be able to view the cassettes!
-
-Click 'Publish' to save these rules.
+* Second, we need to add the code needed to hook into Firebase and display the UI. **[Read the instructions for Javascript implementation.](documentation/javascript-implementation.md)**
 
 
-### Step 3: Install
+## Troubleshooting
 
-In your terminal, run:
-
-```bash
-$ npm i -S redux-vcr.{capture,persist,retrieve,replay}
-
-# This is short-form for:
-# $ npm install --save redux-vcr.capture redux-vcr.persist redux-vcr.retrieve redux-vcr.replay
-```
-
-### Step 4: Integrate
-
-##### 4a: Redux store integration
-
-In your Firebase console, grab your credentials. Select your project, and click "Add Firebase to your web app".
-
-You don't need to copy the entire snippet, we just need the credentials themselves:
-
-```js
-var config = {
-  apiKey: "AAAAAAA-BBBBB",
-  authDomain: "your-project-name.firebaseapp.com",
-  databaseURL: "https://your-project-name.firebaseio.com",
-  storageBucket: "your-project-name.appspot.com",
-};
-```
-
-These credentials are safe to expose in the client; the Firebase rules we set up earlier protect us.
-
-This next part will vary depending on your setup, but assuming a typical `configure-store.js` file, you'll want to add the following lines:
+As common issues arise, their solutions will be shared here.
 
 
-```js
-import { createCaptureMiddleware } from 'redux-vcr.capture';
-import { createPersistHandler } from 'redux-vcr.persist';
-import { createRetrieveHandler, createRetrieveMiddleware } from 'redux-vcr.retrieve';
-import { createReplayMiddleware, wrapReducer } from 'redux-vcr.replay';
-
-// These are the Firebase credentials from above, renamed and using ES6 'const'
-const firebaseAuth = {
-  apiKey: "AAAAAAA-BBBBB",
-  authDomain: "your-project-name.firebaseapp.com",
-  databaseURL: "https://your-project-name.firebaseio.com",
-  storageBucket: "your-project-name.appspot.com",
-};
-
-// Create a persistHandler. It pushes data from Firebase
-const persistHandler = createPersistHandler({ firebaseAuth });
-
-// Create a retrieveHandler. It pulls data from Firebase.
-// Note that in a real app, you only want to load this in development.
-// See below for real-world configuration
-const retrieveHandler = createRetrieveHandler({ firebaseAuth });
-
-// Finally, create all of our middlewares.
-// You can read much more about how these work, and what options they accept,
-// in the API documentation :)
-const middlewares = [
-  createCaptureMiddleware({ persistHandler }),
-  createRetrieveMiddleware({ retrieveHandler }),
-  createReplayMiddleware(),
-];
-
-const store = createStore(
-  // We use a higher-order reducer to update the state when you replay sessions.
-  // Simply pass it your own reducer.
-  wrapReducer(reducer),
-  applyMiddleware.apply(this, middlewares)
-);
-```
-
-##### 4b: React integration
-
-For replaying cassettes, you'll need to add the `Replay` React component to your app.
-
-It is recommended to place it as high in your app as possible, similar to the official Redux devtools.
-
-```js
-import { Replay } from 'redux-vcr.replay';
-
-const YourApp = () => (
-  <div>
-    {/* Your app stuff here */}
-    <Replay />
-  </div>
-)
-```
-
-Replay requires no configuration via props, as all of the logic can be configured in the middlewares above. There are some aesthetic tweaks you can make, though.
-
-
-##### That's it! You should be up and running :)
-
-
-------------------
-
-
-### Further Reading
-
-* How it Works
-* API Reference
-* Deploying in Production
-
-
-### Roadmap
+## Roadmap
 
 There are a few pretty blatant things missing from ReduxVCR.
 
@@ -230,8 +91,12 @@ There are a few pretty blatant things missing from ReduxVCR.
 
   Right now, we're _only_ recording the series of Redux actions. Ideally, we'd want our scroll position to mirror the user's, and it would be nice to know where their cursor is.
 
-- Versioning
+- Scrubbing and Navigation
 
-  There is an assumption made that the app you play the cassette in is identical to the app the cassette was recorded in. In the real world, though, apps change frequently.
+  When replaying cassettes, there is currently no way to "jump" to a specific portion in the cassette, to see how far along you are in the sequence, etc. A media-player-style scrubber would help quickly analyze and replay crucial moments in a cassette.
 
-  An automated solution is probably impossible (would need access to the filesystem and git)
+- Support for common tools and environments
+
+  Immutable.js and React Native are both currently untested/unsupported.
+
+I have limited free time at the moment, so if anybody would like to contribute to this project, these would be great places to start :)
