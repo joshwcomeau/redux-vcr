@@ -74,6 +74,15 @@ The most likely explanation is that there simply aren't any recorded sessions.
 Alternatively, it could mean that the cassettes aren't where the retrieveHandler was looking for them. This could be the case if you're using a custom Persist module.
 `;
 
+export const permissionDenied = () => `
+Redux VCR error:
+You do not have permission to request cassettes.
+
+The likely cause is that you haven't set up the rules in Firebase correctly, or you're authenticating using the wrong GitHub account.
+
+For information on setting up Firebase, read the documentation:
+https://github.com/joshwcomeau/redux-vcr/blob/master/documentation/firebase-config.md
+`;
 
 
 // /////////////////////// //

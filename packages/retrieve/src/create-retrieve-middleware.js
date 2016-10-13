@@ -24,7 +24,10 @@ const {
   signOutFailure,
   setAuthRequirement,
 } = actionCreators;
-const { noCassettesFound } = errors;
+const {
+  noCassettesFound,
+  permissionDenied,
+} = errors;
 
 
 const createRetrieveMiddleware = ({
@@ -32,7 +35,7 @@ const createRetrieveMiddleware = ({
   appName,
   requiresAuth = true,
   initialCassetteId,
-} = {}) => store => {
+} = {}) => (store) => {
   // If the user provided an `appName`, we want to use it as a localStorage
   // key, so that the user can have multiple ReduxVCR apps.
   const localStorageKey = appName ? `redux-vcr-${appName}` : 'redux-vcr-app';
@@ -48,15 +51,15 @@ const createRetrieveMiddleware = ({
   if (credentials && requiresAuth) {
     retrieveHandler
       .signInWithCredential(JSON.parse(credentials))
-      .then(user => {
+      .then((user) => {
         store.dispatch(signInSuccess({ user }));
       })
-      .catch(error => {
+      .catch((error) => {
         store.dispatch(signInFailure({ error }));
       });
   }
 
-  return next => action => {
+  return next => (action) => {
     switch (action.type) {
       case SIGN_IN_REQUEST: {
         return retrieveHandler
@@ -66,7 +69,7 @@ const createRetrieveMiddleware = ({
             // this action to trigger this middleware.
             store.dispatch(signInSuccess({ user, credential }));
           })
-          .catch(error => {
+          .catch((error) => {
             console.error('Problem authenticating with Firebase:', error);
             next(signInFailure({ error }));
           });
@@ -101,7 +104,7 @@ const createRetrieveMiddleware = ({
         retrieveHandler
           .retrieveList()
           .then(snapshot => snapshot.val())
-          .then(cassettes => {
+          .then((cassettes) => {
             if (cassettes) {
               next(cassettesListSuccess({ cassettes }));
 
@@ -113,14 +116,11 @@ const createRetrieveMiddleware = ({
               next(cassettesListFailure({ error: 'empty' }));
             }
           })
-          .catch(error => {
+          .catch((error) => {
             if (error.code === 'PERMISSION_DENIED') {
               console.error(
-                "Oh no! Firebase didn't let us fetch from /cassettes.\n" +
-                "The rules you've set don't allow you to access this resource." +
-                '\n\n' +
-                'For help setting up the rules, see PLACEHOLDER.\n' +
-                "Here's the Firebase error that prompted this message:"
+                permissionDenied(),
+                error
               );
             } else {
               console.error('An error has occurred, and we were unable to fetch the cassettes.');
@@ -147,7 +147,7 @@ const createRetrieveMiddleware = ({
         retrieveHandler
           .retrieveActions({ id: action.id })
           .then(snapshot => snapshot.val())
-          .then(cassetteActions => {
+          .then((cassetteActions) => {
             next(cassetteActionsReceive({
               id: action.id,
               cassetteActions,
