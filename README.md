@@ -17,7 +17,7 @@ You can see a live demo of real, in-production data at **[Key&Pad](http://keyand
 
 ## Blog Post
 
-Check out the [Medium post](todo) that details how and why this is being built.
+Check out the [Medium post](https://medium.com/@joshuawcomeau/introducing-redux-vcr-cad57b37540a) that details how and why this is being built.
 
 
 ## Features
