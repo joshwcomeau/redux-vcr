@@ -1,23 +1,19 @@
-# Redux VCR / persist
+# ReduxVCR.persist
 
-[![Travis][build-badge]][build]
-[![npm package][npm-badge]][npm]
-[![Coveralls][coveralls-badge]][coveralls]
+[![build status](https://travis-ci.org/joshwcomeau/redux-vcr.svg?branch=master)](https://travis-ci.org/joshwcomeau/redux-vcr)
+[![npm version](https://img.shields.io/npm/v/redux-vcr.persist.svg)](https://www.npmjs.com/package/redux-vcr.persist)
+[![npm monthly downloads](https://img.shields.io/npm/dm/redux-vcr.persist.svg)](https://www.npmjs.com/package/redux-vcr.persist)
 
-Persist receives a Cassette object from `capture`, and is responsible for syncing it with some external database.
+ReduxVCR.persist exposes a handler that receives a Cassette object from ReduxVCR.capture, and is responsible for syncing it with Firebase.
 
-Its responsibilities include:
+This module includes a middleware that :
 
-- Debouncing updates from `capture`
-- Authenticating with the external service for write access (if required)
-- Sending cassette data to the server
+- Debouncing updates from ReduxVCR.capture
+- Anonymously authenticating with Firebase for write access
+- Persisting cassette data to Firebase.
 
---------
+## More Info
 
-### How It Works
+This package belongs to the [ReduxVCR monolithic repo](https://github.com/joshwcomeau/redux-vcr). You'll find full information about this and other core modules there.
 
-This base Persist layer uses Firebase for simplicity.
-
-It needs to be initialized with valid Firebase credentials. The initialize
-method will also sign the user in anonymously, generating a user_id. This
-user will then only be able to write to their own cassette.
+You can also jump straight to the [ReduxVCR.persist API reference](https://github.com/joshwcomeau/redux-vcr/blob/master/documentation/API-reference.md#persist).

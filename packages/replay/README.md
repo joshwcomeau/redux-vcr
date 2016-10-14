@@ -1,24 +1,21 @@
-# Redux VCR / replay
+# ReduxVCR.replay
 
-[![Travis][build-badge]][build]
-[![npm package][npm-badge]][npm]
-[![Coveralls][coveralls-badge]][coveralls]
+[![build status](https://travis-ci.org/joshwcomeau/redux-vcr.svg?branch=master)](https://travis-ci.org/joshwcomeau/redux-vcr)
+[![npm version](https://img.shields.io/npm/v/redux-vcr.replay.svg)](https://www.npmjs.com/package/redux-vcr.replay)
+[![npm monthly downloads](https://img.shields.io/npm/dm/redux-vcr.replay.svg)](https://www.npmjs.com/package/redux-vcr.replay)
 
-Replay is responsible for letting you, the admin, replay the actions of your users.
+ReduxVCR.replay is responsible for letting you, the admin, replay the actions of your users.
 
 Its responsibilities include:
 
-- Providing a cute little React VCR for controlling the replays
-- Letting you start, stop, pause, and change the speed of replaying a given user's session
+- Providing a cute little VCR interface for controlling the replays.
 - Letting you pick from a list of recent sessions (known as 'cassettes')
+- Hooking into your Redux state, to be able to reset it when new cassettes are loaded, prepare their initial state, etc.
 
 --------
 
-### How It Works
+## More Info
 
-There are a few pieces to this module:
+This package belongs to the [ReduxVCR monolithic repo](https://github.com/joshwcomeau/redux-vcr). You'll find full information about this and other core modules there.
 
-- We have a collection of React components for control
-- Those react components connect to the redux store, and dispatch actions to affect the replays.
-- The store holds the data collected and retrieved by the other ReduxVCR modules
-- A middleware watches for PLAY_CASSETTE, and uses a utility to recursively trigger actions as long as playStatus holds true.
+You can also jump straight to the [ReduxVCR.replay API reference](https://github.com/joshwcomeau/redux-vcr/blob/master/documentation/API-reference.md#replay).
